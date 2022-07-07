@@ -49,6 +49,8 @@ class LearnerServer:
         self.learner = learner
         self.sampler_num = sampler_num
 
+        self.cached_weights = self.learner.get_weights()
+
     def run(self):
         self.actor_communicator.run()
         threading.Thread(name="learn thread", target=self.learner.run, args=(), daemon=True).start()
@@ -56,7 +58,9 @@ class LearnerServer:
         while True:
             conn, (cmd, data) = self.actor_communicator.recv()
             if cmd == "model":
-                self.actor_communicator.send(conn, (cmd, self.learner.get_weights()))
+                # self.actor_communicator.send(conn, (cmd, self.learner.get_weights()))
+                self.actor_communicator.send(conn, (cmd, self.cached_weights))
+
             elif cmd == "episodes":
                 """
                 for i, moment in enumerate(data):
@@ -70,6 +74,8 @@ class LearnerServer:
                 """
                 self.learner.memory_replay.cache(data)
                 self.actor_communicator.send(conn, (cmd, "successfully receive data"))
+                if self.learner.memory_replay.num_cached % 400 == 0:
+                    self.cached_weights = self.learner.get_weights()
 
     def run_on_policy(self):
         self.actor_communicator.run_sync()

@@ -28,16 +28,16 @@ class DuelNet(Model):
 
 
 if __name__ == "__main__":
-    set_process_logger(file_path="./log/impala_mp_batcher.txt")
+    set_process_logger(file_path="./log/impala_delay_update.txt")
     env = gym.make("LunarLander-v2")
     obs_dim = env.observation_space.shape[0]
     num_acts = env.action_space.n
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = DuelNet(obs_dim=obs_dim, num_acts=num_acts).to(device)
-    #mr = MultiProcessBatcher(maxlen=4096, device=device, batch_size=512, forward_steps=256, num_batch_maker=2)
+    mr = MultiProcessBatcher(maxlen=30000, device=device, batch_size=192, forward_steps=64, num_batch_maker=4)
     #mr = TrajQueue(device, 32)
-    mr = MultiProcessTrajQueue(8, device=device, batch_size=64, num_batch_maker=2)
+    #mr = MultiProcessTrajQueue(8, device=device, batch_size=64, num_batch_maker=2)
     learner = IMPALA(model, mr, lr=1e-3, ef=3e-5, vf=0.5)
     learner_server = LearnerServer(learner, 1234)
     learner_server.run()

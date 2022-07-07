@@ -281,13 +281,13 @@ class IMPALA(A2C):
         return advantage, vtrace_value
 
     def run(self):
-        self.memory_replay.start()
-        #is_started = False
+        #self.memory_replay.start()
+        is_started = False
         while True:
-         #   if len(self.memory_replay) > 2 * self.memory_replay.batch_size:
-          #      if not is_started:
-           #         self.memory_replay.start()
-            #        is_started = True
+            if len(self.memory_replay) > 2 * self.memory_replay.batch_size:
+                if not is_started:
+                    self.memory_replay.start()
+                    is_started = True
             logging.info(self.learn())
 
 
