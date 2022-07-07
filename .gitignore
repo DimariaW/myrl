@@ -1,2 +1,4 @@
 .idea
 log
+myrl/__pycache__
+tests/__pycache__
