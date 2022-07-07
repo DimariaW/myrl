@@ -5,6 +5,7 @@ from myrl.memory_replay import TrajList, MultiProcessBatcher
 import logging
 from typing import Union
 
+
 class PG(Algorithm):
     def __init__(self, model: Model, mr: TrajList, lr: float = 2e-3, gamma: float = 0.99):
         super().__init__()
@@ -280,6 +281,7 @@ class IMPALA(A2C):
         return advantage, vtrace_value
 
     def run(self):
+        self.memory_replay.start()
         #is_started = False
         while True:
          #   if len(self.memory_replay) > 2 * self.memory_replay.batch_size:

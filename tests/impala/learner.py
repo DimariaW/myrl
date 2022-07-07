@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch
 from myrl.learner_server import LearnerServer
 from myrl.algorithm import IMPALA
-from myrl.memory_replay import MultiProcessBatcher, TrajQueue
+from myrl.memory_replay import MultiProcessBatcher, TrajQueue, MultiProcessTrajQueue
 from myrl.utils import set_process_logger
 
 
@@ -28,7 +28,7 @@ class DuelNet(Model):
 
 
 if __name__ == "__main__":
-    set_process_logger(file_path="./log/impala.txt")
+    set_process_logger(file_path="./log/impala_mp_batcher.txt")
     env = gym.make("LunarLander-v2")
     obs_dim = env.observation_space.shape[0]
     num_acts = env.action_space.n
@@ -36,7 +36,8 @@ if __name__ == "__main__":
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = DuelNet(obs_dim=obs_dim, num_acts=num_acts).to(device)
     #mr = MultiProcessBatcher(maxlen=4096, device=device, batch_size=512, forward_steps=256, num_batch_maker=2)
-    mr = TrajQueue(device, 32)
+    #mr = TrajQueue(device, 32)
+    mr = MultiProcessTrajQueue(8, device=device, batch_size=64, num_batch_maker=2)
     learner = IMPALA(model, mr, lr=1e-3, ef=3e-5, vf=0.5)
     learner_server = LearnerServer(learner, 1234)
     learner_server.run()

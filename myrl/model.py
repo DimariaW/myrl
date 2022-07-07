@@ -12,6 +12,13 @@ class Model(nn.Module):
         pass
 
     def sync_weights_to(self, target_model: "Model", decay=0.0):
+        """
+        target model and current model must in same device
+
+        :param target_model:
+        :param decay:
+        :return:
+        """
         target_vars = target_model.state_dict()
         for name, var in self.state_dict().items():
             target_vars[name].data.copy_(decay * target_vars[name].data +

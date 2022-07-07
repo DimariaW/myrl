@@ -300,6 +300,49 @@ class TrajQueue:
                 }
 
 
+class MultiProcessTrajQueue:
+    def __init__(self,
+                 maxlen: int,
+                 device=torch.device("cpu"),
+                 batch_size: int = 192,
+                 num_batch_maker: int = 2
+                 ):
+        self.episodes = queue.Queue(maxsize=maxlen)
+        self.device = device
+        self.batch_size = batch_size
+
+        self.num_cached = 0
+
+        self.batch_maker = MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
+                                                    postprocess=self.post_process,
+                                                    num=num_batch_maker, buffer_length=1, num_receivers=1,
+                                                    name_prefix="batch_maker",
+                                                    logger_file_path="./log/impala_batch_maker.txt")
+
+    def cache(self, episode):
+        try:
+            self.episodes.put(episode, timeout=0.1)
+            self.num_cached += 1
+            logging.debug("put one episode")
+        except queue.Full:
+            logging.critical(" generate rate is larger than consumer")
+            raise
+
+    def recall(self):
+        return self.batch_maker.recv()
+
+    def send_raw_batch(self):
+        while True:
+            yield [self.episodes.get() for _ in range(self.batch_size)]
+
+    def start(self):
+        self.batch_maker.start()
+
+    def post_process(self, batch):
+        for key in batch.keys():
+            batch[key] = batch[key].to(self.device)
+        return batch
+
 
 class MultiProcessBatcher:
     def __init__(self,

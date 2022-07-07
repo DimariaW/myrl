@@ -1,5 +1,9 @@
 
 class Agent:
+    """
+    convert batched np.ndarray to tensor
+    return action_info_dict np.ndarray
+    """
     def __init__(self):
         pass
 

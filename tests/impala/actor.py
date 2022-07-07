@@ -34,6 +34,7 @@ if __name__ == "__main__":
     model = DuelNet(obs_dim=obs_dim, num_acts=num_acts).to(device)
 
     agent = IMPALAAgent(model, device)
-    actor = Actor(env, agent, steps=3000, get_full_episodes=True, use_tensorboard=True, logdir="./log/impala/")
-    actor_client = ActorClient(actor, "127.0.1.1", 1234, role="evaluator")
+    actor = Actor(env, agent, steps=1001, get_full_episodes=False,
+                  use_tensorboard=False, logdir="./log/impala/mp_batcher/")
+    actor_client = ActorClient(actor, "172.18.237.16", 1234, role="sampler")
     actor_client.run()

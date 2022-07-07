@@ -103,9 +103,9 @@ def connect_socket_connection(host, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sock.connect((host, int(port)))
-    except ConnectionRefusedError:
-        print('failed to connect %s %d' % (host, port))
-        return
+    except ConnectionRefusedError as exception:
+        logging.info('failed to connect %s %d' % (host, port))
+        raise exception
     return PickledConnection(sock)
 
 
@@ -221,9 +221,12 @@ class MultiProcessJobExecutors:
         return self.output_queue.get()
 
     def start(self):
-        self.threads.append(threading.Thread(name="sender thread", target=self._sender))
+        self.threads.append(threading.Thread(name="sender thread", target=self._sender, daemon=True))
         for i in range(self.num_receivers):
-            self.threads.append(threading.Thread(name=f"receiver thread {i}", target=self._receiver, args=(i,)))
+            self.threads.append(threading.Thread(name=f"receiver thread {i}",
+                                                 target=self._receiver,
+                                                 args=(i,),
+                                                 daemon=True))
         for thread in self.threads:
             thread.start()
 
@@ -250,17 +253,21 @@ class MultiProcessJobExecutors:
             for conn in tmp_conns:
                 data, cnt = conn.recv()
 
-                self.lock.acquire()
-                self.send_cnt[conn] -= cnt
-                self.lock.release()
-
                 if self.postprocess is not None:
                     data = self.postprocess(data)
 
-                try:
-                    self.output_queue.put(data, timeout=0.1)
-                except queue.Full:
-                    logging.debug(" output_queue is full, the bottleneck is the speed of learner consume batch")
+                while True:
+                    """
+                    只有成功put 数据，才修改send cnt
+                    """
+                    try:
+                        self.output_queue.put(data, timeout=0.1)
+                        self.lock.acquire()
+                        self.send_cnt[conn] -= cnt
+                        self.lock.release()
+                        break
+                    except queue.Full:
+                        logging.debug("output_queue is full, the bottleneck is the speed of learner consume batch")
         logging.info('end receiver %d' % index)
 
 
@@ -290,8 +297,8 @@ class QueueCommunicator:
         self.conns.add(conn)
 
     def disconnect(self, conn):
-        print('disconnected')
         self.conns.discard(conn)
+        logging.info(f'disconnected one connection, current connection num is {self.connection_count()}')
 
     def _send_thread(self):
         while True:
@@ -315,5 +322,9 @@ class QueueCommunicator:
                 except EOFError:
                     self.disconnect(conn)
                     continue
-                self.input_queue.put((conn, recv_data), timeout=0.3)
+                try:
+                    self.input_queue.put((conn, recv_data), timeout=0.3)
+                except queue.Full as error:
+                    logging.critical("the learner server cannot consume some manny actor, the message queue is full")
+                    raise error
 
