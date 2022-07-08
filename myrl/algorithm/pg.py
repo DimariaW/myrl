@@ -288,7 +288,7 @@ class IMPALA(A2C):
                 if not is_started:
                     self.memory_replay.start()
                     is_started = True
-            logging.info(self.learn())
+                logging.info(self.learn())
 
 
 """

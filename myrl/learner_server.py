@@ -74,7 +74,7 @@ class LearnerServer:
                 """
                 self.learner.memory_replay.cache(data)
                 self.actor_communicator.send(conn, (cmd, "successfully receive data"))
-                if self.learner.memory_replay.num_cached % 400 == 0:
+                if self.learner.memory_replay.num_cached % 4000 == 0:
                     self.cached_weights = self.learner.get_weights()
 
     def run_on_policy(self):

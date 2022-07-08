@@ -35,6 +35,6 @@ if __name__ == "__main__":
 
     agent = IMPALAAgent(model, device)
     actor = Actor(env, agent, steps=3000, get_full_episodes=False,
-                  use_tensorboard=False, logdir="./log/impala/mp_batcher/")
-    actor_client = ActorClient(actor, "192.168.43.157", 1234, role="sampler")
+                  use_tensorboard=False, logdir="./log/impala/batcher/")
+    actor_client = ActorClient(actor, "127.0.1.1", 1234, role="sampler")
     actor_client.run()
