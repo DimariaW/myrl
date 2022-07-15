@@ -38,6 +38,6 @@ if __name__ == "__main__":
     mr = MultiProcessBatcher(maxlen=30000, device=device, batch_size=192, forward_steps=64, num_batch_maker=4)
     #mr = TrajQueue(device, 32)
     #mr = MultiProcessTrajQueue(8, device=device, batch_size=64, num_batch_maker=2)
-    learner = IMPALA(model, mr, lr=1e-3, ef=3e-5, vf=0.5)
+    learner = IMPALA(model, mr, lr=1e-5, ef=3e-5, vf=0.5)
     learner_server = LearnerServer(learner, 1234)
     learner_server.run()
