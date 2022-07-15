@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import logging
 from myrl.connection import MultiProcessJobExecutors
 import queue
+from myrl.utils import to_tensor, batchify
 
 
 class MemoryReplay:
@@ -398,17 +399,19 @@ class MultiProcessBatcher:
         self.batch_maker.start()
 
     def post_process(self, batch):
-        for key in batch.keys():
-            batch[key] = batch[key].to(self.device)
-        return batch
+        return to_tensor(batch, unsqueeze=None, device=self.device)
 
     def __len__(self):
         return len(self.episodes)
 
 
 def make_batch(episodes):
+    episodes = [batchify(episode, unsqueeze=0) for episode in episodes]
+    return batchify(episodes, unsqueeze=0)
+    """
     observations, actions, rewards, dones, behavior_log_probs = [], [], [], [], []
     for episode in episodes:
+        episode = batchify(episode, unsqueeze=0)
         observation = np.stack([moment["observation"] for moment in episode], axis=0)
         action = np.array([moment["action"] for moment in episode])
         reward = np.array([moment["reward"] for moment in episode])
@@ -427,3 +430,4 @@ def make_batch(episodes):
             "dones": torch.from_numpy(np.stack(dones, axis=0)).type(torch.float32),
             "behavior_log_probs": torch.from_numpy(np.stack(behavior_log_probs, axis=0)).type(torch.float32)
             }
+    """

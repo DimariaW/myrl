@@ -214,11 +214,11 @@ class IMPALA(A2C):
         self.model.train()
         episodes = self.memory_replay.recall()
 
-        obs = episodes["observations"]  # shape(B*T)
-        behavior_log_prob = episodes['behavior_log_probs']
-        action = episodes["actions"]
-        reward = episodes["rewards"]
-        done = episodes["dones"]
+        obs = episodes["observation"]  # shape(B*T)
+        behavior_log_prob = episodes['behavior_log_prob']
+        action = episodes["action"]
+        reward = episodes["reward"]
+        done = episodes["done"]
 
         value, action_logit = self.model(obs)  # shape: B*T, B*T*act_dim
 
@@ -288,7 +288,7 @@ class IMPALA(A2C):
                 if not is_started:
                     self.memory_replay.start()
                     is_started = True
-            logging.info(self.learn())
+                logging.info(self.learn())
 
 
 """

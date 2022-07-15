@@ -1,7 +1,7 @@
 
 # https://www.kaggle.com/mlconsult/best-open-rules-bot-score-1020-7
 
-from football.util import *
+from envs.football.util import *
 from math import sqrt
 
 directions = [
@@ -14,11 +14,14 @@ dirsign = lambda x: 1 if abs(x) < 0.01 else (0 if x < 0 else 2)
 enemyGoal = [1, 0]
 perfectRange = [[0.61, 1], [-0.2, 0.2]]
 
+
 def inside(pos, area):
     return area[0][0] <= pos[0] <= area[0][1] and area[1][0] <= pos[1] <= area[1][1]
 
+
 def get_distance(pos1,pos2):
     return ((pos1[0]-pos2[0])**2+(pos1[1]-pos2[1])**2)**0.5
+
 
 def player_direction(obs):
     controlled_player_pos = obs['left_team'][obs['active']]
@@ -32,6 +35,7 @@ def player_direction(obs):
         return 0
     if x > dx:
         return 1
+
 
 def run_pass(left_team,right_team,x,y):
     ###Are there defenders dead ahead?

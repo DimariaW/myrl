@@ -1,10 +1,11 @@
 
 # https://www.kaggle.com/eugenkeil/simple-baseline-bot
 
-from football.util import *
+from envs.football.util import *
 
 
-def _agent(obs):
+@human_readable_agent
+def agent(obs):
     directions = [
     [Action.TopLeft, Action.Top, Action.TopRight],
     [Action.Left, Action.Idle, Action.Right],
@@ -18,18 +19,17 @@ def _agent(obs):
     def inside(pos, area):
         return area[0][0] <= pos[0] <= area[0][1] and area[1][0] <= pos[1] <= area[1][1]
 
-    obs = obs['players_raw'][0]
     controlled_player_pos = obs['left_team'][obs['active']]
 
     if obs["game_mode"] == GameMode.Penalty:
-            return Action.Shot
+        return Action.Shot
     if obs["game_mode"] == GameMode.Corner:
         if controlled_player_pos[0] > 0:
             return Action.Shot
     if obs["game_mode"] == GameMode.FreeKick:
         return Action.Shot
     # Make sure player is running.
-    if  0 < controlled_player_pos[0] < 0.6 and Action.Sprint not in obs['sticky_actions']:
+    if 0 < controlled_player_pos[0] < 0.6 and Action.Sprint not in obs['sticky_actions']:
         return Action.Sprint
     elif 0.6 < controlled_player_pos[0] and Action.Sprint in obs['sticky_actions']:
         return Action.ReleaseSprint
@@ -51,6 +51,4 @@ def _agent(obs):
         ydir = dirsign(obs['ball'][1] - controlled_player_pos[1])
         return directions[ydir][xdir]
 
-def agent(obs):
-    return [_agent(obs)]
 

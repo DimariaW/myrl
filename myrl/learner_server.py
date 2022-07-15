@@ -3,6 +3,7 @@ import threading
 from myrl.algorithm import Algorithm
 import numpy as np
 import logging
+from tensorboardX import SummaryWriter
 
 
 class ActorCommunicator(connection.QueueCommunicator):
@@ -44,14 +45,21 @@ class ActorCommunicator(connection.QueueCommunicator):
 
 
 class LearnerServer:
-    def __init__(self, learner: Algorithm, port: int, actor_num=None, sampler_num=None):
+    def __init__(self, learner: Algorithm = None, port: int = None, actor_num=None, sampler_num=None):
         self.actor_communicator = ActorCommunicator(port, actor_num)
         self.learner = learner
         self.sampler_num = sampler_num
 
-        self.cached_weights = self.learner.get_weights()
+        self.cached_weights = None
+
+        self.sw = SummaryWriter(logdir="./log/train/")
+        self.reward_steps = 0
 
     def run(self):
+
+        self.cached_weights = self.learner.get_weights()
+        last_update_num_cached = 0
+
         self.actor_communicator.run()
         threading.Thread(name="learn thread", target=self.learner.run, args=(), daemon=True).start()
 
@@ -59,9 +67,9 @@ class LearnerServer:
             conn, (cmd, data) = self.actor_communicator.recv()
             if cmd == "model":
                 # self.actor_communicator.send(conn, (cmd, self.learner.get_weights()))
-                self.actor_communicator.send(conn, (cmd, self.cached_weights))
+                self.actor_communicator.send(conn, self.cached_weights)
 
-            elif cmd == "episodes":
+            elif cmd == "episode":
                 """
                 for i, moment in enumerate(data):
                     if i < len(data) - 1:
@@ -74,8 +82,17 @@ class LearnerServer:
                 """
                 self.learner.memory_replay.cache(data)
                 self.actor_communicator.send(conn, (cmd, "successfully receive data"))
-                if self.learner.memory_replay.num_cached % 400 == 0:
+
+                if (self.learner.memory_replay.num_cached - last_update_num_cached) >= 400:
                     self.cached_weights = self.learner.get_weights()
+                    last_update_num_cached = self.learner.memory_replay.num_cached
+
+            elif cmd == "sample_reward":
+                for reward in data:
+                    self.reward_steps += 1
+                    self.sw.add_scalar(tag="reward", scalar_value=reward, global_step=self.reward_steps)
+                self.actor_communicator.send(conn, "successfully receive results")
+
 
     def run_on_policy(self):
         self.actor_communicator.run_sync()
@@ -100,7 +117,16 @@ class LearnerServer:
                     received_episodes_num = 0
                     conns = []
 
-
+    def run_test(self):
+        """
+        function to test actor
+        :return:
+        """
+        self.actor_communicator.run()
+        while True:
+            conn, (cmd, data) = self.actor_communicator.recv()
+            logging.info((cmd, data))
+            self.actor_communicator.send(conn, (cmd, "successfully receive"))
 
 
 

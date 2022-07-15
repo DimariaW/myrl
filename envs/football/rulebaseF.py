@@ -13,7 +13,7 @@ LONG_SHOT_X = 0.5865416364112123
 LONG_SHOT_Y = 0.9040971438964053
 
 
-from football.util import *
+from envs.football.util import *
 from math import sqrt
 
 directions = [

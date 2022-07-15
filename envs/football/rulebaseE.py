@@ -12,7 +12,7 @@ GOALIE_OUT = 0.2
 LONG_SHOT_X = 0.4
 LONG_SHOT_Y = 0.2
 
-from football.util import *
+from envs.football.util import *
 from math import sqrt
 
 directions = [

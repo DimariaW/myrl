@@ -2,9 +2,10 @@
 # https://www.kaggle.com/yegorbiryukov/gfootball-with-memory-patterns
 # start executing cells from here to rewrite submission.py
 
-from football.util import *
+from envs.football.util import *
 import math
 import random
+
 
 def find_patterns(obs, player_x, player_y):
     """ find list of appropriate patterns in groups of memory patterns """
@@ -12,6 +13,7 @@ def find_patterns(obs, player_x, player_y):
         group = get_group(obs, player_x, player_y)
         if group["environment_fits"](obs, player_x, player_y):
             return group["get_memory_patterns"](obs, player_x, player_y)
+
 
 def get_action_of_agent(obs, player_x, player_y):
     """ get action of appropriate pattern in agent's memory """
@@ -21,6 +23,7 @@ def get_action_of_agent(obs, player_x, player_y):
         pattern = get_pattern(obs, player_x, player_y)
         if pattern["environment_fits"](obs, player_x, player_y):
             return pattern["get_action"](obs, player_x, player_y)
+
 
 def get_active_sticky_action(obs, exceptions):
     """ get release action of the first active sticky action, except those in exceptions list """
@@ -35,6 +38,7 @@ def get_active_sticky_action(obs, exceptions):
                 release_action = Action.ReleaseDirection
             break
     return release_action
+
 
 def get_average_distance_to_opponents(obs, player_x, player_y):
     """ get average distance to closest opponents """
@@ -52,12 +56,14 @@ def get_average_distance_to_opponents(obs, player_x, player_y):
         return 2, distances_amount
     return distances_sum / distances_amount, distances_amount
 
+
 def get_distance(x1, y1, x2, y2):
     """ get two-dimensional Euclidean distance, considering y size of the field """
     return math.sqrt((x1 - x2) ** 2 + (y1 * 2.38 - y2 * 2.38) ** 2)
 
 # "%%writefile -a submission.py" will append the code below to submission.py,
 # it WILL NOT rewrite submission.py
+
 
 def bad_angle_short_pass(obs, player_x, player_y):
     """ perform a short pass, if player is at bad angle to opponent's goal """
@@ -84,6 +90,7 @@ def bad_angle_short_pass(obs, player_x, player_y):
         return Action.ShortPass
 
     return {"environment_fits": environment_fits, "get_action": get_action}
+
 
 def close_to_goalkeeper_shot(obs, player_x, player_y):
     """ shot if close to the goalkeeper """

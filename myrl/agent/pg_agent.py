@@ -3,6 +3,7 @@ import torch
 import numpy as np
 from myrl.agent import Agent
 from myrl.model import Model
+from myrl.utils import to_tensor
 
 
 class PGAgent(Agent):
@@ -37,9 +38,9 @@ class PGAgent(Agent):
 class IMPALAAgent(PGAgent):
 
     @torch.no_grad()
-    def sample(self, state: np.ndarray):
+    def sample(self, state):
         self.model.eval()
-        state = torch.from_numpy(state).type(torch.float32).to(self.device)
+        state = to_tensor(state, device=self.device)
         _, logits = self.model(state)
         action_idx = torch.distributions.Categorical(logits=logits).sample()
         log_prob = torch.log_softmax(logits, dim=-1)

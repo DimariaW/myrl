@@ -136,6 +136,7 @@ def open_multiprocessing_connections(num_process, target, args_func):
 
     return s_conns
 
+
 #%%
 
 
@@ -156,8 +157,9 @@ def wrapped_func(func: Callable, conn, logger_file_path=None):
             conn.send((data, 1))
             total_sent += 1
             logging.debug(f"successfully send data counts is : {total_sent}")
-    except:
+    except Exception:
         traceback.print_exc(file=open(logger_file_path, "a") if logger_file_path is not None else None)
+        raise
 
 
 class MultiProcessJobExecutors:
@@ -322,9 +324,13 @@ class QueueCommunicator:
                 except EOFError:
                     self.disconnect(conn)
                     continue
-                try:
-                    self.input_queue.put((conn, recv_data), timeout=0.3)
-                except queue.Full as error:
-                    logging.critical("the learner server cannot consume some manny actor, the message queue is full")
-                    raise error
+
+                while True:
+                    try:
+                        self.input_queue.put((conn, recv_data), timeout=0.3)
+                        break
+                    except queue.Full:
+                        logging.critical("this process cannot consume some manny actor, the message queue is full")
+
+
 

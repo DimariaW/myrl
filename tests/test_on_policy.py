@@ -27,7 +27,7 @@ class DuelNet(Model):
 
 
 if __name__ == "__main__":
-    #env = gym.make("LunarLander-v2")
+    #envs = gym.make("LunarLander-v2")
     env = gym.make("CartPole-v1")
     obs_dim = env.observation_space.shape[0]
     num_acts = env.action_space.n
