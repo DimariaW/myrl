@@ -91,8 +91,7 @@ class LearnerServer:
                 for reward in data:
                     self.reward_steps += 1
                     self.sw.add_scalar(tag="reward", scalar_value=reward, global_step=self.reward_steps)
-                self.actor_communicator.send(conn, "successfully receive results")
-
+                self.actor_communicator.send(conn, (cmd, "successfully receive results"))
 
     def run_on_policy(self):
         self.actor_communicator.run_sync()

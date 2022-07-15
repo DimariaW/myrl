@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+from myrl.model import Model
 
 
 def to_tensor(x, unsqueeze=None, device=torch.device("cpu")):
@@ -331,3 +332,63 @@ class FootballNet(nn.Module):
         # p, v, r = self.head(h)
 
         return p, r
+
+
+class SimpleModel(Model):
+    def __init__(self, num_left_players, num_right_players):
+        super().__init__()
+
+        self.ball_ebd = nn.Linear(9, 32)
+        self.ball_owned_ebd = nn.Embedding(1 + num_left_players + num_right_players, 32)
+
+        self.player_ebd = nn.Linear(4 * (num_left_players + num_right_players), 32)
+        self.controlled_player_index_ebd = nn.Embedding(num_left_players, 32)
+
+        self.game_mode_ebd = nn.Embedding(7, 32)
+
+        self.ball_fc = nn.Linear(32, 64)
+        self.player_fc = nn.Linear(32, 64)
+        self.game_mode_fc = nn.Linear(32, 64)
+
+        self.final_fc = nn.Linear(64, 20)
+
+    def forward(self, obs):
+        state = obs["state"]
+
+        ball_embedding = self.ball_ebd(state["ball"])
+        ball_owned_embedding = self.ball_owned_ebd(state["ball_owned"])
+
+        player_embedding = self.player_ebd(state["player"])
+        controlled_player_index_embedding = self.controlled_player_index_ebd(state["controlled_player_index"])
+
+        ball_feas = ball_embedding + ball_owned_embedding + controlled_player_index_embedding
+        ball_feas = ball_feas / np.sqrt(3)
+
+        player_feas = player_embedding + controlled_player_index_embedding
+        player_feas = player_feas / np.sqrt(2)
+
+        ball_feature = self.ball_fc(ball_feas)
+        player_feature = self.player_fc(player_feas)
+        game_feature = self.game_mode_fc(self.game_mode_ebd(state["game_mode"]))
+
+        feature = (ball_feature + player_feature + game_feature) / np.sqrt(3)
+
+        out = self.final_fc(feature)
+
+        value, logit = out[..., 0], out[..., 1:]
+
+        legal_actions = obs["legal_actions"]
+        logit = logit - (1. - legal_actions) * 1e12
+
+        return value, logit
+
+
+
+
+
+
+
+
+
+
+

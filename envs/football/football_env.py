@@ -180,17 +180,31 @@ class FootballEnvDeveloping:
 """
 
 
-class FootballEnv(gym.Wrapper):
+class TamakEriFeverEnv(gym.Wrapper):
+    """
+    processing the raw obs according to the way of TamakEriFever
+    current version: only support control one player, the designated player
+    """
     def __init__(self, env):
         super().__init__(env)
-        self.half_step = 1500
-        self.all_actions = list(range(19))
+        self.half_step = None
+        self.num_left_players = None
+        self.num_right_players = None
+
+        self.all_actions = np.arange(19)
         self.action_history = deque(maxlen=8)
         self.action_history.extend([0] * 8)
 
     def reset(self):
-        obs = self.env.reset()
+        self.env.reset()
+        # remove idle state
+        obs, _, _, _ = self.env.step([0])
         obs = obs[0]
+
+        self.half_step = obs["steps_left"] // 2
+        self.num_left_players = obs["left_team"].shape[0]
+        self.num_right_players = obs["right_team"].shape[0]
+
         state = self._preprocess_obs(obs)
         state = self._raw_obs_to_feature(state, self.action_history, self.half_step)
         legal_actions = self.legal_actions(obs)
@@ -696,6 +710,151 @@ class FootballEnv(gym.Wrapper):
         action_masks = np.zeros(19)
         action_masks[legal_actions] = 1
         return action_masks
+
+
+class SimpleEnv(gym.Wrapper):
+
+    def __init__(self, env):
+        super().__init__(env)
+        self.num_left_players = None
+        self.num_right_players = None
+
+        self.all_actions = np.arange(19)
+        self.action_history = deque(maxlen=8)
+
+    def reset(self):
+        self.env.reset()
+        # remove idle state
+        obs, _, _, _ = self.env.step([0])
+        obs = obs[0]
+
+        self.action_history.extend([0] * 8)
+        self.num_left_players = obs["left_team"].shape[0]
+        self.num_right_players = obs["right_team"].shape[0]
+
+        state = self._preprocess_obs(obs)
+        state = self._raw_obs_to_feature(state, self.action_history)
+        legal_actions = self.legal_actions(obs)
+
+        return {"state": state, 'legal_actions': legal_actions}
+
+    def step(self, action):
+        self.action_history.append(action)
+        obs, reward, done, info = self.env.step([action])
+        obs = obs[0]
+        info["score"] = obs["score"]
+        state = self._preprocess_obs(obs)
+        state = self._raw_obs_to_feature(state, self.action_history)
+        legal_actions = self.legal_actions(obs)
+        return {"state": state, "legal_actions": legal_actions}, reward, done, info
+
+    @staticmethod
+    def _preprocess_obs(obs):
+        mode = obs['game_mode']
+        if mode == GameMode.FreeKick or \
+                mode == GameMode.Corner or \
+                mode == GameMode.Penalty or \
+                mode == GameMode.GoalKick:
+            # find nearest player and team
+            def dist(xy1, xy2):
+                return ((xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2) ** 0.5
+
+            team_player_position = [(0, i, p) for i, p in enumerate(obs['left_team'])] + \
+                                   [(1, i, p) for i, p in enumerate(obs['right_team'])]
+            distances = [(t[0], t[1], dist(t[2], obs['ball'][:2])) for t in team_player_position]
+            distances = sorted(distances, key=lambda x: x[2])
+            # print(mode, [t[2] for t in distances])
+            # print(o['ball_owned_team'], o['ball_owned_player'], '->', distances[0][0], distances[0][1])
+            # input()
+            obs['ball_owned_team'] = distances[0][0]
+            obs['ball_owned_player'] = distances[0][1]
+
+        return obs
+
+    def legal_actions(self, obs):
+        # Illegal actions
+        illegal_actions = set()
+        # You have a ball?
+        ball_owned_team = obs['ball_owned_team']
+        if ball_owned_team == 1:  # not owned
+            illegal_actions.add(int(Action.LongPass))
+            illegal_actions.add(int(Action.HighPass))
+            illegal_actions.add(int(Action.ShortPass))
+            illegal_actions.add(int(Action.Shot))
+            illegal_actions.add(int(Action.Dribble))
+        elif ball_owned_team == -1:  # free
+            illegal_actions.add(int(Action.Dribble))
+        elif ball_owned_team == 0:  # owned
+            illegal_actions.add(int(Action.Slide))
+
+        # Already sticky action?
+        sticky_actions = obs['sticky_actions']
+        if type(sticky_actions) == set:
+            sticky_actions = [0] * 10
+
+        if sticky_actions[action_to_sticky_index[Action.Sprint]] == 0:  # not action_sprint
+            illegal_actions.add(int(Action.ReleaseSprint))
+
+        if sticky_actions[action_to_sticky_index[Action.Dribble]] == 0:  # not action_dribble
+            illegal_actions.add(int(Action.ReleaseDribble))
+
+        if 1 not in sticky_actions[:8]:
+            illegal_actions.add(int(Action.ReleaseDirection))
+
+        legal_actions = [a for a in self.all_actions if a not in illegal_actions]
+        action_masks = np.zeros(19)
+        action_masks[legal_actions] = 1
+        return action_masks
+
+    def _raw_obs_to_feature(self, state, action_history=None):
+        """
+            follow these processing plus action_history
+            'simple115'/'simple115v2': the observation is a vector of size 115.
+                It holds:
+                 - the ball_position and the ball_direction as (x,y,z)
+                 - one hot encoding of who controls the ball.
+                   [1, 0, 0]: nobody, [0, 1, 0]: left team, [0, 0, 1]: right team.
+                 - one hot encoding of size 11 to indicate who is the active player
+                   in the left team.
+                 - 11 (x,y) positions for each player of the left team.
+                 - 11 (x,y) motion vectors for each player of the left team.
+                 - 11 (x,y) positions for each player of the right team.
+                 - 11 (x,y) motion vectors for each player of the right team.
+                 - one hot encoding of the game mode. Vector of size 7 with the
+                   following meaning:
+                   {NormalMode, KickOffMode, GoalKickMode, FreeKickMode,
+                    CornerMode, ThrowInMode, PenaltyMode}.
+                 Can only be used when the scenario is a flavor of normal game
+            """
+        feature = dict()
+        feature["ball"] = np.concatenate([state["ball"], state["ball_direction"], state["ball_rotation"]],
+                                                 axis=0)
+        # global free: 0, left: 1-12, right: 12-23
+        if state["ball_owned_team"] == -1:
+             feature["ball_owned"] = 0
+        else:
+            feature["ball_owned"] = state["ball_owned_team"]*self.num_left_players + state["ball_owned_player"] + 1
+
+        feature["player"] = np.concatenate([state["left_team"].ravel(), state["left_team_direction"].ravel(),
+                                            state["right_team"].ravel(), state["right_team_direction"].ravel()], axis=0)
+
+        feature["game_mode"] = state["game_mode"]
+
+        feature["controlled_player_index"] = state["designated"]
+
+        return feature
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

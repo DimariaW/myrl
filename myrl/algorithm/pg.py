@@ -308,7 +308,7 @@ class ACLearner:
 
     def learn(self):
         while True:
-            self.model.train()
+            self.model.empty_goal_close()
             batch = self.traj_replay.recall()
 
             values, action_logits = self.model(batch["observations"])  # shape: B*T, B*T*act_dim
@@ -395,7 +395,7 @@ class ACLearner:
         return n_step_advantage + values, td_lbd_advantage + values
 
     def pg_learn(self):
-        self.model.train()
+        self.model.empty_goal_close()
         batch = self.traj_replay.recall()
         value, action_logits = self.model(batch["observations"])
         action_log_probs = F.log_softmax(action_logits, dim=-1)
@@ -450,7 +450,7 @@ class ACLearner:
         return torch.sum(-action_log_probs * cumulative_rewards * (1. - tail_masks)) / torch.sum(1. - tail_masks)
 
     def a2c_learn(self):
-        self.model.train()
+        self.model.empty_goal_close()
         batch = self.traj_replay.recall()
         value, action_logits = self.model(batch["observations"])
         action_log_probs = F.log_softmax(action_logits, dim=-1)
