@@ -45,14 +45,15 @@ class ActorCommunicator(connection.QueueCommunicator):
 
 
 class LearnerServer:
-    def __init__(self, learner: Algorithm = None, port: int = None, actor_num=None, sampler_num=None):
+    def __init__(self, learner: Algorithm = None, port: int = None,
+                 tensorboard_log_dir=None, actor_num=None, sampler_num=None):
         self.actor_communicator = ActorCommunicator(port, actor_num)
         self.learner = learner
         self.sampler_num = sampler_num
 
         self.cached_weights = None
 
-        self.sw = SummaryWriter(logdir="./log/train/")
+        self.sw = SummaryWriter(logdir=tensorboard_log_dir)
         self.reward_steps = 0
 
     def run(self):
