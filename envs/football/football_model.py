@@ -5,20 +5,6 @@ import numpy as np
 from myrl.model import Model
 
 
-def to_tensor(x, unsqueeze=None, device=torch.device("cpu")):
-    if isinstance(x, (list, tuple, set)):
-        return type(x)(to_tensor(xx, unsqueeze) for xx in x)
-    elif isinstance(x, dict):
-        return type(x)((key, to_tensor(xx, unsqueeze)) for key, xx in x.items())
-    elif isinstance(x, np.ndarray):
-        if x.dtype == np.int32 or x.dtype == np.int64:
-            t = torch.from_numpy(x).type(torch.long)
-        else:
-            t = torch.from_numpy(x).type(torch.float32)
-
-    return t.to(device) if unsqueeze is None else t.unsqueeze(unsqueeze).to(device)
-
-
 class MultiHeadAttention(nn.Module):
     # multi head attention for sets
     # https://github.com/akurniawan/pytorch-transformer/blob/master/modules/attention.py
@@ -309,29 +295,30 @@ class FootballNet(nn.Module):
         return None
 
     def forward(self, x):
-        e, rel, distance = self.encoder(x)
+        state = x["state"]
+        e, rel, distance = self.encoder(state)
         h = e
         for block in self.blocks:
             h = block(h, rel, distance)
-        cnn_h = self.cnn(x)
+        cnn_h = self.cnn(state)
         #smm_h = self.smm(x)
         #h = self.control(h, e, x['control_flag'], cnn_h, smm_h)
-        h = self.control(h, e, x['control_flag'])
-        rnn_h = self.rnn(x)
+        h = self.control(h, e, state['control_flag'])
+        rnn_h = self.rnn(state)
 
 #         p, v, r = self.head(torch.cat([h,
 #                                        cnn_h.view(cnn_h.size(0), -1),
 #                                        smm_h.view(smm_h.size(0), -1)], axis=-1))
 
         rnn_h_head_tail = rnn_h[:, 0, :] + rnn_h[:, -1, :]
-        rnn_h_plus_stick = torch.cat([rnn_h_head_tail[:, :-4], x['control']], dim=1)
-        p, r = self.head(torch.cat([h,
-                                    cnn_h.view(cnn_h.size(0), -1),
-                                    rnn_h_plus_stick,
-                                    ], axis=-1))
-        # p, v, r = self.head(h)
+        rnn_h_plus_stick = torch.cat([rnn_h_head_tail[:, :-4], state['control']], dim=1)
+        logit, value = self.head(torch.cat([h, cnn_h, rnn_h_plus_stick], dim=-1))
 
-        return p, r
+        legal_actions = x["legal_actions"]
+        logit = logit - (1. - legal_actions) * 1e12
+
+        return value.squeeze(-1), logit
+
 
 
 class SimpleModel(Model):

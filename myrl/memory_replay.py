@@ -5,7 +5,7 @@ import numpy as np
 from typing import Union, Literal, List, Dict, Optional
 import torch.nn.functional as F
 import logging
-from myrl.connection import MultiProcessJobExecutors
+from myrl.connection import MultiProcessJobExecutors, MultiProcessJobExecutorsV2
 import queue
 from myrl.utils import to_tensor, batchify
 
@@ -351,7 +351,10 @@ class MultiProcessBatcher:
                  device=torch.device("cpu"),
                  batch_size: int = 192,
                  forward_steps: int = 64,
-                 num_batch_maker: int = 2
+                 num_batch_maker: int = 2,
+                 use_queue: bool = True,
+                 logger_file_path: str = "./log/log.txt",
+                 file_level=logging.DEBUG
                  ):
         self.episodes = deque(maxlen=maxlen)
         self.device = device
@@ -360,11 +363,21 @@ class MultiProcessBatcher:
 
         self.num_cached = 0
 
-        self.batch_maker = MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
-                                                    postprocess=self.post_process,
-                                                    num=num_batch_maker, buffer_length=1, num_receivers=1,
-                                                    name_prefix="batch_maker",
-                                                    logger_file_path="./log/impala_batch_maker.txt")
+        if not use_queue:
+            self.batch_maker = MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
+                                                        postprocess=self.post_process,
+                                                        num=num_batch_maker, buffer_length=1 + 8//num_batch_maker,
+                                                        num_receivers=1,
+                                                        name_prefix="batch_maker",
+                                                        logger_file_path=logger_file_path,
+                                                        file_level=file_level)
+        else:
+            self.batch_maker = MultiProcessJobExecutorsV2(func=make_batch, send_generator=self.send_raw_batch(),
+                                                          postprocess=self.post_process,
+                                                          num=num_batch_maker, buffer_length=1 + 8//num_batch_maker,
+                                                          name_prefix="batch_maker",
+                                                          logger_file_path=logger_file_path,
+                                                          file_level=file_level)
 
     def cache(self, episodes: Union[List[List[Dict]], List[Dict]]):
         if isinstance(episodes[0], list):

@@ -71,7 +71,7 @@ def to_tensor(x: Union[List, Dict, Tuple, np.ndarray], unsqueeze=None, device=to
         return t if unsqueeze is None else t.unsqueeze(unsqueeze)
 
 
-def batchify(x: Union[List, Tuple], unsqueeze=None):
+def batchify(x: Union[List, Tuple], unsqueeze=None) -> Union[List, Tuple, Dict, np.ndarray]:
     if isinstance(x[0], (list, tuple)):
         temp = []
         for xx in zip(*x):

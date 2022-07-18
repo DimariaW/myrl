@@ -1,0 +1,3 @@
+[pid: 24128, pname: MainProcess], [tid: 16068, tname: MainThread], [memory_replay.py-386], [Mon Jul 18 14:37:41 2022]: total cached episodes is 300
+[pid: 24128, pname: MainProcess], [tid: 18752, tname: sender thread], [connection.py-364], [Mon Jul 18 14:37:41 2022]: start send data
+[pid: 24128, pname: MainProcess], [tid: 12452, tname: receiver thread], [connection.py-371], [Mon Jul 18 14:37:41 2022]: start receiver

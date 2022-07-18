@@ -1,6 +1,7 @@
 # Copyright (c) 2020 DeNA Co., Ltd.
 # Licensed under The MIT License [see LICENSE for details]
 import io
+import sys
 import time
 import struct
 import socket
@@ -9,7 +10,7 @@ import threading
 import queue
 import multiprocessing as mp
 import traceback
-from typing import Callable, Iterable
+from typing import Callable, Iterator
 import myrl.utils as utils
 import time
 import logging
@@ -145,33 +146,34 @@ the cell of MultiProcessJobExecutor
 """
 
 
-def wrapped_func(func: Callable, conn, logger_file_path=None):
+def wrapped_func(func: Callable, conn, logger_file_path=None, file_level=logging.DEBUG):
     try:
-        utils.set_process_logger(file_path=logger_file_path)
+        utils.set_process_logger(file_path=logger_file_path, file_level=file_level)
         total_sent = 0
         while True:
-            beg = time.time()
             data = conn.recv()
+            beg = time.time()
             data = func(data)
             time.sleep(max(0.01, 0.1 - (time.time()-beg)))
             conn.send((data, 1))
             total_sent += 1
             logging.debug(f"successfully send data counts is : {total_sent}")
     except Exception:
-        traceback.print_exc(file=open(logger_file_path, "a") if logger_file_path is not None else None)
+        traceback.print_exc(file=open(logger_file_path, "a") if logger_file_path is not None else sys.stderr)
         raise
 
 
 class MultiProcessJobExecutors:
     def __init__(self,
                  func: Callable,
-                 send_generator: Iterable,
+                 send_generator: Iterator,
                  num: int,
                  postprocess: Callable = None,
                  buffer_length: int = 8,
                  num_receivers: int = 1,
                  name_prefix: str = None,
-                 logger_file_path: str = None
+                 logger_file_path: str = None,
+                 file_level=logging.DEBUG
                  ):
         """
 
@@ -182,6 +184,7 @@ class MultiProcessJobExecutors:
         :param buffer_length:
         :param num_receivers:
         :param logger_file_path:
+        :param file_level:
 
         launch num process, each process return func(next(send_generator)) to a queue,
         the main process can use queue.get() to get the results,
@@ -204,12 +207,13 @@ class MultiProcessJobExecutors:
         self.threads = []
         self.name_prefix = name_prefix
         self.logger_file_path = logger_file_path
+        self.file_level = file_level
 
         for i in range(num):
             conn0, conn1 = mp.Pipe(duplex=True)
             mp.Process(name=f"{name_prefix}-{i}",
                        target=wrapped_func,
-                       args=(func, conn1, logger_file_path), daemon=True).start()
+                       args=(func, conn1, logger_file_path, file_level), daemon=True).start()
             conn1.close()
             self.conns.append(conn0)
             self.send_cnt[conn0] = 0
@@ -272,7 +276,114 @@ class MultiProcessJobExecutors:
                         logging.debug("output_queue is full, the bottleneck is the speed of learner consume batch")
         logging.info('end receiver %d' % index)
 
+#%%
 
+
+def wrapped_func_v2(func, queue_send, queue_receive, logger_file_path=None, file_level=logging.DEBUG):
+    utils.set_process_logger(file_path=logger_file_path, file_level=file_level)
+    try:
+        processed_times = 0
+        while True:
+            data = queue_send.get()
+            processed_data = func(data)
+            queue_receive.put(processed_data)
+            processed_times += 1
+            logging.debug(f"successfully processed data count {processed_times}!")
+    except Exception:
+        traceback.print_exc(file=open(logger_file_path, "a") if logger_file_path else sys.stderr)
+        raise
+
+
+class MultiProcessJobExecutorsV2:
+    def __init__(self,
+                 func: Callable,
+                 send_generator: Iterator,
+                 num: int,
+                 postprocess: Callable = None,
+                 buffer_length: int = 8,
+
+                 name_prefix: str = None,
+                 logger_file_path: str = None,
+                 file_level=logging.DEBUG
+                 ):
+        """
+
+        :param func:
+        :param send_generator:
+        :param num:
+        :param postprocess:
+        :param buffer_length:
+        :param logger_file_path:
+        :param file_level:
+
+        launch num process, each process return func(next(send_generator)) to a queue,
+        the main process can use queue.get() to get the results,
+
+        the buffer_length is the total data can be sent ahead of receiving.
+        the num_receivers control how many receiver thread can be launched.
+
+        each job executors have a process name: f"{name_prefix}_{i}"
+        the logging info will be written in to logger_file_path.
+        """
+        self.send_generator = send_generator
+        self.postprocess = postprocess
+        self.buffer_length = buffer_length
+
+        self.queue_sends = []
+
+        self.output_queue = queue.Queue(maxsize=8)
+
+        self.name_prefix = name_prefix
+        self.logger_file_path = logger_file_path
+        self.file_level = file_level
+
+        self.queue_receive = mp.Queue(maxsize=8)
+        for i in range(num):
+            queue_send = mp.Queue(maxsize=self.buffer_length)
+
+            mp.Process(name=f"{name_prefix}-{i}",
+                       target=wrapped_func_v2,
+                       args=(func, queue_send, self.queue_receive, logger_file_path, file_level), daemon=True).start()
+
+            self.queue_sends.append(queue_send)
+
+        self.threads = []
+
+    def recv(self):
+        return self.output_queue.get()
+
+    def start(self):
+        self.threads.append(threading.Thread(name="sender thread", target=self._sender, daemon=True))
+        self.threads.append(threading.Thread(name=f"receiver thread",
+                                             target=self._receiver,
+                                             daemon=True))
+        for thread in self.threads:
+            thread.start()
+
+    def _sender(self):
+        logging.info("start send data")
+        while True:
+            for queue_send in self.queue_sends:
+                if not queue_send.full():
+                    queue_send.put(next(self.send_generator))
+
+    def _receiver(self):
+        logging.info('start receiver')
+        while True:
+            data = self.queue_receive.get()
+
+            if self.postprocess is not None:
+                data = self.postprocess(data)
+
+            while True:
+                """
+                只有成功put 数据，才修改send cnt
+                """
+                try:
+                    self.output_queue.put(data, timeout=0.1)
+                    break
+                except queue.Full:
+                    logging.debug("output_queue is full, the bottleneck is the speed of learner consume batch")
 #%%
 
 
