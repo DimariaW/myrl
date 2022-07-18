@@ -119,9 +119,9 @@ class Actor:
         episodes_reward = []
         while step < self.steps or (not self.done and self.get_full_episodes):
 
-            action_info = self.agent.predict(self.obs)
+            action_info = self.agent.predict(batchify([self.obs], unsqueeze=0))
 
-            self.obs, reward, self.done, info = self.env.step(action_info['action'])
+            self.obs, reward, self.done, info = self.env.step(action_info['action'][0])
 
             step += 1
 
@@ -151,7 +151,7 @@ class Actor:
                 if step >= self.steps:
                     break
 
-        return np.mean(episodes_reward)
+        return episodes_reward
 
 
 class ActorClient:

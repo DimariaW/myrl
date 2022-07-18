@@ -274,7 +274,7 @@ class ActionHistoryEncoder(nn.Module):
         return h
 
 
-class FootballNet(nn.Module):
+class FootballNet(Model):
     def __init__(self):
         super().__init__()
         blocks = 5
@@ -295,7 +295,7 @@ class FootballNet(nn.Module):
         return None
 
     def forward(self, x):
-        state = x["state"]
+        state = x["feature"]
         e, rel, distance = self.encoder(state)
         h = e
         for block in self.blocks:
@@ -318,7 +318,6 @@ class FootballNet(nn.Module):
         logit = logit - (1. - legal_actions) * 1e12
 
         return value.squeeze(-1), logit
-
 
 
 class SimpleModel(Model):
