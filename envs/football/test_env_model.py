@@ -25,11 +25,17 @@ for _ in tqdm.tqdm(range(3001)):
         print(t_r)
 """
 #%%
+import logging
+
 import gfootball.env as gfootball_env
 from envs.football import TamakEriFeverEnv
 from envs.football import FootballNet
-from myrl.utils import to_tensor, batchify
+from myrl.utils import to_tensor, batchify, set_process_logger
 import torch
+import os
+print(os.getcwd())
+
+set_process_logger(stdout_level=logging.DEBUG)
 
 
 def load_model(model, model_path):
@@ -42,7 +48,7 @@ def load_model(model, model_path):
 
 
 device = torch.device("cpu")
-env = gfootball_env.create_environment(env_name="11_vs_11_kaggle", representation="raw", rewards="scoring,checkpoints")
+env = gfootball_env.create_environment(env_name="11_vs_11_kaggle_level1", representation="raw", rewards="scoring,checkpoints")
 env = TamakEriFeverEnv(env)
 
 net = FootballNet()
@@ -51,6 +57,8 @@ net.eval()
 
 
 obs = env.reset()
+logging.info("hello")
+
 
 def infinite():
     while True:
@@ -64,5 +72,5 @@ for _ in tqdm(infinite()):
 
     obs, reward, done, info = env.step(torch.argmax(logit).item())
     if done:
-        print(info)
+        logging.info(info)
         obs = env.reset()

@@ -1,12 +1,10 @@
 from myrl.agent import Agent
-import numpy as np
 import myrl.connection as connection
 from tensorboardX import SummaryWriter
-from typing import Literal, Callable
+from typing import Callable
 import logging
 import multiprocessing as mp
 from myrl.utils import batchify, set_process_logger
-from collections import deque
 
 
 __all__ = ["Actor", "ActorClient", "open_gather"]
@@ -62,20 +60,6 @@ class Actor:
 
             for key, value in action_info.items():
                 moment[key] = value[0]
-
-            #moment['value'] = value.item()
-
-            #action_mask = torch.zeros((1, self.envs.action_space.n))
-            #action_logits = action_logits - action_mask
-
-            #behavior_log_probs = F.log_softmax(action_logits, dim=-1)
-            #action = Categorical(logits=behavior_log_probs).sample().item()
-
-            #moment['action'] = action
-            #moment['behavior_log_prob'] = behavior_log_probs[0, action].item()
-
-            #moment['action_mask'] = action_mask.squeeze(0).numpy()
-            #moment['action'] = action
 
             self.obs, reward, self.done, info = self.env.step(moment['action'])
             step += 1
@@ -152,7 +136,7 @@ class Actor:
 
                 if step >= self.steps:
                     break
-            return
+        return
 
 
 class ActorClient:
@@ -161,7 +145,7 @@ class ActorClient:
                  actor: Actor,
                  queue_gather2actor: mp.Queue,
                  queue_actor2gather: mp.Queue,
-                 role: Literal["sampler", "evaluator"] = "sampler",
+                 role: str = "sampler",  # Literal["sampler", "evaluator"]
                  ):
         self.actor_id = actor_id
         self.actor = actor
@@ -175,7 +159,7 @@ class ActorClient:
         while True:
             self.queue_actor2gather.put((self.actor_id, "model", None))
             weights = self.queue_gather2actor.get()
-            # print(cmd)
+            logging.debug(("model", "successfully request model weights"))
             self.actor.agent.set_weights(weights)
 
             if self.role == "sampler":
@@ -196,8 +180,6 @@ class ActorClient:
                     logging.debug(self.queue_gather2actor.get())
                     self.actor.episode_rewards = []
 
-            # logging.info(self.queue_gather2actor.get())
-
 
 class Gather:
     def __init__(self,
@@ -212,19 +194,19 @@ class Gather:
 
         self.cached_model_weights = None
         self.sent_cached_model_weights_times = 0
-        self.max_sent_cached_model_weights_times = (num_sample_actors+num_predict_actors)*2
+        self.max_sent_cached_model_weights_times = num_sample_actors * 2
 
         self.cached_sample_reward = []
-        self.max_cached_sample_reward_length = num_sample_actors * 4
+        self.max_cached_sample_reward_length = num_sample_actors * 5
 
         self.cached_eval_reward = []
-        self.max_cached_eval_reward_length = num_predict_actors * 8
+        self.max_cached_eval_reward_length = num_predict_actors * 5
 
         self.cached_episodes = []
-        self.max_cached_episodes_length = 1 + num_sample_actors // 4
+        self.max_cached_episodes_length = 1 + num_sample_actors//2
 
         self.queue_gather2actors = []
-        self.queue_actor2gather = mp.Queue(maxsize=4 * (num_sample_actors + num_predict_actors))
+        self.queue_actor2gather = mp.Queue(maxsize=2 * (num_sample_actors + num_predict_actors))
 
         for i in range(num_sample_actors + num_predict_actors):
             self.queue_gather2actors.append(mp.Queue(maxsize=1))
@@ -243,21 +225,22 @@ class Gather:
                         self.sent_cached_model_weights_times > self.max_sent_cached_model_weights_times:
 
                     cmd, self.cached_model_weights = connection.send_recv(self.server_conn, (command, data))
+                    logging.debug(f"successfully request {cmd}")
                     self.sent_cached_model_weights_times = 0
                 self.queue_gather2actors[actor_index].put(self.cached_model_weights)
                 self.sent_cached_model_weights_times += 1
 
             elif command == "episode":
                 self.cache_and_send_data(self.cached_episodes, [data], self.max_cached_episodes_length, command)
-                self.queue_gather2actors[actor_index].put((command, "successfully receive episodes"))
+                self.queue_gather2actors[actor_index].put((command, "successfully send episodes"))
 
             elif command == "sample_reward":
                 self.cache_and_send_data(self.cached_sample_reward, data, self.max_cached_sample_reward_length, command)
-                self.queue_gather2actors[actor_index].put((command, "successfully receive sample reward"))
+                self.queue_gather2actors[actor_index].put((command, "successfully send sample reward"))
 
             elif command == "eval_reward":
                 self.cache_and_send_data(self.cached_eval_reward, data, self.max_cached_eval_reward_length, command)
-                self.queue_gather2actors[actor_index].put((command, "successfully receive eval reward"))
+                self.queue_gather2actors[actor_index].put((command, "successfully send eval reward"))
 
     def cache_and_send_data(self, cache_list: list, data_list: list, max_cache_list_length: int, command: str):
         cache_list.extend(data_list)

@@ -4,6 +4,8 @@ import torch.nn.functional as F
 import numpy as np
 from myrl.model import Model
 
+torch.set_num_threads(1)
+
 
 class MultiHeadAttention(nn.Module):
     # multi head attention for sets

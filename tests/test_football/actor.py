@@ -11,7 +11,7 @@ import torch
 
 def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
     set_process_logger(file_path=f"./log/empty_goal/actor_{actor_index}.txt")
-    env = gfootball_env.create_environment(env_name="academy_empty_goal",
+    env = gfootball_env.create_environment(env_name="11_vs_11_kaggle_simple",
                                            representation="raw",
                                            rewards="scoring,checkpoints")
     env = TamakEriFeverEnv(env)
@@ -21,11 +21,11 @@ def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
     model = FootballNet().to(device)
     #model = SimpleModel(2, 1).to(device)
     agent = IMPALAAgent(model, device)
-    if actor_index < 5:
-        actor = Actor(env, agent, steps=128, get_full_episodes=False)
+    if actor_index < 16:
+        actor = Actor(env, agent, steps=512, get_full_episodes=False)
         actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="sampler")
     else:
-        actor = Actor(env, agent, steps=128, get_full_episodes=True)
+        actor = Actor(env, agent, steps=512, get_full_episodes=True)
         actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="evaluator")
     actor_client.run()
 

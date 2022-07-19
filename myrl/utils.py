@@ -11,7 +11,21 @@ from typing import Union, List, Dict, Tuple
 allowed_levels = (logging.CRITICAL, logging.ERROR, logging.WARNING, logging.INFO, logging.DEBUG)
 
 
-def set_process_logger(name=None, stdout_level=logging.INFO, file_path=None, file_level=logging.DEBUG):
+class DirFilter(logging.Filter):
+    def __init__(self, dir_head):
+        super().__init__()
+        self.dir_head = dir_head
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        temp = os.path.commonprefix([record.pathname, self.dir_head])
+        if os.path.exists(temp) and os.path.samefile(temp, self.dir_head):
+            return True
+        else:
+            return False
+
+
+def set_process_logger(name=None, stdout_level=logging.INFO, file_path=None, file_level=logging.DEBUG,
+                       starts_with=os.getcwd()):
     """
     note: name is usually None, representing the root logger.
     when using fork, the logger is transferred to other process.
@@ -27,12 +41,16 @@ def set_process_logger(name=None, stdout_level=logging.INFO, file_path=None, fil
 
     formatter = logging.Formatter(fmt="[pid: %(process)d, pname: %(processName)s], "
                                       "[tid: %(thread)d, tname: %(threadName)s], "
-                                      "[%(filename)s-%(lineno)d], [%(asctime)s]: %(message)s",
+                                      "[%(asctime)s], "
+                                      "[%(pathname)s-%(lineno)d]: "
+                                      "%(message)s",
                                   datefmt="%a %b %d %H:%M:%S %Y")
 
     s_handler = logging.StreamHandler()
     s_handler.setLevel(stdout_level)
     s_handler.setFormatter(formatter)
+    if starts_with is not None:
+        s_handler.addFilter(DirFilter(starts_with))
     logger.addHandler(s_handler)
 
     if file_path is not None:
@@ -40,6 +58,8 @@ def set_process_logger(name=None, stdout_level=logging.INFO, file_path=None, fil
         f_handler = logging.FileHandler(file_path)
         f_handler.setLevel(file_level)
         f_handler.setFormatter(formatter)
+        if starts_with is not None:
+            f_handler.addFilter(DirFilter(starts_with))
         logger.addHandler(f_handler)
     return logger
 

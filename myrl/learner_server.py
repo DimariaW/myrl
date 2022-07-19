@@ -85,7 +85,7 @@ class LearnerServer:
                                                          moment["reward"], moment["done"])
                 """
                 self.learner.memory_replay.cache(data)
-                self.actor_communicator.send(conn, (cmd, "successfully receive episodes"))
+                self.actor_communicator.send(conn, (cmd, "successfully sent episodes"))
 
                 if (self.learner.memory_replay.num_cached - last_update_num_cached) >= 400:
                     logging.info("update cached weights")
@@ -96,13 +96,13 @@ class LearnerServer:
                 for reward in data:
                     self.sample_reward_steps += 1
                     self.sw.add_scalar(tag="sample_reward", scalar_value=reward, global_step=self.sample_reward_steps)
-                self.actor_communicator.send(conn, (cmd, "successfully receive sample rewards"))
+                self.actor_communicator.send(conn, (cmd, "successfully sent sample rewards"))
 
             elif cmd == "eval_reward":
                 for reward in data:
                     self.eval_reward_steps += 1
                     self.sw.add_scalar(tag="eval_reward", scalar_value=reward, global_step=self.eval_reward_steps)
-                self.actor_communicator.send(conn, (cmd, "successfully receive eval rewards"))
+                self.actor_communicator.send(conn, (cmd, "successfully sent eval rewards"))
 
     def run_on_policy(self):
         self.actor_communicator.run_sync()

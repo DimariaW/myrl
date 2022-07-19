@@ -11,7 +11,7 @@ if __name__ == "__main__":
     #test_multiprocess_batcher()
     #Server().run()
     #set_process_logger()
-    open_gather(host="172.18.237.20", port=8010,
-                num_gathers=1, num_sample_actors_per_gather=5, num_predict_actors_per_gather=1,
+    open_gather(host="192.168.43.157", port=58899,
+                num_gathers=2, num_sample_actors_per_gather=16, num_predict_actors_per_gather=4,
                 func=create_actor, logger_file_dir="./log/empty_goal/")
     #tests.connections.test_mp_job_executor.test_multiprocess_job_executor_v2()

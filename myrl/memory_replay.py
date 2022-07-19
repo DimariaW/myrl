@@ -2,7 +2,7 @@ from collections import deque
 import torch
 import random
 import numpy as np
-from typing import Union, Literal, List, Dict, Optional
+from typing import Union, List, Dict, Optional
 import torch.nn.functional as F
 import logging
 from myrl.connection import MultiProcessJobExecutors, MultiProcessJobExecutorsV2
@@ -111,7 +111,7 @@ class TrajReplay:
                  maxlen: int,
                  device=torch.device("cpu"),
                  batch_size: int = 192,
-                 forward_steps: Union[int, Literal["full"]] = 64,
+                 forward_steps: Union[int, str] = 64,
                  max_forward_steps: Optional[int] = None,
                  burning_steps: int = 0
                  ):
