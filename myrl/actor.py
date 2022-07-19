@@ -9,7 +9,7 @@ from myrl.utils import batchify, set_process_logger
 from collections import deque
 
 
-__all__ = ["Actor", "ActorClient"]
+__all__ = ["Actor", "ActorClient", "open_gather"]
 
 
 class Actor:
@@ -103,7 +103,7 @@ class Actor:
                     self.sw.add_scalar(tag=f"reward", scalar_value=self.current_episode_total_reward,
                                        global_step=self.global_episode)
 
-                self.episode_steps.append(self.current_episode_step)
+                #self.episode_steps.append(self.current_episode_step)
                 self.episode_rewards.append(self.current_episode_total_reward)
 
                 self.current_episode_step = 0
@@ -116,7 +116,6 @@ class Actor:
 
     def predict(self):
         step = 0
-        episodes_reward = []
         while step < self.steps or (not self.done and self.get_full_episodes):
 
             action_info = self.agent.predict(batchify([self.obs], unsqueeze=0))
@@ -135,11 +134,14 @@ class Actor:
 
                 self.global_episode += 1
 
-                print(f"global_episode is : {self.global_episode}, "
-                      f"reward is : {self.current_episode_total_reward},"
-                      f"episodes length is {self.current_episode_step}")
+                logging.info(f"global_episode is : {self.global_episode}, "
+                             f"reward is : {self.current_episode_total_reward},"
+                             f"episodes length is {self.current_episode_step},"
+                             f"info is {info}"
+                             )
 
-                episodes_reward.append(self.current_episode_total_reward)
+                self.episode_rewards.append(self.current_episode_total_reward)
+                #self.episode_steps.append(self.current_episode_step)
 
                 if self.use_tensorboard:
                     self.sw.add_scalar(tag=f"reward", scalar_value=self.current_episode_total_reward,
@@ -150,8 +152,7 @@ class Actor:
 
                 if step >= self.steps:
                     break
-
-        return episodes_reward
+            return
 
 
 class ActorClient:
@@ -169,8 +170,8 @@ class ActorClient:
         self.role = role
 
     def run(self):
-        send_metric_interval = 10
-        send_num = 0
+
+        send_rewards_length = 5
         while True:
             self.queue_actor2gather.put((self.actor_id, "model", None))
             weights = self.queue_gather2actor.get()
@@ -182,29 +183,42 @@ class ActorClient:
                 self.queue_actor2gather.put((self.actor_id, "episode", episode))
                 logging.debug(self.queue_gather2actor.get())
 
-                send_num += 1
-                if send_num % send_metric_interval == 0:
-                    if len(self.actor.episode_rewards) > 0:
-                        self.queue_actor2gather.put((self.actor_id, "sample_reward", self.actor.episode_rewards))
-                        logging.debug(self.queue_gather2actor.get())
-                        self.actor.episode_rewards = []
-                    send_num = 0
+                if len(self.actor.episode_rewards) > send_rewards_length:
+                    self.queue_actor2gather.put((self.actor_id, "sample_reward", self.actor.episode_rewards))
+                    logging.debug(self.queue_gather2actor.get())
+                    self.actor.episode_rewards = []
 
-                #logging.info(self.queue_gather2actor.get())
+            elif self.role == "evaluator":
+                self.actor.predict()
+
+                if len(self.actor.episode_rewards) > send_rewards_length:
+                    self.queue_actor2gather.put((self.actor_id, "eval_reward", self.actor.episode_rewards))
+                    logging.debug(self.queue_gather2actor.get())
+                    self.actor.episode_rewards = []
+
+            # logging.info(self.queue_gather2actor.get())
 
 
 class Gather:
-    def __init__(self, gather_id: int, server_conn, num_sample_actors: int, num_predict_actors: int, func: Callable):
+    def __init__(self,
+                 gather_id: int,
+                 server_conn,
+                 num_sample_actors: int,
+                 num_predict_actors: int,
+                 func: Callable):
         super().__init__()
         self.gather_id = gather_id
         self.server_conn = server_conn
 
         self.cached_model_weights = None
         self.sent_cached_model_weights_times = 0
-        self.max_sent_cached_model_weights_times = num_sample_actors*2
+        self.max_sent_cached_model_weights_times = (num_sample_actors+num_predict_actors)*2
 
-        self.cached_results = []
-        self.max_cached_results_length = num_sample_actors * 4
+        self.cached_sample_reward = []
+        self.max_cached_sample_reward_length = num_sample_actors * 4
+
+        self.cached_eval_reward = []
+        self.max_cached_eval_reward_length = num_predict_actors * 8
 
         self.cached_episodes = []
         self.max_cached_episodes_length = 1 + num_sample_actors // 4
@@ -212,7 +226,7 @@ class Gather:
         self.queue_gather2actors = []
         self.queue_actor2gather = mp.Queue(maxsize=4 * (num_sample_actors + num_predict_actors))
 
-        for i in range(num_sample_actors):
+        for i in range(num_sample_actors + num_predict_actors):
             self.queue_gather2actors.append(mp.Queue(maxsize=1))
             mp.Process(target=func, args=(i, self.queue_gather2actors[i], self.queue_actor2gather),
                        name=f"gather_{gather_id}_actor_{i}", daemon=True).start()
@@ -222,44 +236,52 @@ class Gather:
 
             actor_index, command, data = self.queue_actor2gather.get()
             actor_index: int
+            logging.debug(f"actor_index : {actor_index}, command : {command}")
 
             if command == "model":
                 if self.cached_model_weights is None or \
                         self.sent_cached_model_weights_times > self.max_sent_cached_model_weights_times:
 
-                    self.cached_model_weights = connection.send_recv(self.server_conn, (command, data))
+                    cmd, self.cached_model_weights = connection.send_recv(self.server_conn, (command, data))
                     self.sent_cached_model_weights_times = 0
                 self.queue_gather2actors[actor_index].put(self.cached_model_weights)
                 self.sent_cached_model_weights_times += 1
 
             elif command == "episode":
-                self.cached_episodes.append(data)
-                if len(self.cached_episodes) > self.max_cached_episodes_length:
-                    logging.debug(connection.send_recv(self.server_conn, (command, self.cached_episodes)))
-                    self.cached_episodes = []
+                self.cache_and_send_data(self.cached_episodes, [data], self.max_cached_episodes_length, command)
                 self.queue_gather2actors[actor_index].put((command, "successfully receive episodes"))
 
             elif command == "sample_reward":
-                self.cached_results.extend(data)
-                if len(self.cached_results) > self.max_cached_results_length:
-                    logging.debug(connection.send_recv(self.server_conn, (command, self.cached_results)))
-                    self.cached_results = []
+                self.cache_and_send_data(self.cached_sample_reward, data, self.max_cached_sample_reward_length, command)
                 self.queue_gather2actors[actor_index].put((command, "successfully receive sample reward"))
 
+            elif command == "eval_reward":
+                self.cache_and_send_data(self.cached_eval_reward, data, self.max_cached_eval_reward_length, command)
+                self.queue_gather2actors[actor_index].put((command, "successfully receive eval reward"))
 
-def _open_per_gather(gather_id, host, port, num_sample_actors, num_predict_actors, func):
-    set_process_logger()  # windows need
+    def cache_and_send_data(self, cache_list: list, data_list: list, max_cache_list_length: int, command: str):
+        cache_list.extend(data_list)
+        if len(cache_list) > max_cache_list_length:
+            logging.debug(connection.send_recv(self.server_conn, (command, cache_list)))
+            cache_list.clear()
+
+
+def _open_per_gather(gather_id, host, port, num_sample_actors, num_predict_actors, func, logger_file_path):
+    set_process_logger(file_path=logger_file_path)  # windows need
     server_conn = connection.connect_socket_connection(host, port)
     logging.info(f"successfully connect to {host}:{port}! the gather {gather_id} is started!")
     Gather(gather_id, server_conn, num_sample_actors, num_predict_actors, func).run()
 
 
 def open_gather(host: str, port: int, num_gathers: int,
-                num_sample_actors_per_gather: int, num_predict_actors_per_gather: int = 0, func: Callable = None):
+                num_sample_actors_per_gather: int, num_predict_actors_per_gather: int = 0,
+                func: Callable = None, logger_file_dir=None):
+    mp.set_start_method("spawn")
     processes = []
     for i in range(num_gathers):
         p = mp.Process(name=f"gather_{i}", target=_open_per_gather,
-                       args=(i, host, port, num_sample_actors_per_gather, num_predict_actors_per_gather, func),
+                       args=(i, host, port, num_sample_actors_per_gather, num_predict_actors_per_gather,
+                             func, logger_file_dir + f"gather_{i}.txt"),
                        daemon=False
                        )
         processes.append(p)
@@ -270,11 +292,11 @@ def open_gather(host: str, port: int, num_gathers: int,
     try:
         for p in processes:
             p.join()
-    except KeyboardInterrupt:
+    finally:
         for p in processes:
             p.close()
 
 
 def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
-    pass
+    raise NotImplementedError
 

@@ -42,11 +42,11 @@ def load_model(model, model_path):
 
 
 device = torch.device("cpu")
-env = gfootball_env.create_environment(env_name="11_vs_11_kaggle", representation="raw")
+env = gfootball_env.create_environment(env_name="11_vs_11_kaggle", representation="raw", rewards="scoring,checkpoints")
 env = TamakEriFeverEnv(env)
 
 net = FootballNet()
-net = load_model(net, "./1679.pth")
+net.load_state_dict(torch.load("./1679.pth"), strict=True)
 net.eval()
 
 
@@ -59,7 +59,8 @@ def infinite():
 from tqdm import tqdm
 
 for _ in tqdm(infinite()):
-    _, logit = net(to_tensor(batchify([obs], unsqueeze=0), unsqueeze=None, device=device))
+    obs_tensor = to_tensor(batchify([batchify([obs], unsqueeze=0)], unsqueeze=0), unsqueeze=None, device=device)
+    _, logit = net(obs_tensor)
 
     obs, reward, done, info = env.step(torch.argmax(logit).item())
     if done:

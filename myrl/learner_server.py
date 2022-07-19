@@ -54,10 +54,11 @@ class LearnerServer:
         self.cached_weights = None
 
         self.sw = SummaryWriter(logdir=tensorboard_log_dir)
-        self.reward_steps = 0
+        self.sample_reward_steps = 0
+        self.eval_reward_steps = 0
 
     def run(self):
-
+        logging.info("start running learner server")
         self.cached_weights = self.learner.get_weights()
         last_update_num_cached = 0
 
@@ -66,9 +67,11 @@ class LearnerServer:
 
         while True:
             conn, (cmd, data) = self.actor_communicator.recv()
+            logging.debug(f"received cmd : {cmd}")
+
             if cmd == "model":
                 # self.actor_communicator.send(conn, (cmd, self.learner.get_weights()))
-                self.actor_communicator.send(conn, self.cached_weights)
+                self.actor_communicator.send(conn, (cmd, self.cached_weights))
 
             elif cmd == "episode":
                 """
@@ -82,17 +85,24 @@ class LearnerServer:
                                                          moment["reward"], moment["done"])
                 """
                 self.learner.memory_replay.cache(data)
-                self.actor_communicator.send(conn, (cmd, "successfully receive data"))
+                self.actor_communicator.send(conn, (cmd, "successfully receive episodes"))
 
                 if (self.learner.memory_replay.num_cached - last_update_num_cached) >= 400:
+                    logging.info("update cached weights")
                     self.cached_weights = self.learner.get_weights()
                     last_update_num_cached = self.learner.memory_replay.num_cached
 
             elif cmd == "sample_reward":
                 for reward in data:
-                    self.reward_steps += 1
-                    self.sw.add_scalar(tag="reward", scalar_value=reward, global_step=self.reward_steps)
-                self.actor_communicator.send(conn, (cmd, "successfully receive results"))
+                    self.sample_reward_steps += 1
+                    self.sw.add_scalar(tag="sample_reward", scalar_value=reward, global_step=self.sample_reward_steps)
+                self.actor_communicator.send(conn, (cmd, "successfully receive sample rewards"))
+
+            elif cmd == "eval_reward":
+                for reward in data:
+                    self.eval_reward_steps += 1
+                    self.sw.add_scalar(tag="eval_reward", scalar_value=reward, global_step=self.eval_reward_steps)
+                self.actor_communicator.send(conn, (cmd, "successfully receive eval rewards"))
 
     def run_on_policy(self):
         self.actor_communicator.run_sync()

@@ -1136,9 +1136,9 @@ class TamakEriFeverEnv(gym.Wrapper):
         # active
         active = obs['active']
         active_player_x = np.repeat(obs_left_team[active][0][..., None, None], self.num_right_players, axis=1).\
-        repeat(self.num_left_players, axis=0)
+            repeat(self.num_left_players, axis=0)
         active_player_y = np.repeat(obs_left_team[active][1][..., None, None], self.num_right_players, axis=1).\
-        repeat(self.num_left_players, axis=0)
+            repeat(self.num_left_players, axis=0)
 
         # left players - right players
         left_minus_right_player_x = obs_left_team[:, 0][..., None] - obs_right_team[:, 0]
@@ -1159,45 +1159,45 @@ class TamakEriFeverEnv(gym.Wrapper):
 
         # right players - right goal
         right_minus_right_goal_x = (obs_right_team[:, 0][..., None] - right_goal[0]).\
-        repeat(self.num_left_players, axis=1).transpose((1, 0))
+            repeat(self.num_left_players, axis=1).transpose((1, 0))
         right_minus_right_goal_y = (obs_right_team[:, 1][..., None] - right_goal[1]).\
-        repeat(self.num_left_players, axis=1).transpose((1, 0))
+            repeat(self.num_left_players, axis=1).transpose((1, 0))
 
         # right players - left goal
         right_minus_left_goal_x = (obs_right_team[:, 0][..., None] - left_goal[0]).\
-        repeat(self.num_left_players, axis=1).transpose(1, 0)
+            repeat(self.num_left_players, axis=1).transpose(1, 0)
         right_minus_left_goal_y = (obs_right_team[:, 1][..., None] - left_goal[1]).\
-        repeat(self.num_left_players, axis=1).transpose(1, 0)
+            repeat(self.num_left_players, axis=1).transpose(1, 0)
 
         # left players (x) - active
         left_minus_active_x = (obs_left_team[:, 0][..., None] - obs_left_team[active][0]).\
-        repeat(self.num_right_players, axis=1)
+            repeat(self.num_right_players, axis=1)
         left_minus_active_y = (obs_left_team[:, 1][..., None] - obs_left_team[active][1]).\
-        repeat(self.num_right_players, axis=1)
+            repeat(self.num_right_players, axis=1)
 
         # right player - ball
         right_minus_ball_x = (obs_right_team[:, 0][..., None] - obs_ball[0]).\
-        repeat(self.num_left_players, axis=1).transpose(1, 0)
+            repeat(self.num_left_players, axis=1).transpose(1, 0)
         right_minus_ball_y = (obs_right_team[:, 1][..., None] - obs_ball[1]).\
-        repeat(self.num_left_players, axis=1).transpose(1, 0)
+            repeat(self.num_left_players, axis=1).transpose(1, 0)
 
         # right player - active
         right_minus_active_x = (obs_right_team[:, 0][..., None] - obs_left_team[active][0]).\
-        repeat(self.num_left_players, axis=1).transpose(1, 0)
+            repeat(self.num_left_players, axis=1).transpose(1, 0)
         right_minus_active_y = (obs_right_team[:, 1][..., None] - obs_left_team[active][1]).\
-        repeat(self.num_left_players, axis=1).transpose(1, 0)
+            repeat(self.num_left_players, axis=1).transpose(1, 0)
 
         # left player - side line
         left_minus_side_top = np.abs(obs_left_team[:, 1][..., None] - side_line_y[0]).\
-        repeat(self.num_right_players, axis=1)
+            repeat(self.num_right_players, axis=1)
         left_minus_side_bottom = np.abs(obs_left_team[:, 1][..., None] - side_line_y[1]).\
-        repeat(self.num_right_players, axis=1)
+            repeat(self.num_right_players, axis=1)
 
         # right player - side line
         right_minus_side_top = np.abs(obs_right_team[:, 1][..., None] - side_line_y[0]).\
-        repeat(self.num_left_players, axis=1).transpose(1,0)
+            repeat(self.num_left_players, axis=1).transpose(1,0)
         right_minus_side_bottom = np.abs(obs_right_team[:, 1][..., None] - side_line_y[1]).\
-        repeat(self.num_left_players, axis=1).transpose(1, 0)
+            repeat(self.num_left_players, axis=1).transpose(1, 0)
 
         # left players direction
         obs_left_team_direction = obs['left_team_direction']
@@ -1206,8 +1206,10 @@ class TamakEriFeverEnv(gym.Wrapper):
 
         # right players direction
         obs_right_team_direction = obs['right_team_direction']
-        right_player_direction_x = np.repeat(obs_right_team_direction[:, 0][..., None], self.num_left_players, axis=1).transpose(1, 0)
-        right_player_direction_y = np.repeat(obs_right_team_direction[:, 1][..., None], self.num_left_players, axis=1).transpose(1, 0)
+        right_player_direction_x = np.repeat(obs_right_team_direction[:, 0][..., None], self.num_left_players, axis=1).\
+            transpose(1, 0)
+        right_player_direction_y = np.repeat(obs_right_team_direction[:, 1][..., None], self.num_left_players, axis=1).\
+            transpose(1, 0)
 
         # ball direction
         obs_ball_direction = obs['ball_direction']
@@ -1216,22 +1218,20 @@ class TamakEriFeverEnv(gym.Wrapper):
         ball_direction_z = np.ones((self.num_left_players, self.num_right_players)) * obs_ball_direction[2]
 
         # left players direction - right players direction
-        left_minus_right_player_direction_x = obs_left_team_direction[:, 0][..., None] - obs_right_team_direction[:,
-                                                                                 0]
-        left_minus_right_player_direction_y = obs_left_team_direction[:, 1][..., None] - obs_right_team_direction[:,
-                                                                                 1]
+        left_minus_right_player_direction_x = obs_left_team_direction[:, 0][..., None] - obs_right_team_direction[:, 0]
+        left_minus_right_player_direction_y = obs_left_team_direction[:, 1][..., None] - obs_right_team_direction[:, 1]
 
         # left players direction - ball direction
-        left_minus_ball_direction_x = (obs_left_team_direction[:, 0][..., None] - obs_ball_direction[0]).repeat(self.num_right_players,
-                                                                                                        axis=1)
-        left_minus_ball_direction_y = (obs_left_team_direction[:, 1][..., None] - obs_ball_direction[1]).repeat(self.num_right_players,
-                                                                                                        axis=1)
+        left_minus_ball_direction_x = (obs_left_team_direction[:, 0][..., None] - obs_ball_direction[0])\
+            .repeat(self.num_right_players, axis=1)
+        left_minus_ball_direction_y = (obs_left_team_direction[:, 1][..., None] - obs_ball_direction[1])\
+            .repeat(self.num_right_players, axis=1)
 
         # right players direction - ball direction
         right_minus_ball_direction_x = (obs_right_team_direction[:, 0][..., None] - obs_ball_direction[0]).repeat(
-        self.num_left_players, axis=1).transpose(1, 0)
+            self.num_left_players, axis=1).transpose(1, 0)
         right_minus_ball_direction_y = (obs_right_team_direction[:, 1][..., None] - obs_ball_direction[1]).repeat(
-        self.num_left_players, axis=1).transpose(1, 0)
+            self.num_left_players, axis=1).transpose(1, 0)
 
         # ball rotation
         obs_ball_rotation = obs['ball_rotation']
@@ -1240,60 +1240,60 @@ class TamakEriFeverEnv(gym.Wrapper):
         ball_rotation_z = np.ones((self.num_left_players, self.num_right_players)) * obs_ball_rotation[2]
 
         cnn_feature = np.stack([
-        left_player_x,
-        left_player_y,
-        right_player_x,
-        right_player_y,
-        ball_x,
-        ball_y,
-        ball_z,
-        left_goal_x,
-        left_goal_y,
-        right_goal_x,
-        right_goal_y,
-        side_line_y_top,
-        side_line_y_bottom,
-        active_player_x,
-        active_player_y,
-        left_minus_right_player_x,
-        left_minus_right_player_y,
-        left_minus_right_goal_x,
-        left_minus_right_goal_y,
-        left_minus_left_goal_x,
-        left_minus_left_goal_y,
-        right_minus_right_goal_x,
-        right_minus_right_goal_y,
-        right_minus_left_goal_x,
-        right_minus_left_goal_y,
-        left_minus_side_top,
-        left_minus_side_bottom,
-        right_minus_side_top,
-        right_minus_side_bottom,
-        right_minus_ball_x,
-        right_minus_ball_y,
-        right_minus_active_x,
-        right_minus_active_y,
-        left_minus_ball_x,
-        left_minus_ball_y,
-        left_minus_active_x,
-        left_minus_active_y,
-        ball_direction_x,
-        ball_direction_y,
-        ball_direction_z,
-        left_minus_ball_direction_x,
-        left_minus_ball_direction_y,
-        right_minus_ball_direction_x,
-        right_minus_ball_direction_y,
-        left_player_direction_x,
-        left_player_direction_y,
-        right_player_direction_x,
-        right_player_direction_y,
-        left_minus_right_player_direction_x,
-        left_minus_right_player_direction_y,
-        ball_rotation_x,
-        ball_rotation_y,
-        ball_rotation_z,
-        ], axis=0)
+            left_player_x,
+            left_player_y,
+            right_player_x,
+            right_player_y,
+            ball_x,
+            ball_y,
+            ball_z,
+            left_goal_x,
+            left_goal_y,
+            right_goal_x,
+            right_goal_y,
+            side_line_y_top,
+            side_line_y_bottom,
+            active_player_x,
+            active_player_y,
+            left_minus_right_player_x,
+            left_minus_right_player_y,
+            left_minus_right_goal_x,
+            left_minus_right_goal_y,
+            left_minus_left_goal_x,
+            left_minus_left_goal_y,
+            right_minus_right_goal_x,
+            right_minus_right_goal_y,
+            right_minus_left_goal_x,
+            right_minus_left_goal_y,
+            left_minus_side_top,
+            left_minus_side_bottom,
+            right_minus_side_top,
+            right_minus_side_bottom,
+            right_minus_ball_x,
+            right_minus_ball_y,
+            right_minus_active_x,
+            right_minus_active_y,
+            left_minus_ball_x,
+            left_minus_ball_y,
+            left_minus_active_x,
+            left_minus_active_y,
+            ball_direction_x,
+            ball_direction_y,
+            ball_direction_z,
+            left_minus_ball_direction_x,
+            left_minus_ball_direction_y,
+            right_minus_ball_direction_x,
+            right_minus_ball_direction_y,
+            left_player_direction_x,
+            left_player_direction_y,
+            right_player_direction_x,
+            right_player_direction_y,
+            left_minus_right_player_direction_x,
+            left_minus_right_player_direction_y,
+            ball_rotation_x,
+            ball_rotation_y,
+            ball_rotation_z,
+            ], axis=0)
 
         # ball
         BALL_OWEND_1HOT = {-1: [0, 0], 0: [1, 0], 1: [0, 1]}

@@ -23,7 +23,7 @@ class PGAgent(Agent):
     @torch.no_grad()
     def predict(self, state: np.ndarray):
         self.model.eval()
-        state = torch.from_numpy(state).type(torch.float32).to(self.device)
+        state = to_tensor(state, device=self.device)
         _, logits = self.model(state)
         action_idx = torch.argmax(logits, dim=-1).cpu().numpy()
         return {"action": action_idx}

@@ -144,28 +144,29 @@ class FootballEncoder(nn.Module):
         self.fc = nn.Linear(filters + 41, filters)
 
     def forward(self, x):
-        bs = x['mode_index'].size(0)
+        bs = x['mode_index'].squeeze(-1)
         # scalar features
-        m_emb = self.mode_embedding(x['mode_index']).view(bs, -1)
+        m_emb = self.mode_embedding(bs)
         ball = x['ball']
-        s = torch.cat([ball, x['match'], x['distance']['b2o'].view(bs, -1), m_emb], dim=1)
+        s = torch.cat([ball, x['match'], x['distance']['b2o'], m_emb], dim=-1)
 
         # player features
         p_emb_self = self.player_embedding(x['player_index']['self'])
-        ball_concat_self = ball.view(bs, 1, -1).repeat(1, x['player']['self'].size(1), 1)
-        p_self = torch.cat([x['player']['self'], p_emb_self, ball_concat_self], dim=2)
+        ball_concat_self = ball.unsqueeze(-2).expand(*p_emb_self.shape[:-1], -1)
+
+        p_self = torch.cat([x['player']['self'], p_emb_self, ball_concat_self], dim=-1)
 
         p_emb_opp = self.player_embedding(x['player_index']['opp'])
-        ball_concat_opp = ball.view(bs, 1, -1).repeat(1, x['player']['opp'].size(1), 1)
-        p_opp = torch.cat([x['player']['opp'], p_emb_opp, ball_concat_opp], dim=2)
+        ball_concat_opp = ball.unsqueeze(-2).expand(*p_emb_opp.shape[:-1], -1)
+        p_opp = torch.cat([x['player']['opp'], p_emb_opp, ball_concat_opp], dim=-1)
 
         # encoding linear layer
         p_self = self.fc_teammate(p_self)
         p_opp = self.fc_opponent(p_opp)
 
-        p = F.relu(torch.cat([p_self, p_opp], dim=1))
-        s_concat = s.view(bs, 1, -1).repeat(1, p.size(1), 1)
-        p = torch.cat([p, x['distance']['p2bo'].view(bs, p.size(1), -1), s_concat], dim=2)
+        p = F.relu(torch.cat([p_self, p_opp], dim=-2))
+        s_concat = s.unsqueeze(-2).expand(*p.shape[:-1], -1)
+        p = torch.cat([p, x['distance']['p2bo'], s_concat], dim=-1)
 
         h = F.relu(self.fc(p))
 
@@ -211,8 +212,8 @@ class FootballHead(nn.Module):
     def __init__(self, filters):
         super().__init__()
         self.head_p = nn.Linear(filters, 19, bias=False)
-        #self.head_p_special = nn.Linear(filters, 1 + 8 * 4, bias=False)
-        #self.head_v = nn.Linear(filters, 1, bias=True)
+        self.head_p_special = nn.Linear(filters, 1 + 8 * 4, bias=False)
+        self.head_v = nn.Linear(filters, 1, bias=True)
         self.head_r = nn.Linear(filters, 1, bias=False)
 
     def forward(self, x):
@@ -295,6 +296,27 @@ class FootballNet(Model):
         return None
 
     def forward(self, x):
+        def unroll(x):
+            if isinstance(x, torch.Tensor):
+                return x.view(-1, *x.shape[2:])
+            else:
+                for key in x.keys():
+                    x[key] = unroll(x[key])
+            return x
+
+        def roll(x, time_length):
+            if isinstance(x, torch.Tensor):
+                return x.view(-1, time_length, *x.shape[1:])
+            else:
+                for key in x.keys():
+                    x[key] = roll(x[key], time_length)
+            return x
+
+        dim = len(x["legal_actions"].shape)
+        if dim == 3:
+            time_length = x["legal_actions"].shape[1]
+            x = unroll(x)
+
         state = x["feature"]
         e, rel, distance = self.encoder(state)
         h = e
@@ -317,6 +339,8 @@ class FootballNet(Model):
         legal_actions = x["legal_actions"]
         logit = logit - (1. - legal_actions) * 1e12
 
+        if dim == 3:
+            return roll(value.squeeze(-1), time_length), roll(logit, time_length)
         return value.squeeze(-1), logit
 
 

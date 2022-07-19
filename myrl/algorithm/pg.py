@@ -207,8 +207,9 @@ class A2C(Algorithm):
 
 
 class IMPALA(A2C):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, model: Model, mr: Union[MultiProcessBatcher, TrajList],
+                 lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3):
+        super().__init__(model, mr,  lr, gamma, lbd, vf, ef)
 
     def learn(self):
         self.model.train()
@@ -521,7 +522,7 @@ class ACLearner:
 
 """
 
-
+"""
 if __name__ == "__main__":
     import random
     import time
@@ -542,3 +543,4 @@ if __name__ == "__main__":
     print(torch.sum(a1-a2), torch.sum(a1-a3), torch.sum(a2-a3))
     print(torch.sum(v1 - v2), torch.sum(v1 - v3), torch.sum(v2 - v3))
     print(f"1 :{beg2-beg1}, 2:{beg3 - beg2}, 3:{beg4-beg3}")
+"""
