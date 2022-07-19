@@ -17,7 +17,7 @@ def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
     env = TamakEriFeverEnv(env)
     #env = SimpleEnv(env)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu")
     model = FootballNet().to(device)
     #model = SimpleModel(2, 1).to(device)
     agent = IMPALAAgent(model, device)
