@@ -12,8 +12,8 @@ if __name__ == "__main__":
     mp.set_start_method("spawn")
     set_process_logger(file_path="./log/empty_goal/learner.txt")
     device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
-    #model = FootballNet().to(device)
-    model = SimpleModel(2, 1).to(device)
+    model = FootballNet().to(device)
+    #model = SimpleModel(2, 1).to(device)
     #mr = MultiProcessBatcher(maxlen=30000, device=device, batch_size=192, forward_steps=64, num_batch_maker=2,
                             # use_queue=True, logger_file_path="./log/empty_goal/batcher.txt")
     mr = MultiProcessTrajQueue(maxlen=8, device=device, batch_size=64,

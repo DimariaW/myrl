@@ -81,7 +81,9 @@ class PG(Algorithm):
 
 class A2C(Algorithm):
     def __init__(self, model: Model, mr: Union[MultiProcessBatcher, MultiProcessTrajQueue],
-                 lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3):
+                 lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3,
+                 upgo: bool = False):
+
         super().__init__()
         self.model = model
         self.memory_replay = mr
@@ -91,6 +93,7 @@ class A2C(Algorithm):
         self.lbd = lbd
         self.vf = vf
         self.ef = ef
+        self.upgo = upgo
 
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, eps=1e-12)
 
@@ -205,11 +208,30 @@ class A2C(Algorithm):
 
         return td_lambda_value - value, td_lambda_value
 
+    @staticmethod
+    def upgo_adv_and_value(value: torch.Tensor, reward: torch.Tensor,
+             gamma: float, lbd: float, done: torch.Tensor, bootstrap_value: torch.Tensor):
+        target_value = []
+        next_value = bootstrap_value
+        next_target = bootstrap_value
+        for i in range(value.shape[1] - 1, -1, -1):
+            curr_reward = reward[:, i]
+            curr_done = done[:, i]
+            target_value.insert(0,
+                                curr_reward + gamma * (1. - curr_done) *
+                                torch.max(next_value, (1 - lbd) * next_value + lbd * next_target))
+            next_value = value[:, i]
+            next_target = target_value[0]
+
+        target_value = torch.stack(target_value, dim=-1)
+
+        return target_value - value, target_value
+
 
 class IMPALA(A2C):
     def __init__(self, model: Model, mr: Union[MultiProcessBatcher, MultiProcessTrajQueue],
-                 lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3):
-        super().__init__(model, mr,  lr, gamma, lbd, vf, ef)
+                 lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3, upgo: bool = False):
+        super().__init__(model, mr,  lr, gamma, lbd, vf, ef, upgo)
 
     def learn(self):
         self.model.train()
@@ -243,7 +265,17 @@ class IMPALA(A2C):
         logging.debug(f" adv is {torch.mean(vtrace_adv)}")
         logging.debug(f" value is {torch.mean(vtrace_value)}")
 
-        actor_loss = torch.mean(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * vtrace_adv)
+        if self.upgo:
+            upgo_adv, upgo_value = self.upgo_adv_and_value(value_nograd[:, :-1], reward[:, :-1],
+                                                           gamma=self.gamma, lbd=1, done=done[:, :-1],
+                                                           bootstrap_value=value_nograd[:, -1])
+
+            logging.debug(f" upgo_adv is {torch.mean(upgo_adv)}")
+            logging.debug(f" upgo_value is {torch.mean(upgo_value)}")
+
+            actor_loss = torch.mean(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * (vtrace_adv + upgo_adv))
+        else:
+            actor_loss = torch.mean(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * vtrace_adv)
 
         critic_loss = self.critic_loss_fn(value[:, :-1], vtrace_value)
 
