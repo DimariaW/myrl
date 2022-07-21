@@ -16,9 +16,9 @@ if __name__ == "__main__":
     #model = SimpleModel(2, 1).to(device)
     #mr = MultiProcessBatcher(maxlen=30000, device=device, batch_size=192, forward_steps=64, num_batch_maker=2,
                             # use_queue=True, logger_file_path="./log/empty_goal/batcher.txt")
-    mr = MultiProcessTrajQueue(maxlen=8, device=device, batch_size=128,
-                               num_batch_maker=2,
+    mr = MultiProcessTrajQueue(maxlen=16, device=device, batch_size=16,
+                               num_batch_maker=4,
                                logger_file_path="./log/11_vs_11_easy_stochastic/batcher.txt")
-    learner = IMPALA(model, mr, lr=1e-3, ef=1e-3, vf=0.5, gamma=0.993, lbd=1, upgo=False)
+    learner = IMPALA(model, mr, lr=0.00019896, ef=0.00087453, vf=0.5, gamma=0.993, lbd=1, upgo=False)
     learner_server = LearnerServer(learner, port=58899, tensorboard_log_dir="./log/11_vs_11_easy_stochastic/tensorboard/")
     learner_server.run()

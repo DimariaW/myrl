@@ -194,7 +194,7 @@ class Gather:
 
         self.cached_model_weights = None
         self.sent_cached_model_weights_times = 0
-        self.max_sent_cached_model_weights_times = num_sample_actors * 16
+        self.max_sent_cached_model_weights_times = 4
 
         self.cached_sample_reward = []
         self.max_cached_sample_reward_length = num_sample_actors * 5
@@ -203,7 +203,7 @@ class Gather:
         self.max_cached_eval_reward_length = num_predict_actors * 5
 
         self.cached_episodes = []
-        self.max_cached_episodes_length = 1 + num_sample_actors//2
+        self.max_cached_episodes_length = 4
 
         self.queue_gather2actors = []
         self.queue_actor2gather = mp.Queue(maxsize=2 * (num_sample_actors + num_predict_actors))

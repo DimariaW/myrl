@@ -21,11 +21,11 @@ def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
     model = FootballNet().to(device)
     #model = SimpleModel(2, 1).to(device)
     agent = IMPALAAgent(model, device)
-    if actor_index < 16:
-        actor = Actor(env, agent, steps=32, get_full_episodes=False)
+    if actor_index < 4:
+        actor = Actor(env, agent, steps=64, get_full_episodes=False)
         actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="sampler")
     else:
-        actor = Actor(env, agent, steps=512, get_full_episodes=True)
+        actor = Actor(env, agent, steps=64, get_full_episodes=True)
         actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="evaluator")
     actor_client.run()
 

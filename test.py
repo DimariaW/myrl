@@ -12,6 +12,6 @@ if __name__ == "__main__":
     #Server().run()
     #set_process_logger()
     open_gather(host="10.127.45.22", port=58899,
-                num_gathers=2, num_sample_actors_per_gather=16, num_predict_actors_per_gather=4,
+                num_gathers=10, num_sample_actors_per_gather=4, num_predict_actors_per_gather=0,
                 func=create_actor, logger_file_dir="./log/11_vs_11_easy_stochastic/")
     #tests.connections.test_mp_job_executor.test_multiprocess_job_executor_v2()

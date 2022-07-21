@@ -98,7 +98,7 @@ class A2C(Algorithm):
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, eps=1e-12)
 
         #self.critic_loss_fn = torch.nn.MSELoss()
-        self.critic_loss_fn = torch.nn.SmoothL1Loss()
+        self.critic_loss_fn = torch.nn.SmoothL1Loss(reduction="sum")
 
     def set_weights(self, weights):
         self.model.set_weights(weights)
@@ -273,13 +273,13 @@ class IMPALA(A2C):
             logging.debug(f" upgo_adv is {torch.mean(upgo_adv)}")
             logging.debug(f" upgo_value is {torch.mean(upgo_value)}")
 
-            actor_loss = torch.mean(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * (vtrace_adv + upgo_adv))
+            actor_loss = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * (vtrace_adv + upgo_adv) / 2)
         else:
-            actor_loss = torch.mean(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * vtrace_adv)
+            actor_loss = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * vtrace_adv)
 
         critic_loss = self.critic_loss_fn(value[:, :-1], vtrace_value)
 
-        entropy = torch.mean(torch.distributions.Categorical(logits=action_logit).entropy())
+        entropy = torch.sum(torch.distributions.Categorical(logits=action_logit).entropy())
 
         loss = actor_loss + self.vf * critic_loss - self.ef * entropy
 
