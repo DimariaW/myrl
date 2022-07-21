@@ -10,7 +10,7 @@ import torch
 
 if __name__ == "__main__":
     mp.set_start_method("spawn")
-    set_process_logger(file_path="./log/empty_goal/learner.txt")
+    set_process_logger(file_path="./log/11_vs_11_easy_stochastic/learner.txt")
     device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
     model = FootballNet().to(device)
     #model = SimpleModel(2, 1).to(device)
@@ -18,7 +18,7 @@ if __name__ == "__main__":
                             # use_queue=True, logger_file_path="./log/empty_goal/batcher.txt")
     mr = MultiProcessTrajQueue(maxlen=8, device=device, batch_size=64,
                                num_batch_maker=2,
-                               logger_file_path="./log/empty_goal/batcher.txt")
-    learner = IMPALA(model, mr, lr=1e-3, ef=1e-3, vf=0.5, gamma=0.993, lbd=1)
-    learner_server = LearnerServer(learner, port=58899, tensorboard_log_dir="./log/empty_goal/tensorboard/")
+                               logger_file_path="./log/11_vs_11_easy_stochastic/batcher.txt")
+    learner = IMPALA(model, mr, lr=1e-3, ef=1e-3, vf=0.5, gamma=0.993, lbd=1, upgo=False)
+    learner_server = LearnerServer(learner, port=58899, tensorboard_log_dir="./log/11_vs_11_easy_stochastic/tensorboard/")
     learner_server.run()
