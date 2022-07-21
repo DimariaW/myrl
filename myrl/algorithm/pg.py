@@ -253,8 +253,8 @@ class IMPALA(A2C):
 
         logging.debug(f" rho is {torch.mean(rho)}")
 
-        clipped_rho = torch.clamp(rho, 0, clip_rho_threshold := 1)  # rho shape: B*T
-        cs = torch.clamp(rho, 0, clip_c_threshold := 1)  # c shape: B*T
+        clipped_rho = torch.clamp(rho, 0, 1)#clip_rho_threshold := 1)  # rho shape: B*T
+        cs = torch.clamp(rho, 0, 1)#clip_c_threshold := 1)  # c shape: B*T
 
         value_nograd = value.detach()
 

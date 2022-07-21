@@ -11,7 +11,7 @@ import torch
 
 def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
     set_process_logger(file_path=f"./log/11_vs_11_easy_stochastic/actor_{actor_index}.txt")
-    env = gfootball_env.create_environment(env_name="academy_11_vs_11_easy_stochastic",
+    env = gfootball_env.create_environment(env_name="11_vs_11_easy_stochastic",
                                            representation="raw",
                                            rewards="scoring,checkpoints")
     env = TamakEriFeverEnv(env)
