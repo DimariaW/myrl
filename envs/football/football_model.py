@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from myrl.model import Model
-from models.layers import BertLayer, LayerNorm, MultiHeadAttentionLayer
+from models.layers import BertLayer, LayerNorm, MultiHeadAttentionLayer, activations
 
 torch.set_num_threads(1)
 
@@ -78,21 +78,44 @@ class FootballControll(nn.Module):
         super().__init__()
         self.filters = filters
         self.attention = MultiHeadAttentionLayer(hidden_size=filters, num_attention_heads=1, dropout_rate=0.1)
-        self.layer_norm = LayerNorm(filters)
+        self.dropout1 = nn.Dropout(0.1)
+        self.layer_norm1 = LayerNorm(filters)
         # self.fc_control = Dense(filters * 3, final_filters, bnunits=final_filters)
-        self.fc_control = nn.Linear(filters * 3, final_filters)
-        self.relu = nn.ReLU()
+        self.fc_control = nn.Linear(filters * 2, final_filters)
+        self.fc_gate = nn.Linear(filters * 2, final_filters)
+        self.sigmoid = nn.Sigmoid()
+
+        self.initializer_range = 0.5 / np.sqrt(filters)
+        self.attention.apply(self.init_model_weights)
+        self.layer_norm1.apply(self.init_model_weights)
 
     def forward(self, x, e, control_flag):
         x_controled = (x * control_flag).sum(dim=-2, keepdim=True)
         e_controled = (e * control_flag).sum(dim=-2, keepdim=True)
 
         h = self.attention(x_controled, x, x)
+        h = self.layer_norm1(x_controled + self.dropout1(h))
 
-        h = torch.cat([x_controled, e_controled, h], dim=-1).squeeze(-2)
+        h = torch.cat([e_controled, h], dim=-1).squeeze(-2)
         # h = torch.cat([h, cnn_h.view(cnn_h.size(0), -1)], dim=1)
-        h = self.relu(self.fc_control(h))
-        return h
+        h_control = self.fc_control(h)
+        h_gate = self.sigmoid(self.fc_gate(h))
+
+        return h_control * h_gate
+
+    def init_model_weights(self, module):
+        """ 初始化权重
+        """
+        if isinstance(module, (nn.Linear, nn.Embedding)):
+            # bert参数初始化, tf版本在linear和Embedding层使用的是截断正太分布, pytorch没有实现该函数,
+            # 此种初始化对于加载预训练模型后进行finetune没有任何影响，
+            # cf https://github.com/pytorch/pytorch/pull/5617
+            module.weight.data.normal_(mean=0.0, std=self.initializer_range)
+        elif isinstance(module, LayerNorm):
+            module.bias.data.zero_()
+            module.weight.data.fill_(1.0)
+        if isinstance(module, nn.Linear) and module.bias is not None:
+            module.bias.data.zero_()
 
 
 class FootballHead(nn.Module):
@@ -211,7 +234,6 @@ class FootballNet(Model):
         logit = logit - (1. - legal_actions) * 1e12
 
         return value.squeeze(-1), logit
-
 
 
 class SimpleModel(Model):
