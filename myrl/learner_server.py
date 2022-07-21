@@ -70,8 +70,8 @@ class LearnerServer:
             logging.debug(f"received cmd : {cmd}")
 
             if cmd == "model":
-                # self.actor_communicator.send(conn, (cmd, self.learner.get_weights()))
-                self.actor_communicator.send(conn, (cmd, self.cached_weights))
+                self.actor_communicator.send(conn, (cmd, self.learner.get_weights()))
+                #self.actor_communicator.send(conn, (cmd, self.cached_weights))
 
             elif cmd == "episode":
                 """
@@ -87,10 +87,10 @@ class LearnerServer:
                 self.learner.memory_replay.cache(data)
                 self.actor_communicator.send(conn, (cmd, "successfully sent episodes"))
 
-                if (self.learner.memory_replay.num_cached - last_update_num_cached) >= 400:
-                    logging.info("update cached weights")
-                    self.cached_weights = self.learner.get_weights()
-                    last_update_num_cached = self.learner.memory_replay.num_cached
+                #if (self.learner.memory_replay.num_cached - last_update_num_cached) >= 400:
+                 #   logging.info("update cached weights")
+                  #  self.cached_weights = self.learner.get_weights()
+                   # last_update_num_cached = self.learner.memory_replay.num_cached
 
             elif cmd == "sample_reward":
                 for reward in data:

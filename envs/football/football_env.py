@@ -1,10 +1,9 @@
 import gfootball.env as gfootball_env
 import gym
-
 from collections import deque
 import numpy as np
 import enum
-#%%
+#%%  some commons
 
 
 class Action(enum.IntEnum):
@@ -68,6 +67,7 @@ class GameMode(enum.IntEnum):
     Corner = 4
     ThrowIn = 5
     Penalty = 6
+
 
 #%%
 """
@@ -854,8 +854,11 @@ class TamakEriFeverEnv(gym.Wrapper):
         super().__init__(env)
         self.num_left_players = None
         self.num_right_players = None
-
-        self.all_actions = np.arange(19)
+        self.ball_owned_one_hot = None
+        self.player_left_one_hot = None
+        self.player_right_one_hot = None
+        self.direction = None
+        self.all_actions = None
         self.action_history = deque(maxlen=8)
         self.half_step = None
 
@@ -865,10 +868,22 @@ class TamakEriFeverEnv(gym.Wrapper):
         obs, _, _, _ = self.env.step([0])
         obs = obs[0]
 
-        self.half_step = obs["steps_left"] // 2
         self.num_left_players = obs["left_team"].shape[0]
         self.num_right_players = obs["right_team"].shape[0]
+        self.ball_owned_one_hot = np.array([[1, 0], [0, 1], [0, 0]])
+        self.player_left_one_hot = np.concatenate([np.eye(self.num_left_players),
+                                                   np.zeros((1, self.num_left_players))],
+                                                  axis=0)
+        self.player_right_one_hot = np.concatenate([np.eye(self.num_right_players),
+                                                    np.zeros((1, self.num_right_players))],
+                                                   axis=0)
+        self.direction = np.array([
+            [-1, 0], [-.707, -.707], [0, 1], [.707, -.707],  # L, TL, T, TR
+            [1, 0], [.707, .707], [0, -1], [-.707, .707]  # R, BR, B, BL
+            ])
+        self.all_actions = np.arange(self.env.action_space.n)
         self.action_history.extend([0]*8)
+        self.half_step = obs["steps_left"] // 2
 
         obs = self._preprocess_obs(obs)
         feature = self._raw_obs_to_feature(obs)
@@ -912,15 +927,48 @@ class TamakEriFeverEnv(gym.Wrapper):
         return obs
 
     def _raw_obs_to_feature_to_do(self, obs: dict):
+        ball_owned_team_ = obs["ball_owned_team"]
+        ball_owned_team = self.ball_owned_one_hot[ball_owned_team_]  # {-1, 0, 1} None, self, opponent
+
+        if ball_owned_team_ == -1:
+            my_ball_owned_player = self.player_left_one_hot[-1]
+            op_ball_owned_player = self.player_right_one_hot[-1]
+        elif ball_owned_team_ == 0:
+            my_ball_owned_player = self.player_left_one_hot[obs["ball_owned_player"]]
+            op_ball_owned_player = self.player_right_one_hot[-1]
+        else:
+            my_ball_owned_player = self.player_left_one_hot[-1]
+            op_ball_owned_player = self.player_right_one_hot[obs["ball_owned_player"]]
+
+
         # left players feature
         left_team_pos = obs['left_team']  # shape(11, 2)
         left_team_direction = obs['left_team_direction']  # shape(11, 2)
-        left_team_feas = np.concatenate([left_team_pos, left_team_direction], axis=-1)  # shape(11, 4)
+        left_team_features = np.concatenate([
+            np.ones(shape=(self.num_left_players, 1)),  # left team flag
+            left_team_pos,  # position
+            left_team_direction,
+            obs['left_team_tired_factor'][..., None],
+            obs['left_team_yellow_card'][..., None],
+            obs['left_team_active'][..., None],
+            my_ball_owned_player[..., None]
+        ], axis=-1).astype(np.float32)  # shape(11, 9)
+        left_team_indice = np.arange(0, self.num_left_players, dtype=np.int32)
 
         # right players feature
         right_team_pos = obs['right_team']  # shape(11, 2)
         right_team_direction = obs['right_team_direction']  # shape(11, 2)
-        right_team_feas = np.concatenate([right_team_pos, right_team_direction], axis=-1)  # shape(11, 4)
+        right_team_features = np.concatenate([
+            np.zeros(shape=(self.num_right_players, 1)),  # right team flag
+            right_team_pos,  # position
+            right_team_direction,
+            obs['right_team_tired_factor'][..., None],
+            obs['right_team_yellow_card'][..., None],
+            obs['right_team_active'][..., None],
+            op_ball_owned_player[..., None]
+        ], axis=-1).astype(np.float32)  # shape (11,9)
+        right_team_indice = np.arange(0, self.num_right_players, dtype=np.int32)
+
 
         # ball feature
         ball_pos = obs["ball"]  # shape(3)
@@ -929,11 +977,12 @@ class TamakEriFeverEnv(gym.Wrapper):
         ball_features = np.concatenate([ball_pos, ball_direction, ball_rotation], axis=0).astype(np.float32)  # shape(9)
 
         # other feature
-        left_goal_right_goal_side_line = np.array([[-1, 0], [1, 0], [-.42, .42]])  # shape(3, 2)
+        goal = np.array([[-1, 0], [1, 0]], dtype=np.float32)
+        side_line_y = np.array([-.42, .42], dtype=np.float32)
+
         # active player_feature
         active_player_pos = left_team_pos[obs['active']]  # shape(2)
 
-        other_feas = np.concatenate([left_goal_right_goal_side_line.reshape(-1), active_player_pos], axis=0)  # shape(8)
 
         def create_relative_feature(team_feature, other_feature, reduction=True):
             tmp = team_feature[:, None, :] - other_feature[None, ...]
@@ -942,7 +991,8 @@ class TamakEriFeverEnv(gym.Wrapper):
             return tmp
 
         other_pos_features = np.concatenate([ball_pos[None, :2],
-                                             left_goal_right_goal_side_line,
+                                             goal,
+                                             side_line_y,
                                              active_player_pos[None, ...]], axis=0)  # shape(5,2)
 
         left_minus_other_pos = create_relative_feature(left_team_pos, other_pos_features, reduction=True)   # shape(11,10)
@@ -954,58 +1004,94 @@ class TamakEriFeverEnv(gym.Wrapper):
         left_minus_right_direction = create_relative_feature(left_team_direction, right_team_direction,
                                                              reduction=False)  # shape(11,11,2)
 
-
-
-        cnn_feature = left_team_feas[:, None, :] + right_team_feas[None, ...] + ball_features[None, None, ...] + \
-                      other_feas[None, None, :] + left_minus_other_pos[:, None, :] + \
-                      left_minus_other_direction[:, None, :] + right_minus_other_pos[None, ...] + \
-                      right_minus_other_direction[None, ...] + \
-                      left_minus_right_pos + left_minus_right_direction
+        cnn_feature = np.concatenate([left_team_pos[:, None, :],
+                                      left_team_direction[:, None, :],
+                                      right_team_pos[None, ...],
+                                      right_team_direction[None, ...],
+                                      ball_features[None, None, ...],
+                                      goal.ravel()[None, None, ...],
+                                      side_line_y[None, None, ...],
+                                      active_player_pos[None, None, ...],
+                                      left_minus_other_pos[:, None, :],
+                                      left_minus_other_direction[:, None, :],
+                                      right_minus_other_pos[None, ...],
+                                      right_minus_other_direction[None, ...],
+                                      left_minus_right_pos,
+                                      left_minus_right_direction], axis=-1)
 
         cnn_feature = cnn_feature.astype(np.float32)
 
-        BALL_OWEND_1HOT = {-1: [0, 0], 0: [1, 0], 1: [0, 1]}
-        ball_owned_team_ = obs['ball_owned_team']
-        ball_owned_team = BALL_OWEND_1HOT[ball_owned_team_]  # {-1, 0, 1} None, self, opponent
-        PLAYER_1HOT_LEFT = np.concatenate([np.eye(self.num_left_players), np.zeros((1, self.num_left_players))], axis=0)
-        PLAYER_1HOT_RIGHT = np.concatenate([np.eye(self.num_right_players), np.zeros((1, self.num_right_players))], axis=0)
 
-        if ball_owned_team_ == -1:
-            my_ball_owned_player = PLAYER_1HOT_LEFT[-1]
-            op_ball_owned_player = PLAYER_1HOT_RIGHT[-1]
-        elif ball_owned_team_ == 0:
-            my_ball_owned_player = PLAYER_1HOT_LEFT[obs["ball_owned_player"]]
-            op_ball_owned_player = PLAYER_1HOT_RIGHT[-1]
+
+
+
+        # controlled player information
+
+
+
+
+        action_history = np.array(self.action_history, dtype=np.int32)[..., None]
+
+        return {
+            # features
+            'ball': ball_features,
+            'player': {
+                'self': left_team_features,
+                'opp': right_team_features
+            },
+            'player_index': {
+                'self': left_team_indice,
+                'opp': right_team_indice
+            },
+
+            # CNN
+            'cnn_feature': cnn_feature,
+            # SuperMiniMap
+            # 'smm': smm,
+            'action_history': action_history
+        }
+
+    def _get_control_feature(self, obs):
+        control_flag_ = self.player_left_one_hot[obs['active']]
+        control_flag = np.concatenate([control_flag_, np.zeros(self.num_right_players)]).astype(np.float32)
+
+        # controlled status information
+
+        sticky_direction = np.dot(obs['sticky_actions'][None, :8], self.direction).squeeze(axis=0)
+        sticky_flags = obs['sticky_actions'][8:]
+
+        control_features = np.concatenate([
+            sticky_direction,
+            sticky_flags,
+        ]).astype(np.float32)
+
+        return {'control_flag': control_flag, 'control': control_features}
+
+    def _get_match_feature(self, obs):
+
+        def multi_scale(x, scale):
+            return 2 / (1 + np.exp(-np.array(x)[..., np.newaxis] / np.array(scale)))
+
+        # Match state
+        if obs['steps_left'] > self.half_step:
+            steps_left_half = obs['steps_left'] - self.half_step
         else:
-            my_ball_owned_player = PLAYER_1HOT_LEFT[-1]
-            op_ball_owned_player = PLAYER_1HOT_RIGHT[obs["ball_owned_player"]]
+            steps_left_half = obs['steps_left']
 
-        # self team
-        left_team_features = np.concatenate([
-            np.ones(shape=(self.num_left_players, 1)),  # left team flag
-            obs['left_team'],  # position
-            obs['left_team_direction'],
-            obs['left_team_tired_factor'][..., None],
-            obs['left_team_yellow_card'][..., None],
-            obs['left_team_active'][..., None],
-            my_ball_owned_player[..., None]
-        ], axis=-1).astype(np.float32)
+        match_features = np.concatenate([
+            multi_scale(obs['score'], [1, 3]).ravel(),  # 4
+            multi_scale(obs['score'][0] - obs['score'][1], [1, 3]),  # 2
+            multi_scale(obs['steps_left'], [10, 100, 1000, 10000]),  # 4
+            multi_scale(steps_left_half, [10, 100, 1000, 10000]),  # 4
+            self.ball_owned_one_hot[obs["ball_owned_team"]],  # 2
+        ]).astype(np.float32)
 
-        left_team_indice = np.arange(0, self.num_left_players, dtype=np.int32)
+        mode_index = np.array([obs['game_mode']], dtype=np.int32)
 
-        # opponent team
-        right_team_features = np.concatenate([
-            np.ones(shape=(self.num_right_players, 1)),  # right team flag
-            obs['right_team'],  # position
-            obs['right_team_direction'],
-            obs['right_team_tired_factor'][..., None],
-            obs['right_team_yellow_card'][..., None],
-            obs['right_team_active'][..., None],
-            op_ball_owned_player[..., None]
-        ], axis=-1).astype(np.float32)
+        return {"mode_index": mode_index, 'match': match_features}
 
-        right_team_indice = np.arange(0, self.num_right_players, dtype=np.int32)
-
+    @staticmethod
+    def _get_distance(obs):
         # distance information
         def get_distance(xy1, xy2):
             return (((xy1 - xy2) ** 2).sum(axis=-1)) ** 0.5
@@ -1013,22 +1099,20 @@ class TamakEriFeverEnv(gym.Wrapper):
         def get_line_distance(x1, x2):
             return np.abs(x1 - x2)
 
-        def multi_scale(x, scale):
-            return 2 / (1 + np.exp(-x[..., np.newaxis] / np.array(scale)))
-
         both_team = np.concatenate([obs['left_team'], obs['right_team']], axis=0)
-        ball = np.array([obs['ball'][:2]], dtype=np.float32)
+        ball = obs['ball'][None, :2]
+        ball = ball.astype(np.float32)
         goal = np.array([[-1, 0], [1, 0]], dtype=np.float32)
         goal_line_x = np.array([-1, 1], dtype=np.float32)
         side_line_y = np.array([-.42, .42], dtype=np.float32)
 
         # ball <-> goal, goal line, side line distance
-        b2g_distance = get_distance(ball, goal)
-        b2gl_distance = get_line_distance(ball[0][0], goal_line_x)
-        b2sl_distance = get_line_distance(ball[0][1], side_line_y)
+        b2g_distance = get_distance(ball, goal)  # 2
+        b2gl_distance = get_line_distance(ball[0][0], goal_line_x)  # 2
+        b2sl_distance = get_line_distance(ball[0][1], side_line_y)  # 2
         b2o_distance = np.concatenate([
             b2g_distance, b2gl_distance, b2sl_distance
-        ], axis=-1).astype(np.float32)
+        ], axis=-1).astype(np.float32)  # 6
 
         # player <-> ball, goal, back line, side line distance
         p2b_distance = get_distance(both_team[:, np.newaxis, :], ball[np.newaxis, :, :])
@@ -1042,67 +1126,12 @@ class TamakEriFeverEnv(gym.Wrapper):
         # player <-> player distance
         p2p_distance = get_distance(both_team[:, np.newaxis, :], both_team[np.newaxis, :, :]).astype(np.float32)
 
-        # controlled player information
-        control_flag_ = np.array(PLAYER_1HOT_LEFT[obs['active']], dtype=np.float32)
-        control_flag = np.concatenate([control_flag_, np.zeros(len(obs['right_team']))])[..., np.newaxis]
-
-        # controlled status information
-        DIR = [
-            [-1, 0], [-.707, -.707], [0, 1], [.707, -.707],  # L, TL, T, TR
-            [1, 0], [.707, .707], [0, -1], [-.707, .707]  # R, BR, B, BL
-        ]
-        sticky_direction = DIR[obs['sticky_actions'][:8].argmax()] if 1 in obs['sticky_actions'][:8] else [0, 0]
-        sticky_flags = obs['sticky_actions'][8:]
-
-        control_features = np.concatenate([
-            sticky_direction,
-            sticky_flags,
-        ]).astype(np.float32)
-
-        # Match state
-        if obs['steps_left'] > self.half_step:
-            steps_left_half = obs['steps_left'] - self.half_step
-        else:
-            steps_left_half = obs['steps_left']
-        match_features = np.concatenate([
-            multi_scale(obs['score'], [1, 3]).ravel(),
-            multi_scale(obs['score'][0] - obs['score'][1], [1, 3]),
-            multi_scale(obs['steps_left'], [10, 100, 1000, 10000]),
-            multi_scale(steps_left_half, [10, 100, 1000, 10000]),
-            ball_owned_team,
-        ])
-
-        mode_index = np.array([obs['game_mode']], dtype=np.int32)
-
-        action_history = np.array(self.action_history, dtype=np.int32)[..., None]
-
-        return {
-            # features
-            'ball': ball_features.astype(np.float32),
-            'match': match_features,
-            'player': {
-                'self': left_team_features,
-                'opp': right_team_features
-            },
-            'control': control_features,
-            'player_index': {
-                'self': left_team_indice,
-                'opp': right_team_indice
-            },
-            'mode_index': mode_index,
-            'control_flag': control_flag,
-            # distances
-            'distance': {
-                'p2p': p2p_distance,
-                'p2bo': p2bo_distance,
-                'b2o': b2o_distance
-            },
-            # CNN
-            'cnn_feature': cnn_feature,
-            # SuperMiniMap
-            # 'smm': smm,
-            'action_history': action_history
-        }
+        return {'distance': {
+                            'p2p': p2p_distance,
+                            'p2bo': p2bo_distance,
+                            'b2o': b2o_distance
+                            }
+                }
 
     def _raw_obs_to_feature(self, obs: dict):
         # left players

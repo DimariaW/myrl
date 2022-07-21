@@ -305,8 +305,10 @@ class MultiProcessTrajQueue:
     def __init__(self,
                  maxlen: int,
                  device=torch.device("cpu"),
-                 batch_size: int = 192,
-                 num_batch_maker: int = 2
+                 batch_size: int = 64,
+                 num_batch_maker: int = 2,
+                 logger_file_path: str = None,
+                 file_level=logging.DEBUG
                  ):
         self.episodes = queue.Queue(maxsize=maxlen)
         self.device = device
@@ -314,20 +316,24 @@ class MultiProcessTrajQueue:
 
         self.num_cached = 0
 
-        self.batch_maker = MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
-                                                    postprocess=self.post_process,
-                                                    num=num_batch_maker, buffer_length=1, num_receivers=1,
-                                                    name_prefix="batch_maker",
-                                                    logger_file_path="./log/impala_batch_maker.txt")
+        self.batch_maker = MultiProcessJobExecutorsV2(func=make_batch, send_generator=self.send_raw_batch(),
+                                                      postprocess=self.post_process,
+                                                      num=num_batch_maker,
+                                                      buffer_length=1,
+                                                      name_prefix="batch_maker",
+                                                      logger_file_path=logger_file_path,
+                                                      file_level=file_level)
 
-    def cache(self, episode):
-        try:
-            self.episodes.put(episode, timeout=0.1)
-            self.num_cached += 1
-            logging.debug("put one episode")
-        except queue.Full:
-            logging.critical(" generate rate is larger than consumer")
-            raise
+    def cache(self, episodes: List[List]):
+        for episode in episodes:
+            while True:
+                try:
+                    self.episodes.put(episode, timeout=0.1)
+                    self.num_cached += 1
+                    logging.debug(f"successfully cached episode num {self.num_cached}")
+                    break
+                except queue.Full:
+                    logging.critical(" generate rate is larger than consumer")
 
     def recall(self):
         return self.batch_maker.recv()
@@ -340,9 +346,7 @@ class MultiProcessTrajQueue:
         self.batch_maker.start()
 
     def post_process(self, batch):
-        for key in batch.keys():
-            batch[key] = batch[key].to(self.device)
-        return batch
+        return to_tensor(batch, unsqueeze=None, device=self.device)
 
 
 class MultiProcessBatcher:

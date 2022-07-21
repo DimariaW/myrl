@@ -1,13 +1,13 @@
 import torch
 from myrl.model import Model
 from myrl.algorithm import Algorithm
-from myrl.memory_replay import TrajList, MultiProcessBatcher
+from myrl.memory_replay import MultiProcessBatcher, MultiProcessTrajQueue
 import logging
 from typing import Union
 
 
 class PG(Algorithm):
-    def __init__(self, model: Model, mr: TrajList, lr: float = 2e-3, gamma: float = 0.99):
+    def __init__(self, model: Model, mr, lr: float = 2e-3, gamma: float = 0.99):
         super().__init__()
         self.model = model
         self.memory_replay = mr
@@ -80,7 +80,7 @@ class PG(Algorithm):
 
 
 class A2C(Algorithm):
-    def __init__(self, model: Model, mr: Union[MultiProcessBatcher, TrajList],
+    def __init__(self, model: Model, mr: Union[MultiProcessBatcher, MultiProcessTrajQueue],
                  lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3):
         super().__init__()
         self.model = model
@@ -92,7 +92,7 @@ class A2C(Algorithm):
         self.vf = vf
         self.ef = ef
 
-        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, eps=1e-12)
 
         #self.critic_loss_fn = torch.nn.MSELoss()
         self.critic_loss_fn = torch.nn.SmoothL1Loss()
@@ -207,7 +207,7 @@ class A2C(Algorithm):
 
 
 class IMPALA(A2C):
-    def __init__(self, model: Model, mr: Union[MultiProcessBatcher, TrajList],
+    def __init__(self, model: Model, mr: Union[MultiProcessBatcher, MultiProcessTrajQueue],
                  lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3):
         super().__init__(model, mr,  lr, gamma, lbd, vf, ef)
 
@@ -282,13 +282,18 @@ class IMPALA(A2C):
         return advantage, vtrace_value
 
     def run(self):
-        #self.memory_replay.start()
-        is_started = False
-        while True:
-            if len(self.memory_replay) > 2 * self.memory_replay.batch_size:
-                if not is_started:
-                    self.memory_replay.start()
-                    is_started = True
+        if isinstance(self.memory_replay, MultiProcessBatcher):
+            #self.memory_replay.start()
+            is_started = False
+            while True:
+                if len(self.memory_replay) > 2 * self.memory_replay.batch_size:
+                    if not is_started:
+                        self.memory_replay.start()
+                        is_started = True
+                    logging.info(self.learn())
+        elif isinstance(self.memory_replay, MultiProcessTrajQueue):
+            self.memory_replay.start()
+            while True:
                 logging.info(self.learn())
 
 

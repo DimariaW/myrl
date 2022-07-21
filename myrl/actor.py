@@ -194,7 +194,7 @@ class Gather:
 
         self.cached_model_weights = None
         self.sent_cached_model_weights_times = 0
-        self.max_sent_cached_model_weights_times = num_sample_actors * 2
+        self.max_sent_cached_model_weights_times = num_sample_actors * 16
 
         self.cached_sample_reward = []
         self.max_cached_sample_reward_length = num_sample_actors * 5

@@ -33,6 +33,7 @@ from envs.football import FootballNet
 from myrl.utils import to_tensor, batchify, set_process_logger
 import torch
 import os
+import sys
 print(os.getcwd())
 
 set_process_logger(stdout_level=logging.DEBUG)
@@ -48,16 +49,27 @@ def load_model(model, model_path):
 
 
 device = torch.device("cpu")
-env = gfootball_env.create_environment(env_name="11_vs_11_kaggle_level1", representation="raw", rewards="scoring,checkpoints")
+env = gfootball_env.create_environment(env_name="11_vs_11_easy_stochastic", representation="raw", rewards="scoring,checkpoints")
 env = TamakEriFeverEnv(env)
 
 net = FootballNet()
-net.load_state_dict(torch.load("./1679.pth"), strict=True)
+#net.load_state_dict(torch.load("./1679.pth"), strict=True)
 net.eval()
+
 
 
 obs = env.reset()
 logging.info("hello")
+
+print(sys.getsizeof(obs))
+
+def getsizeof(obs):
+    if isinstance(obs, dict):
+        return sum([getsizeof(value) for (key, value) in obs.items()]) + sys.getsizeof(obs)
+    else:
+        return sys.getsizeof(obs)
+
+print(getsizeof(obs))
 
 
 def infinite():
@@ -67,10 +79,12 @@ def infinite():
 from tqdm import tqdm
 
 for _ in tqdm(infinite()):
+
     obs_tensor = to_tensor(batchify([batchify([obs], unsqueeze=0)], unsqueeze=0), unsqueeze=None, device=device)
     _, logit = net(obs_tensor)
 
-    obs, reward, done, info = env.step(torch.argmax(logit).item())
+    obs, reward, done, info = env.step(logit.argmax().item())
     if done:
         logging.info(info)
         obs = env.reset()
+
