@@ -102,7 +102,19 @@ class TrajQueue(MemoryReplayBase):
         self.is_stop = False
         self.use_bz2 = use_bz2
 
-    def cache(self, episodes: Union[List[List[Dict]], List[Dict]]):
+    def cache(self, episodes: Union[List[List[Dict]], List[Dict], List]):
+        if self.use_bz2:
+            for compressed_episode in episodes:
+                while True:
+                    try:
+                        self.episode_queue.put(compressed_episode, timeout=0.1)
+                        break
+                    except queue.Full:
+                        logging.debug("the queue is full")
+                self.num_cached += 1
+            logging.debug(f"total cashed data num is {self.num_cached}")
+            return
+
         if isinstance(episodes[0], dict):
             while True:
                 try:
