@@ -10,6 +10,9 @@ from tensorboardX import SummaryWriter
 import myrl.connection as connection
 import myrl.utils as utils
 
+import pickle
+import bz2
+
 
 class MemoryReplayBase:
     """
@@ -45,6 +48,11 @@ class MemoryReplayBase:
 
 def make_batch(episodes: List[List]):  # batch_size*time_step
     episodes = [utils.batchify(episode, unsqueeze=0) for episode in episodes]
+    return utils.batchify(episodes, unsqueeze=0)
+
+
+def decompress_and_make_batch(episodes: List):
+    episodes = [utils.batchify(pickle.loads(bz2.decompress(episode)), unsqueeze=0) for episode in episodes]
     return utils.batchify(episodes, unsqueeze=0)
 
 
@@ -85,12 +93,14 @@ class TrajQueue(MemoryReplayBase):
     def __init__(self,
                  maxlen: int,
                  queue_receiver: mp.Queue,
-                 batch_size=64):
+                 batch_size=64,
+                 use_bz2: bool = True):
         super().__init__(queue_receiver)
         self.episode_queue = queue.Queue(maxsize=maxlen)
         self.batch_size = batch_size
         self.num_cached = 0
         self.is_stop = False
+        self.use_bz2 = use_bz2
 
     def cache(self, episodes: Union[List[List[Dict]], List[Dict]]):
         if isinstance(episodes[0], dict):
@@ -136,7 +146,10 @@ class TrajQueue(MemoryReplayBase):
         send_generator = self.send_raw_batch()
         try:
             while True:
-                batched = make_batch(next(send_generator))
+                if self.use_bz2:
+                    batched = decompress_and_make_batch(next(send_generator))
+                else:
+                    batched = make_batch(next(send_generator))
                 self.queue_receiver.put((False, batched))
                 num += 1
                 logging.debug(f"successfully make and send batch num: {num}")
@@ -153,12 +166,15 @@ class TrajQueueMP(TrajQueue):
                  maxlen: int,
                  queue_receiver: mp.Queue,
                  batch_size: int = 64,
+                 use_bz2: bool = True,
                  num_batch_maker: int = 2,
                  logger_file_dir: str = None,
                  ):
-        super().__init__(maxlen, queue_receiver, batch_size)
+        super().__init__(maxlen, queue_receiver, batch_size, use_bz2)
 
-        self.batch_maker = connection.MultiProcessJobExecutors(func=make_batch,
+        self.batch_maker = connection.MultiProcessJobExecutors(func=make_batch if not use_bz2
+                                                               else decompress_and_make_batch,
+
                                                                send_generator=self.send_raw_batch(),
                                                                num=num_batch_maker,
                                                                queue_receiver=self.queue_receiver,

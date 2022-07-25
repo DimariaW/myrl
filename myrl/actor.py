@@ -1,4 +1,7 @@
+import bz2
 import os
+import pickle
+
 from myrl.agent import Agent
 import myrl.connection as connection
 from tensorboardX import SummaryWriter
@@ -187,7 +190,8 @@ class Gather:
                  model_server_conn,
                  num_sample_actors: int,
                  num_predict_actors: int,
-                 func: Callable):
+                 func: Callable,
+                 use_bz2=True):
         super().__init__()
         self.gather_id = gather_id
         self.episode_server_conn = episode_server_conn
@@ -220,6 +224,8 @@ class Gather:
         self.num_sample_actors = num_sample_actors
         self.num_predict_actors = num_predict_actors
 
+        self.use_bz2 = use_bz2
+
     def run(self):
 
         cmd, self.cached_model_weights = connection.send_recv(self.model_server_conn, ("model", None))
@@ -248,6 +254,8 @@ class Gather:
                 self.sent_cached_model_weights_times += 1
 
             elif command == "episode":
+                if self.use_bz2:
+                    data = bz2.compress(pickle.dumps(data))
                 self.cache_and_send_data(self.cached_episodes, [data], self.max_cached_episodes_length, command)
                 self.queue_gather2actors[actor_index].put((command, "successfully send episodes"))
 
@@ -267,25 +275,25 @@ class Gather:
 
 
 def _open_per_gather(gather_id, episodes_address, model_address,
-                     num_sample_actors, num_predict_actors, func, logger_file_path):
+                     num_sample_actors, num_predict_actors, func, use_bz2, logger_file_path):
     set_process_logger(file_path=logger_file_path)  # windows need
     episodes_conn = connection.connect_socket_connection(*episodes_address)
     model_conn = connection.connect_socket_connection(*model_address)
 
     logging.info(f"successfully connected! the gather {gather_id} is started!")
-    Gather(gather_id, episodes_conn, model_conn, num_sample_actors, num_predict_actors, func).run()
+    Gather(gather_id, episodes_conn, model_conn, num_sample_actors, num_predict_actors, func, use_bz2).run()
 
 
 def open_gather(episodes_address, model_address, num_gathers: int,
                 num_sample_actors_per_gather: int, num_predict_actors_per_gather: int = 0,
-                func: Callable = None, logger_file_dir=None):
+                func: Callable = None, use_bz2: bool = True, logger_file_dir=None):
     mp.set_start_method("spawn")
     processes = []
     for i in range(num_gathers):
         p = mp.Process(name=f"gather_{i}", target=_open_per_gather,
                        args=(i, episodes_address, model_address,
                              num_sample_actors_per_gather, num_predict_actors_per_gather,
-                             func, os.path.join(logger_file_dir, f"gather_{i}.txt")), daemon=False)
+                             func, use_bz2, os.path.join(logger_file_dir, f"gather_{i}.txt")), daemon=False)
         processes.append(p)
 
     for p in processes:

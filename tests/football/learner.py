@@ -15,6 +15,7 @@ class MemoryReplayMain(core.MemoryReplayMainBase):
         traj_queue = mr.TrajQueueMP(maxlen=32,
                                     queue_receiver=queue_receiver,
                                     batch_size=16,
+                                    use_bz2=True,
                                     num_batch_maker=4,
                                     logger_file_dir=os.path.join(self.logger_file_dir, "batch_maker"))
         memory_server = mr.MemoryReplayServer(traj_queue, 7777, actor_num=None,
