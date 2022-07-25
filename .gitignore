@@ -4,3 +4,4 @@ myrl/__pycache__/*
 tests/__pycache__/*
 myrl/agent/__pycache__/*
 myrl/algorithm/__pycache__/*
+tests/*/log
