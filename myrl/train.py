@@ -131,6 +131,8 @@ def train_main(learner_main: LearnerMainBase,
                league_main: LeagueMainBase,
                queue_size=(1, 1)):  # receiver and sender
 
+    mp.set_start_method("spawn")
+
     queue_receiver = mp.Queue(maxsize=queue_size[0])  # receiver batched tensor, when on policy, this can be set to 1
     queue_sender = mp.Queue(maxsize=queue_size[1])  # the queue to send the newest data
 
