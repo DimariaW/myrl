@@ -361,7 +361,6 @@ class MultiProcessJobExecutors:
             self.queue_senders.append(queue_sender)
 
         self.threads = []
-        self.stop = False
         self.stopped = False
 
     def recv(self):
@@ -390,11 +389,10 @@ class MultiProcessJobExecutors:
             while True:
                 for queue_sender in self.queue_senders:
                     if not queue_sender.full():
-                        queue_sender.put((self.stop, next(self.send_generator)))
+                        queue_sender.put((False, next(self.send_generator)))
         except StopIteration:
-            self.stop = True
             for queue_sender in self.queue_senders:
-                queue_sender.put((self.stop, None))
+                queue_sender.put((True, None))
             logging.info("successfully send all data!")
 
     def _receiver(self):
@@ -451,7 +449,6 @@ class Receiver:
             except queue.Empty:
                 if self.stopped:
                     raise
-                continue
 
 #%%
 

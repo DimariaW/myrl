@@ -65,18 +65,15 @@ def set_process_logger(name=None, stdout_level=logging.INFO, file_path=None, fil
     return logger
 
 
-def wrap_traceback(handle=sys.stderr):
-    def wrap(func):
-        @wraps(func)
-        def wrapped_func(*args, **kwargs):
-            try:
-                func(*args, **kwargs)
-            except Exception:
-                traceback.print_exc(file=handle)
-                handle.flush()
-                raise
-        return wrapped_func
-    return wrap
+def wrap_traceback(func):
+    @wraps(func)
+    def wrapped_func(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception:
+            logging.error(traceback.format_exc())
+            raise
+    return wrapped_func
 
 
 def to_tensor(x: Union[List, Dict, Tuple, np.ndarray, torch.Tensor], unsqueeze=None, device=torch.device("cpu")):

@@ -11,8 +11,9 @@ from tests.impala_rebuild.model import Model
 
 class MemoryReplayMain(core.MemoryReplayMainBase):
     def main(self, queue_receiver: mp.Queue):
-        traj_queue = mr.TrajQueue(maxlen=8, queue_receiver=queue_receiver, batch_size=16)
-        memory_server = mr.MemoryReplayServer(traj_queue, 7777, actor_num=None, tensorboard_dir=self.logger_file_dir+"reward/")
+        traj_queue = mr.TrajQueue(maxlen=8, queue_receiver=queue_receiver, batch_size=4)
+        memory_server = mr.MemoryReplayServer(traj_queue, 7777, actor_num=None,
+                                              tensorboard_dir=os.path.join(self.logger_file_dir, "reward"))
         memory_server.run()
 
 
@@ -23,7 +24,8 @@ class LearnerMain(core.LearnerMainBase):
         model = Model(8, 4, use_orthogonal_init=True, use_tanh=True)
         impala = alg.IMPALA(model, memory_replay,
                             lr=2e-3, gamma=0.99, lbd=0.98, vf=0.5, ef=1e-2,
-                            queue_sender=queue_sender, tensorboard_dir=self.logger_file_dir,
+                            queue_sender=queue_sender,
+                            tensorboard_dir=os.path.join(self.logger_file_dir, "train_info"),
                             use_upgo=True, send_intervals=1)
         impala.run()
 

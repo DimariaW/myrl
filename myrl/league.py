@@ -1,8 +1,10 @@
 import myrl.connection as connection
+import myrl.utils as utils
 
 import threading
 import multiprocessing as mp
 import numpy as np
+import os
 import os.path as osp
 import logging
 
@@ -24,8 +26,11 @@ class League:
         self.old_num_model_weights_update = 0
 
         self.model_weights_save_dir = model_weights_save_dir
+        os.makedirs(self.model_weights_save_dir, exist_ok=True)
+
         self.model_weights_save_intervals = model_weights_save_intervals
 
+    @utils.wrap_traceback
     def _receive(self):
         while True:
             self._receive_once()
@@ -35,7 +40,8 @@ class League:
 
         logging.debug(f"weights update times is {self.num_model_weights_update}")
         if self.num_model_weights_update - self.old_num_model_weights_update > self.model_weights_save_intervals:
-            np.save(file=osp.join(self.model_weights_save_dir, f"model_{self.num_model_weights_update}.npy"))
+            np.save(file=osp.join(self.model_weights_save_dir, f"model_{self.num_model_weights_update}.npy"),
+                    arr=self.cached_weights)
             self.old_num_model_weights_update = self.num_model_weights_update
 
     def run(self):

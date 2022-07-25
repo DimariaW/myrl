@@ -130,15 +130,13 @@ class TrajQueue(MemoryReplayBase):
     def start(self):
         threading.Thread(target=self._make_batch, args=(), name="batch_maker", daemon=True).start()
 
+    @utils.wrap_traceback
     def _make_batch(self):
         num = 0
         send_generator = self.send_raw_batch()
         try:
             while True:
-                if num == 0:
-                    batched = make_batch(next(send_generator))
-                else:
-                    batched = make_batch(send_generator.send(self.is_stop))
+                batched = make_batch(next(send_generator))
                 self.queue_receiver.put((False, batched))
                 num += 1
                 logging.debug(f"successfully make and send batch num: {num}")

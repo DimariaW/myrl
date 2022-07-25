@@ -13,7 +13,7 @@ class PGAgent(Agent):
         self.device = device
 
     @torch.no_grad()
-    def sample(self, state: np.ndarray):
+    def sample(self, state: np.ndarray):  # batched np.ndarray
         self.model.eval()
         state = to_tensor(state, unsqueeze=None, device=self.device)
         _, logits = self.model(state)
