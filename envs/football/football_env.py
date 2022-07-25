@@ -1549,7 +1549,7 @@ class TamakEriFeverEnv(gym.Wrapper):
         illegal_actions = set()
         # You have a ball?
         ball_owned_team = obs['ball_owned_team']
-        if ball_owned_team == 1:  # not owned
+        if ball_owned_team == 1:  # opponent owned
             illegal_actions.add(int(Action.LongPass))
             illegal_actions.add(int(Action.HighPass))
             illegal_actions.add(int(Action.ShortPass))

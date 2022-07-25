@@ -277,34 +277,30 @@ class MultiProcessJobExecutorsDeprecated:
 #%%
 
 
+@utils.wrap_traceback
 def wrapped_func(func: Callable, queue_sender: mp.Queue, queue_receiver: mp.Queue,
                  logger_file_path: str = None,
                  file_level=logging.DEBUG,
                  starts_with=None):
     utils.set_process_logger(file_path=logger_file_path, file_level=file_level, starts_with=starts_with)
-    try:
-        num_processed_data = 0
-        while True:
-            is_stop, data = queue_sender.get()
-            if is_stop:
-                logging.debug("the sender is closed, this process is going to close!")
-                queue_receiver.put((is_stop, None))
-                break
 
-            processed_data = func(data)
-            while True:
-                try:
-                    queue_receiver.put((is_stop, processed_data), timeout=0.1)
-                    num_processed_data += 1
-                    logging.debug(f"successfully processed data count {num_processed_data}!")
-                    break
-                except queue.Full:
-                    logging.debug(" the receive queue is full !")
-    except Exception:
-        traceback.print_exc(file=open(logger_file_path, "a") if logger_file_path else sys.stderr)
-        raise
-    finally:
-        logging.debug("this process is closed")
+    num_processed_data = 0
+    while True:
+        is_stop, data = queue_sender.get()
+        if is_stop:
+            logging.debug("the sender is closed, this process is going to close!")
+            queue_receiver.put((is_stop, None))
+            break
+
+        processed_data = func(data)
+        while True:
+            try:
+                queue_receiver.put((is_stop, processed_data), timeout=0.1)
+                num_processed_data += 1
+                logging.debug(f"successfully processed data count {num_processed_data}!")
+                break
+            except queue.Full:
+                logging.debug(" the receive queue is full !")
 
 
 class MultiProcessJobExecutors:

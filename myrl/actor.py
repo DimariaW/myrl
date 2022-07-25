@@ -212,7 +212,7 @@ class Gather:
 
         for i in range(num_sample_actors + num_predict_actors):
             self.queue_gather2actors.append(mp.Queue(maxsize=1))
-            mp.Process(target=func, args=((i, num_sample_actors, num_predict_actors),
+            mp.Process(target=func, args=((gather_id, i, num_sample_actors, num_predict_actors),
                                           self.queue_gather2actors[i],
                                           self.queue_actor2gather),
                        name=f"gather_{gather_id}_actor_{i}", daemon=True).start()

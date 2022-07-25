@@ -4,18 +4,18 @@ import torch
 import envs.env_wrapper as env_wrapper
 import myrl.utils as utils
 import myrl.train as core
-from tests.a2c_rebuild.model import Model
+from tests.impala_rebuild.model import Model
 from myrl.agent import IMPALAAgent
 
 
 class ActorCreate(core.ActorCreateBase):
     def create_env_and_agent(self):
         env = gym.make("LunarLander-v2")
-        env = env_wrapper.ScaleReward(env, 1 / 200)
+        env = env_wrapper.ScaleReward(env, 1)
         env = env_wrapper.DictObservation(env, "feature")
 
         device = torch.device("cpu")
-        model = Model(8, 4).to(device)
+        model = Model(8, 4, use_orthogonal_init=False, use_tanh=False).to(device)
         agent = IMPALAAgent(model, device)
         return env, agent
 

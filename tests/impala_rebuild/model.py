@@ -14,9 +14,9 @@ def orthogonal_init(layer, gain=1.0):
 class Model(md.Model):
     def __init__(self, state_dim: int, num_act: int, use_orthogonal_init=True, use_tanh=True):
         super().__init__()
-        self.fc1 = nn.Linear(state_dim, 64)
-        self.fc2 = nn.Linear(64, 64)
-        self.fc3 = nn.Linear(64, 1 + num_act)
+        self.fc1 = nn.Linear(state_dim, 128)
+        self.fc2 = nn.Linear(128, 128)
+        self.fc3 = nn.Linear(128, 1 + num_act)
         if use_orthogonal_init:
             logging.info("use orthogonal init")
             orthogonal_init(self.fc1)

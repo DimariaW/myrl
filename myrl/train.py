@@ -33,9 +33,9 @@ class ActorCreateBase(MainBase):
         self.steps = steps
 
     def __call__(self, actor_indexes: tuple, queue_gather2actor, queue_actor2gather):
-        actor_index, num_samples, num_evals = actor_indexes
+        gather_id, actor_index, num_samples, num_evals = actor_indexes
         if self.logger_file_dir is not None:
-            self.logger_file_path = os.path.join(self.logger_file_dir, f"actor_{actor_index}.txt")
+            self.logger_file_path = os.path.join(self.logger_file_dir, f"gather_{gather_id}_actor_{actor_index}.txt")
         utils.set_process_logger(file_path=self.logger_file_path)
 
         env, agent = self.create_env_and_agent()
