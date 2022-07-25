@@ -1,0 +1,971 @@
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 1
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 1
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 2
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 2
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 3
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 3
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 4
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 4
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 5
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 5
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 6
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 6
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 7
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 7
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 8
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 8
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 9
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 9
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 10
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 10
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 11
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 11
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 12
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 12
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 13
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 13
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 14
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 14
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 15
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 15
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 16
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 16
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 17
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 17
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 18
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 18
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 19
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 19
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 20
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 20
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 21
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 21
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 22
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 22
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 23
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 23
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 24
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 24
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 25
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 25
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 26
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 26
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 27
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 27
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 28
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 28
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 29
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 29
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 30
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 30
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 31
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 31
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 32
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 32
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 33
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 33
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 34
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 34
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 35
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 35
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 36
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 36
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 37
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 37
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 38
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 38
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 39
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 39
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 40
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 40
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 41
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 41
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 42
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 42
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 43
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 43
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 44
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 44
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 45
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 45
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 46
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 46
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 47
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 47
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 48
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 48
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 49
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 49
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 50
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 50
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 51
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 51
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 52
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 52
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 53
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 53
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:34 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 54
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 54
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:34 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 55
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 55
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:34 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 56
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 56
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 57
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 57
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 58
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 58
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 59
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 59
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 60
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 60
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 61
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 61
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 62
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 62
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:37 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 63
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 63
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:37 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 64
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 64
+[pid: 2888, pname: learner_main], [tid: 9928, tname: MainThread], [Sun Jul 24 22:03:38 2022], [D:\dimaria\myrl\myrl\memory_replay.py-262]: current queue receiver size is : 0
+[pid: 13200, pname: learner_main], [tid: 9648, tname: MainThread], [Sun Jul 24 22:16:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-273]: current queue receiver size is : 0
+[pid: 10424, pname: learner_main], [tid: 10532, tname: MainThread], [Sun Jul 24 22:16:50 2022], [D:\dimaria\myrl\myrl\memory_replay.py-273]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 1
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 1
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 2
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 2
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 3
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 3
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 4
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 4
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 5
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 5
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 6
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 6
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 7
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 7
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 8
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 8
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 9
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 9
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 10
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 10
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 11
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 11
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 12
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 12
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 13
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 13
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:34 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 14
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 14
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:34 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 15
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 15
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 16
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 16
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 17
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 17
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 18
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 18
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 19
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 19
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 20
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 20
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 21
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 21
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 22
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 22
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:37 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 23
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 23
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:38 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 24
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 24
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:38 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 25
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 25
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 26
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 26
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 27
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 27
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:39 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 28
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 28
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 29
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 29
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 30
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 30
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:40 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:41 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 31
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:41 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 31
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:41 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:41 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 32
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:41 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 32
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:41 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 33
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 33
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 34
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 34
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 35
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 35
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:42 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 36
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 36
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 37
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 37
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 38
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 38
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:43 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:44 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 39
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:44 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 39
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:44 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:44 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 40
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:44 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 40
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:44 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 41
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 41
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 42
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 42
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 43
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 43
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:45 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 44
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 44
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 45
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 45
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 46
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 46
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:46 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:47 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 47
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:47 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 47
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:47 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:47 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 48
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:47 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 48
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:47 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 49
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 49
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 50
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 50
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 51
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 51
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:48 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 52
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 52
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 53
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 53
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 54
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 54
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:49 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:50 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 55
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:50 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 55
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:50 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:50 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 56
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:50 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 56
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:50 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 57
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 57
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 58
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 58
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 59
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 59
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:51 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 60
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 60
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 61
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 61
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 62
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 62
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:52 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:53 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 63
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:53 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 63
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:53 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:53 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 64
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:53 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 64
+[pid: 11560, pname: learner_main], [tid: 1820, tname: MainThread], [Sun Jul 24 22:17:53 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:08 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 1
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 1
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 2
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 2
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 3
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 3
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:09 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:10 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 4
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:10 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 4
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:10 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:10 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 5
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:10 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 5
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:10 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:11 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 6
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:11 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 6
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:11 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:11 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 7
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:11 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 7
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:11 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 8
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 8
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 9
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 9
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 10
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 10
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:12 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 11
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 11
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 12
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 12
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 13
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 13
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:13 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 14
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 14
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:14 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 15
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 15
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:14 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 16
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 16
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 17
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 17
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 18
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 18
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 19
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 19
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 20
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 20
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 21
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 21
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 22
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 22
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 23
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 23
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 24
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 24
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 25
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 25
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 26
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 26
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 27
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 27
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 28
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 28
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 29
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 29
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 30
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 30
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 31
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 31
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 32
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 32
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 33
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 33
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 34
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 34
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 35
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 35
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 36
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 36
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 37
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 37
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 38
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 38
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 39
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 39
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 40
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 40
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 41
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 41
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 42
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 42
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 43
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 43
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 44
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 44
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 45
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 45
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 46
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 46
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 47
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 47
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 48
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 48
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 49
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 49
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 50
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 50
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 51
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 51
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 52
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 52
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 53
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 53
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 54
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 54
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 55
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 55
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 56
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 56
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 57
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 57
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 58
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 58
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 59
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 59
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 60
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 60
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 61
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 61
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 62
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 62
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 63
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 63
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 64
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 64
+[pid: 8440, pname: learner_main], [tid: 12428, tname: MainThread], [Sun Jul 24 22:20:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:14 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 1
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 1
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 2
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 2
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 3
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 3
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 4
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 4
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 5
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 5
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 6
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 6
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 7
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 7
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 8
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 8
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 9
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 9
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 10
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 10
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 11
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 11
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 12
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 12
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 13
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 13
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 14
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 14
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 15
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 15
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 16
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 16
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 17
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 17
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 18
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 18
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 19
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 19
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 20
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 20
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 21
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 21
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 22
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 22
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 23
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 23
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 24
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 24
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 25
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 25
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 26
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 26
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 27
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 27
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 28
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 28
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 29
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 29
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 30
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 30
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 31
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 31
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 32
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 32
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 33
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 33
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 34
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 34
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 35
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 35
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 36
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 36
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 37
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 37
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 38
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 38
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 39
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 39
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 40
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 40
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 41
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 41
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 42
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 42
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 43
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 43
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 44
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 44
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 45
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 45
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 46
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 46
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 47
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 47
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 48
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 48
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:33 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 49
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 49
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:34 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 50
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:34 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 50
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:34 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 51
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 51
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 52
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 52
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 53
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 53
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:35 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 54
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 54
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 55
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 55
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 56
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 56
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:36 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 57
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 57
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:37 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 58
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:37 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 58
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:37 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 59
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 59
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 60
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 60
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 61
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 61
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:38 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 62
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 62
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 63
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 63
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 64
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 64
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:39 2022], [D:\dimaria\myrl\myrl\memory_replay.py-274]: current queue receiver size is : 0
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:40 2022], [D:\dimaria\myrl\myrl\connection.py-445]: successfully receive all processed data!
+[pid: 12040, pname: learner_main], [tid: 12636, tname: MainThread], [Sun Jul 24 22:23:40 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-45]: end receiving
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:13 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 1
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 1
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 1
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 2
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 2
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 1
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 3
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 3
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 4
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 4
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 5
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 5
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 6
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 6
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 7
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 7
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 8
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 8
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 9
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 9
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 10
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 10
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 11
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 11
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 12
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 12
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 13
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 13
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 14
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 14
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 15
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 15
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 16
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 16
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 17
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 17
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 18
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 18
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 19
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 19
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 20
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 20
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 21
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 21
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 22
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 22
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 23
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 23
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 24
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 24
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 25
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 25
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 26
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 26
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 27
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 27
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 28
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 28
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 29
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 29
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 30
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 30
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 31
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 31
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 32
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 32
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 33
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 33
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 34
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 34
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 35
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 35
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 36
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 36
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 37
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 37
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 38
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 38
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 39
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 39
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 40
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 40
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 41
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 41
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 42
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 42
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 43
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 43
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 44
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 44
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 45
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 45
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 46
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 46
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 47
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 47
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 48
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 48
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 49
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 49
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 50
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 50
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 51
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 51
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 52
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 52
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 53
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 53
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 54
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 54
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 55
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 55
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 56
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 56
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 57
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 57
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 58
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 58
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 59
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 59
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 60
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 60
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 61
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 61
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 62
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 62
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 63
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 63
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 0
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-40]: successfully receive 64
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-43]: successfully put 64
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\myrl\memory_replay.py-258]: current queue receiver size is : 1
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\myrl\connection.py-445]: successfully receive all processed data!
+[pid: 13148, pname: learner_main], [tid: 12304, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\tests\test_myrl\test_memory_replay.py-45]: end receiving

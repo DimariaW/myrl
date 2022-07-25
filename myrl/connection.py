@@ -2,6 +2,7 @@
 # Licensed under The MIT License [see LICENSE for details]
 import io
 import sys
+import os
 import time
 import struct
 import socket
@@ -12,7 +13,6 @@ import multiprocessing as mp
 import traceback
 from typing import Callable, Iterator
 import myrl.utils as utils
-import time
 import logging
 
 
@@ -122,7 +122,13 @@ def accept_socket_connections(port, timeout=None, maxsize=1024):
         yield conn
 
 
-def open_multiprocessing_connections(num_process, target, args_func):
+#%%
+"""
+this part have been deprecated because the pipe may cause some unreasonable error
+"""
+
+
+def open_multiprocessing_connections_deprecated(num_process, target, args_func):
     # open connections
     s_conns, g_conns = [], []
     for _ in range(num_process):
@@ -138,15 +144,7 @@ def open_multiprocessing_connections(num_process, target, args_func):
     return s_conns
 
 
-#%%
-
-
-"""
-the cell of MultiProcessJobExecutor
-"""
-
-
-def wrapped_func(func: Callable, conn, logger_file_path=None, file_level=logging.DEBUG):
+def wrapped_func_deprecated(func: Callable, conn, logger_file_path=None, file_level=logging.DEBUG):
     try:
         utils.set_process_logger(file_path=logger_file_path, file_level=file_level)
         total_sent = 0
@@ -163,7 +161,7 @@ def wrapped_func(func: Callable, conn, logger_file_path=None, file_level=logging
         raise
 
 
-class MultiProcessJobExecutors:
+class MultiProcessJobExecutorsDeprecated:
     def __init__(self,
                  func: Callable,
                  send_generator: Iterator,
@@ -212,7 +210,7 @@ class MultiProcessJobExecutors:
         for i in range(num):
             conn0, conn1 = mp.Pipe(duplex=True)
             mp.Process(name=f"{name_prefix}-{i}",
-                       target=wrapped_func,
+                       target=wrapped_func_deprecated,
                        args=(func, conn1, logger_file_path, file_level), daemon=True).start()
             conn1.close()
             self.conns.append(conn0)
@@ -279,101 +277,142 @@ class MultiProcessJobExecutors:
 #%%
 
 
-def wrapped_func_v2(func, queue_send, queue_receive, logger_file_path=None, file_level=logging.DEBUG):
-    utils.set_process_logger(file_path=logger_file_path, file_level=file_level)
+def wrapped_func(func: Callable, queue_sender: mp.Queue, queue_receiver: mp.Queue,
+                 logger_file_path: str = None,
+                 file_level=logging.DEBUG,
+                 starts_with=None):
+    utils.set_process_logger(file_path=logger_file_path, file_level=file_level, starts_with=starts_with)
     try:
-        processed_times = 0
+        num_processed_data = 0
         while True:
-            data = queue_send.get()
+            is_stop, data = queue_sender.get()
+            if is_stop:
+                logging.debug("the sender is closed, this process is going to close!")
+                queue_receiver.put((is_stop, None))
+                break
+
             processed_data = func(data)
-            queue_receive.put(processed_data)
-            processed_times += 1
-            logging.debug(f"successfully processed data count {processed_times}!")
+            while True:
+                try:
+                    queue_receiver.put((is_stop, processed_data), timeout=0.1)
+                    num_processed_data += 1
+                    logging.debug(f"successfully processed data count {num_processed_data}!")
+                    break
+                except queue.Full:
+                    logging.debug(" the receive queue is full !")
     except Exception:
         traceback.print_exc(file=open(logger_file_path, "a") if logger_file_path else sys.stderr)
         raise
+    finally:
+        logging.debug("this process is closed")
 
 
-class MultiProcessJobExecutorsV2:
+class MultiProcessJobExecutors:
     def __init__(self,
+                 # task args
                  func: Callable,
                  send_generator: Iterator,
+                 # 并行进程个数，与每个进程可以提前send的data个数
                  num: int,
-                 postprocess: Callable = None,
-                 buffer_length: int = 8,
-
+                 buffer_length: int = 1,
+                 # 是否外部传入queue_receive, 如果传入的话，就不开启接收进程与后处理
+                 queue_receiver: mp.Queue = None,
+                 post_process: Callable = None,
+                 # logger args
                  name_prefix: str = None,
-                 logger_file_path: str = None,
-                 file_level=logging.DEBUG
+                 logger_file_dir: str = None,
+                 file_level=logging.DEBUG,
+                 starts_with=None
                  ):
         """
-
-        :param func:
-        :param send_generator:
-        :param num:
-        :param postprocess:
-        :param buffer_length:
-        :param logger_file_path:
-        :param file_level:
-
-        launch num process, each process return func(next(send_generator)) to a queue,
-        the main process can use queue.get() to get the results,
+        launch num process each process return func(next(send_generator)) to a queue,
+        the main process can use self.recv() to get the results,
 
         the buffer_length is the total data can be sent ahead of receiving.
-        the num_receivers control how many receiver thread can be launched.
+        the num control how many receiver thread can be launched.
 
         each job executors have a process name: f"{name_prefix}_{i}"
         the logging info will be written in to logger_file_path.
         """
         self.send_generator = send_generator
-        self.postprocess = postprocess
-        self.buffer_length = buffer_length
 
-        self.queue_sends = []
+        self.num = num
 
-        self.output_queue = queue.Queue(maxsize=8)
+        self.start_receiver = True if queue_receiver is None else False
+        self.queue_receiver = mp.Queue(maxsize=8) if self.start_receiver else queue_receiver
+        self.output_queue = queue.Queue(maxsize=8) if self.start_receiver else None
+        self.post_process = post_process
 
-        self.name_prefix = name_prefix
-        self.logger_file_path = logger_file_path
-        self.file_level = file_level
+        self.queue_senders = []
 
-        self.queue_receive = mp.Queue(maxsize=8)
         for i in range(num):
-            queue_send = mp.Queue(maxsize=self.buffer_length)
+            queue_sender = mp.Queue(maxsize=buffer_length)
+
+            if logger_file_dir is not None:
+                logger_file_path = os.path.join(logger_file_dir, f'{name_prefix}-{i}.txt')
+            else:
+                logger_file_path = None
 
             mp.Process(name=f"{name_prefix}-{i}",
-                       target=wrapped_func_v2,
-                       args=(func, queue_send, self.queue_receive, logger_file_path, file_level), daemon=True).start()
+                       target=wrapped_func,
+                       args=(func, queue_sender, self.queue_receiver,
+                             logger_file_path, file_level, starts_with), daemon=True).start()
 
-            self.queue_sends.append(queue_send)
+            self.queue_senders.append(queue_sender)
 
         self.threads = []
+        self.stop = False
+        self.stopped = False
 
     def recv(self):
-        return self.output_queue.get()
+        while True:
+            try:
+                data = self.output_queue.get(timeout=0.1)
+                return data
+            except queue.Empty:
+                if self.stopped:
+                    raise
+                else:
+                    pass
 
     def start(self):
         self.threads.append(threading.Thread(name="sender thread", target=self._sender, daemon=True))
-        self.threads.append(threading.Thread(name=f"receiver thread",
-                                             target=self._receiver,
-                                             daemon=True))
+        if self.start_receiver:
+            self.threads.append(threading.Thread(name=f"receiver thread",
+                                                 target=self._receiver,
+                                                 daemon=True))
         for thread in self.threads:
             thread.start()
 
     def _sender(self):
         logging.info("start send data")
-        while True:
-            for queue_send in self.queue_sends:
-                if not queue_send.full():
-                    queue_send.put(next(self.send_generator))
+        try:
+            while True:
+                for queue_sender in self.queue_senders:
+                    if not queue_sender.full():
+                        queue_sender.put((self.stop, next(self.send_generator)))
+        except StopIteration:
+            self.stop = True
+            for queue_sender in self.queue_senders:
+                queue_sender.put((self.stop, None))
+            logging.info("successfully send all data!")
 
     def _receiver(self):
         logging.info('start receiver')
+        stop_num = 0
         while True:
-            data = self.queue_receive.get()
+            is_stop, data = self.queue_receiver.get()
 
-            if self.postprocess is not None:
-                data = self.postprocess(data)
+            if is_stop:
+                stop_num += 1
+                if stop_num == self.num:
+                    logging.info("successfully receive all processed data!")
+                    self.stopped = True
+                    break
+                continue
+
+            if self.post_process is not None:
+                data = self.post_process(data)
 
             while True:
                 """
@@ -384,16 +423,44 @@ class MultiProcessJobExecutorsV2:
                     break
                 except queue.Full:
                     logging.debug("output_queue is full, the bottleneck is the speed of learner consume batch")
+
 #%%
 
 
-class QueueCommunicator:
-    def __init__(self, conns=[]):
+class Receiver:
+    def __init__(self, queue_receiver: mp.Queue, num_sender: int):
+        self.queue_receiver = queue_receiver
+        self.num_sender = num_sender
+        self.stopped = False
+        self.stopped_num = 0
+
+    def recv(self):
+        while True:
+            try:
+                is_stop, data = self.queue_receiver.get(timeout=0.1)
+
+                if is_stop:
+                    self.stopped_num += 1
+                    if self.stopped_num == self.num_sender:
+                        logging.debug("successfully receive all processed data!")
+                        self.stopped = True
+                    continue
+
+                return data
+
+            except queue.Empty:
+                if self.stopped:
+                    raise
+                continue
+
+#%%
+
+
+class QueueCommunicatorBase:
+    def __init__(self):
         self.input_queue = queue.Queue(maxsize=256)
         self.output_queue = queue.Queue(maxsize=256)
         self.conns = set()
-        for conn in conns:
-            self.add_connection(conn)
         threading.Thread(target=self._send_thread, daemon=True).start()
         threading.Thread(target=self._recv_thread, daemon=True).start()
 
@@ -444,4 +511,46 @@ class QueueCommunicator:
                         logging.critical("this process cannot consume some manny actor, the message queue is full")
 
 
+class QueueCommunicator(QueueCommunicatorBase):
+    def __init__(self, port: int, num_client=None):
+        """
 
+        :param port: 指定服务器端口
+        :param num_client: 指定连接的actor个数, 若异步模式此参数无意义, 若同步模式此参数表示需要等待actor_num个连接
+        """
+        super().__init__()
+        self.port = port
+        self.num_client = num_client
+
+    def run(self):
+        """
+        异步模式
+        """
+        def worker_server(port):
+            logging.info('started actor server %d' % port)
+            conn_acceptor = accept_socket_connections(port=port, maxsize=9999)
+            while True:
+                conn = next(conn_acceptor)
+
+                self.add_connection(conn)
+
+                logging.info(f"total actor count now is {self.connection_count()}")
+
+        threading.Thread(name="add_connection", target=worker_server, args=(self.port,), daemon=True).start()
+
+    def run_sync(self):
+        """
+        同步，堵塞直到所有actor建立连接
+        """
+        if self.num_client is None:
+            raise ValueError("sync version requires known number of client")
+
+        logging.info('started actor server %d' % self.port)
+        conn_acceptor = accept_socket_connections(port=self.port, maxsize=self.num_client)
+        while True:
+            try:
+                conn = next(conn_acceptor)
+                self.add_connection(conn)
+                logging.info(f"total actor count now is {self.connection_count()}")
+            except StopIteration:
+                break

@@ -10,16 +10,22 @@ class Algorithm:
         pass
 
     def learn(self):
-        pass
+        """
+        core function, used to fetch data from memory_replay and train
+        """
+        raise NotImplementedError
 
     def run(self):
-        pass
+        """
+        算法在进程中运行需要实现此接口
+        """
+        raise NotImplementedError
 
     def get_weights(self):
-        pass
+        raise NotImplementedError
 
     def set_weights(self, weights):
-        pass
+        raise NotImplementedError
 
     @staticmethod
     def optimize(optimizer, loss):

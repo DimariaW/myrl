@@ -1,0 +1,47 @@
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:14 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 1!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:15 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 2!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:16 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 3!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 4!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:17 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 5!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:18 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 6!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:19 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 7!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:20 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 8!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:21 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 9!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:22 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 10!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:23 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 11!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 12!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:24 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 13!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:25 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 14!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:26 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 15!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:27 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 16!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:28 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 17!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:29 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 18!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:30 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 19!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 20!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:31 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 21!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\myrl\connection.py-290]: the sender is closed, this process is going to close!
+[pid: 8112, pname: batch_maker-1], [tid: 1784, tname: MainThread], [Sun Jul 24 22:29:32 2022], [D:\dimaria\myrl\myrl\connection.py-307]: this process is closed
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:37 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 1!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:38 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 2!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:39 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 3!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:40 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 4!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:41 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 5!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:42 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 6!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:42 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 7!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:43 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 8!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:44 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 9!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:45 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 10!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:46 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 11!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:47 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 12!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:48 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 13!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:49 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 14!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:50 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 15!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:50 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 16!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:51 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 17!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:52 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 18!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:53 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 19!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:54 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 20!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:55 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 21!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:56 2022], [D:\dimaria\myrl\myrl\connection.py-299]: successfully processed data count 22!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:56 2022], [D:\dimaria\myrl\myrl\connection.py-290]: the sender is closed, this process is going to close!
+[pid: 1204, pname: batch_maker-1], [tid: 14012, tname: MainThread], [Sun Jul 24 22:33:56 2022], [D:\dimaria\myrl\myrl\connection.py-307]: this process is closed

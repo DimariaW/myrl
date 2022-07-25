@@ -25,11 +25,12 @@ class DirFilter(logging.Filter):
 
 
 def set_process_logger(name=None, stdout_level=logging.INFO, file_path=None, file_level=logging.DEBUG,
-                       starts_with=os.getcwd()):
+                       starts_with=None):
     """
     note: name is usually None, representing the root logger.
     when using fork, the logger is transferred to other process.
     so we prefer to use spawn method.
+    starts_with means only log the message with file is starts from this dir
     """
     if stdout_level not in allowed_levels or file_level not in allowed_levels:
         raise ValueError(" level is not allowed")
@@ -78,7 +79,7 @@ def wrap_traceback(handle=sys.stderr):
     return wrap
 
 
-def to_tensor(x: Union[List, Dict, Tuple, np.ndarray], unsqueeze=None, device=torch.device("cpu")):
+def to_tensor(x: Union[List, Dict, Tuple, np.ndarray, torch.Tensor], unsqueeze=None, device=torch.device("cpu")):
     if isinstance(x, (list, tuple)):
         return type(x)(to_tensor(xx, unsqueeze, device) for xx in x)
     elif isinstance(x, dict):
@@ -89,6 +90,14 @@ def to_tensor(x: Union[List, Dict, Tuple, np.ndarray], unsqueeze=None, device=to
         else:
             t = torch.from_numpy(x).type(torch.float32).to(device)
         return t if unsqueeze is None else t.unsqueeze(unsqueeze)
+    elif isinstance(x, torch.Tensor):
+        if x.dtype in [torch.int32, torch.int64]:
+            t = x.type(torch.int64).to(device)
+        else:
+            t = x.type(torch.float32).to(device)
+        return t if unsqueeze is None else t.unsqueeze(unsqueeze)
+    else:
+        raise NotImplementedError(f"do not support convert type: {type(x)} to tensor")
 
 
 def batchify(x: Union[List, Tuple], unsqueeze=None) -> Union[List, Tuple, Dict, np.ndarray]:

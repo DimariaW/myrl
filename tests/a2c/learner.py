@@ -4,7 +4,7 @@ from myrl.model import Model
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-from myrl.learner_server import LearnerServer
+from myrl.actor_server import MemoryReplayServer
 from myrl.algorithm import PG, A2C, IMPALA
 from myrl.memory_replay import TrajList
 from myrl.utils import set_process_logger
@@ -37,5 +37,5 @@ if __name__ == "__main__":
     model = DuelNet(obs_dim=obs_dim, num_acts=num_acts).to(device)
     mr = TrajList(device)
     learner = IMPALA(model, mr, lr=1e-3, ef=3e-5, vf=0.5)
-    learner_server = LearnerServer(learner, 1234, actor_num=10, sampler_num=10)
+    learner_server = MemoryReplayServer(learner, 1234, actor_num=10, sampler_num=10)
     learner_server.run_on_policy()

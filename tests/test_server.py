@@ -4,7 +4,7 @@ from myrl.model import Model
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-from myrl.learner_server import LearnerServer
+from myrl.actor_server import MemoryReplayServer
 from myrl.algorithm import DQN
 from myrl.memory_replay import MemoryReplay
 from myrl.agent import DQNAgent
@@ -42,7 +42,7 @@ if __name__ == "__main__":
         set_process_logger(file_path="./log/double_dqn_mp.txt")
         mr = MemoryReplay(100000, 512, device, True)
         learner = DQN(model.to(device), mr, True, num_learns=1)
-        learner_server = LearnerServer(learner, 9999)
+        learner_server = MemoryReplayServer(learner, 9999)
         #learner_server.run()
     else:
         agent = DQNAgent(model, num_acts, device)

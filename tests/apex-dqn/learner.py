@@ -3,7 +3,7 @@ from myrl.model import Model
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-from myrl.learner_server import LearnerServer
+from myrl.actor_server import MemoryReplayServer
 from myrl.algorithm import DQN
 from myrl.memory_replay import MemoryReplay
 from myrl.utils import set_process_logger
@@ -36,5 +36,5 @@ if __name__ == "__main__":
     model = DuelNet(obs_dim=obs_dim, num_acts=num_acts).to(device)
     mr = MemoryReplay(100000, 512, device, True)
     learner = DQN(model, mr, True, num_learns=1)
-    learner_server = LearnerServer(learner, 1234)
+    learner_server = MemoryReplayServer(learner, 1234)
     learner_server.run()

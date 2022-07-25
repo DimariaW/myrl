@@ -42,7 +42,7 @@ def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = DuelNet(obs_dim, num_acts).to(device)
     agent = IMPALAAgent(model, device)
-    actor = Actor(env, agent, steps=128, get_full_episodes=False)
+    actor = Actor(env, agent, steps=128, get_full_episode=False)
     actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="sampler")
     actor_client.run()
 

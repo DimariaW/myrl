@@ -40,7 +40,7 @@ from myrl.actor import Actor
 from myrl.agent import DQNAgent
 
 agent = DQNAgent(model, num_acts, device)
-actor = Actor(env, agent, 100, get_full_episodes=False, use_tensorboard=True, logdir="./log/actor/double_dqn_pr/")
+actor = Actor(env, agent, 100, get_full_episode=False, use_tensorboard=True, logdir="./log/actor/double_dqn_pr/")
 #%%
 from myrl.memory_replay import MemoryReplay, PriorityMemoryReplay
 import numpy as np

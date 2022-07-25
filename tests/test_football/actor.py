@@ -9,11 +9,13 @@ from myrl.utils import set_process_logger
 import torch
 
 
-def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
+def create_actor(actor_indexes: tuple, queue_gather2actor, queue_actor2gather):
+    actor_index, num_samples, num_evals = actor_indexes
+
     set_process_logger(file_path=f"./log/11_vs_11_easy_stochastic/actor_{actor_index}.txt")
-    env = gfootball_env.create_environment(env_name="11_vs_11_easy_stochastic",
+    env = gfootball_env.create_environment(env_name="academy_empty_goal",
                                            representation="raw",
-                                           rewards="scoring,checkpoints")
+                                           rewards="scoring")
     env = TamakEriFeverEnv(env)
     #env = SimpleEnv(env)
 
@@ -21,11 +23,11 @@ def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
     model = FootballNet().to(device)
     #model = SimpleModel(2, 1).to(device)
     agent = IMPALAAgent(model, device)
-    if actor_index < 4:
-        actor = Actor(env, agent, steps=64, get_full_episodes=False)
+    if actor_index < num_samples:
+        actor = Actor(env, agent, steps=64, get_full_episode=False)
         actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="sampler")
     else:
-        actor = Actor(env, agent, steps=64, get_full_episodes=True)
+        actor = Actor(env, agent, steps=64, get_full_episode=True)
         actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="evaluator")
     actor_client.run()
 

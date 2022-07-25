@@ -1,4 +1,4 @@
-from myrl import LearnerServer
+from myrl import ActorServer
 from myrl.utils import set_process_logger
 from myrl.model import Model
 import torch
@@ -32,5 +32,5 @@ if __name__ == "__main__":
     model = DuelNet(8, 4).to(device)
     mr = MultiProcessBatcher(maxlen=3000, device=device, batch_size=64, forward_steps=64, num_batch_maker=1)
     learner = IMPALA(model, mr, lr=1e-3, ef=3e-5, vf=0.5)
-    learner_server = LearnerServer(learner, port=8010)
+    learner_server = ActorServer(learner, port=8010)
     learner_server.run()

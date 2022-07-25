@@ -1,0 +1,34 @@
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:08 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 0
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:08 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 1
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:12 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 2
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:12 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 3
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:17 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 4
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:17 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 5
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:21 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 6
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:21 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-58]: 7
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:21 2022], [D:\dimaria\myrl\myrl\connection.py-443]: successfully receive all processed data!
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:21 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-60]: successfully receive all data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:21 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:25 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:25 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 0
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:25 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:29 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:29 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 1
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:29 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:33 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:33 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 2
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:33 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:36 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:36 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 3
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:36 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:40 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:40 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 4
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:40 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:44 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:44 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 5
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:44 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:48 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:48 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 6
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:48 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-11]: start process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:51 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-15]: finish process data
+[pid: 7780, pname: receiver], [tid: 10864, tname: MainThread], [Sun Jul 24 11:52:51 2022], [D:\dimaria\myrl\tests\connections\test_mp_job_executor.py-64]: 7

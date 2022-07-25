@@ -7,6 +7,7 @@ import multiprocessing as mp
 from myrl.utils import set_process_logger
 import threading
 
+
 def consume(bathcer):
     while True:
         if len(bathcer) > 400:

@@ -4,7 +4,7 @@ from myrl.model import Model
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-from myrl.learner_server import LearnerServer
+from myrl.actor_server import MemoryReplayServer
 from myrl.algorithm import IMPALA
 from myrl.memory_replay import MultiProcessBatcher, TrajQueue, MultiProcessTrajQueue
 from myrl.utils import set_process_logger
@@ -39,5 +39,5 @@ if __name__ == "__main__":
     #mr = TrajQueue(device, 32)
     #mr = MultiProcessTrajQueue(8, device=device, batch_size=64, num_batch_maker=2)
     learner = IMPALA(model, mr, lr=1e-5, ef=3e-5, vf=0.5)
-    learner_server = LearnerServer(learner, 1234)
+    learner_server = MemoryReplayServer(learner, 1234)
     learner_server.run()

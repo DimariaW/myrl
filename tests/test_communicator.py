@@ -1,4 +1,4 @@
-from myrl.learner_server import ActorCommunicator
+from myrl.actor_server import ActorCommunicator
 from myrl.utils import set_process_logger
 set_process_logger()
 

@@ -1,307 +1,268 @@
-from collections import deque
-import torch
-import random
-import numpy as np
-from typing import Union, List, Dict, Optional
-import torch.nn.functional as F
 import logging
-from myrl.connection import MultiProcessJobExecutors, MultiProcessJobExecutorsV2
+import torch
 import queue
-from myrl.utils import to_tensor, batchify
+import multiprocessing as mp
+import threading
+
+from typing import Union, List, Dict
+from tensorboardX import SummaryWriter
+
+import myrl.connection as connection
+import myrl.utils as utils
 
 
-class MemoryReplay:
-    def __init__(self, maxlen: int,  batch_size: int = 512, device=torch.device("cpu"), cached_in_device=True):
+class MemoryReplayBase:
+    """
+       MemoryReplayServer is the data structure that caches the episode sent from actors
+    """
+    def __init__(self, queue_receiver: mp.Queue):
         """
-        若device是cuda, cashed_in_device参数可以选择是否直接将样本存储到显存
+        at least have queue_receiver
+        :param queue_receiver: the queue that caches batched np.ndarray
         """
-        self.memory = deque(maxlen=maxlen)
-        self.device = device
-        self.cached_in_device = cached_in_device
-        self.batch_size = batch_size
+        self.queue_receiver = queue_receiver
 
-    def cache(self, state, action, next_state, reward, done):
+    def cache(self, episodes: Union[List[List[Dict]], List[Dict]]) -> None:
         """
-        Store the experience to self.memory (replay buffer)
-        the input must be np.array or int
+        the api that caches the episode
+        :param episodes: list of episode,
+               episode itself is a list of dict,
+               dict contains obs, action, reward, done
+        :return: None
         """
-        state = torch.from_numpy(state).type(torch.float32)
-        if type(action) in [int, np.int32, np.int64]:
-            action = torch.tensor([action], dtype=torch.long)
+        raise NotImplementedError
+
+    def start(self):
+        """
+        the logic that batchifies the cached raw episodes
+        :return: None
+        """
+        raise NotImplementedError
+
+    def stop(self):
+        pass
+
+
+def make_batch(episodes: List[List]):  # batch_size*time_step
+    episodes = [utils.batchify(episode, unsqueeze=0) for episode in episodes]
+    return utils.batchify(episodes, unsqueeze=0)
+
+
+class TrajList(MemoryReplayBase):
+    """
+    used for a2c algorithm
+    """
+    def __init__(self, queue_receiver):
+        super().__init__(queue_receiver)
+        self.episode_list = []
+        self.num_cashed = 0
+        self.num_sent = 0
+
+    def cache(self, episodes: Union[List[List[Dict]], List[Dict]]):
+        if isinstance(episodes[0], list):
+            self.episode_list.extend(episodes)
+            self.num_cashed += len(episodes)
+        elif isinstance(episodes[0], dict):
+            self.episode_list.append(episodes)
+            self.num_cashed += 1
         else:
-            action = torch.from_numpy(action).type(torch.float32)
+            raise TypeError("episodes must be list of traj or traj, traj itself is a list of dict")
+        logging.debug(f"total cached data num is {self.num_cashed}")
 
-        next_state = torch.from_numpy(next_state).type(torch.float32)
-        reward = torch.tensor([reward], dtype=torch.float32)
-        done = torch.tensor([1. if done else 0.], dtype=torch.float32)
+    def start(self):
+        batch = make_batch(self.episode_list)
+        self.queue_receiver.put((False, batch))  # False 表示发送端没有停止发送
+        self.num_sent += 1
+        logging.debug(f"total sent data num is {self.num_sent}")
+        self.episode_list.clear()
 
-        if self.cached_in_device:
-            self.memory.append(
-                (state.to(self.device), action.to(self.device), next_state.to(self.device), reward.to(self.device),
-                 done.to(self.device)))
-        else:
-            self.memory.append((state, action, next_state, reward, done))
-
-    def recall(self):
-        """
-        Retrieve a batch of experiences from memory
-        """
-        batch = random.sample(self.memory, self.batch_size)
-        state, action, next_state, reward, done = map(torch.stack, zip(*batch))
-        return self.to_device(state, action, next_state, reward, done)
-
-    def all_sample(self):
-        state, action, next_state, reward, done = map(torch.stack, zip(*self.memory))
-        return self.to_device(state, action, next_state, reward, done)
-
-    def empty(self):
-        self.memory.clear()
-
-    def __len__(self):
-        return len(self.memory)
-
-    def to_device(self, *args):
-        if not self.cached_in_device:
-            new_args = []
-            for arg in args:
-                new_args.append(arg.to(self.device))
-            return new_args
-        return args
+    def stop(self):
+        self.queue_receiver.put((True, None))
+        logging.debug(f'successfully stop sending data')
 
 
-class PriorityMemoryReplay(MemoryReplay):
-    def __init__(self, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
-        self.priority = deque(maxlen=self.memory.maxlen)
-        self.alpha = 0.6  # the smoothing term of priority
-        self.beta = 0.4  # the importance ratio of sample
-
-    def cache(self, *args, **kwargs):
-        super().cache(*args, **kwargs)
-        # 新来的样本priority高
-        max_priority = np.max(self.priority) if len(self.priority) > 0 else 1.
-        self.priority.append(max_priority)
-
-    def recall(self):
-        temp = np.asarray(self.priority)
-        temp = temp/np.sum(temp)
-
-        index = np.random.choice(np.arange(len(self.memory)), size=self.batch_size, replace=False, p=temp)
-        # index type:np.ndarray
-
-        batch = [self.memory[ind] for ind in index]
-        selected_priority = torch.tensor([self.priority[ind] for ind in index], dtype=torch.float32, device=self.device)
-        state, action, next_state, reward, done = map(torch.stack, zip(*batch))
-
-        weight = torch.nn.functional.normalize(selected_priority.pow(-self.beta), p=1, dim=0)
-
-        state, action, next_state, reward, done = self.to_device(state, action, next_state, reward, done)
-        return state, action, next_state, reward, done, weight, index
-
-    def update_priority(self, index, td_errors):
-        # index is np.array
-        # td_errors is np.array
-        for ind, td_error in zip(index, td_errors):
-            self.priority[ind] = td_error**self.alpha
-
-
-class TrajReplay:
+class TrajQueue(MemoryReplayBase):
     def __init__(self,
                  maxlen: int,
-                 device=torch.device("cpu"),
-                 batch_size: int = 192,
-                 forward_steps: Union[int, str] = 64,
-                 max_forward_steps: Optional[int] = None,
-                 burning_steps: int = 0
-                 ):
-        """
-        :param maxlen: the length of episodes
-        :param batch_size: the recall batch_size
-        :param forward_steps: the length of each trajectory
-        :param max_forward_steps: if forward_steps is full,
-                                  this parameter determines the max length of episode,
-                                  to avoid too long episode.
-        :param burning_steps: burning steps for lstm.
-        """
-        self.episodes = deque(maxlen=maxlen)
-        self.device = device
-        self.batch_size = batch_size
-        self.forward_steps = forward_steps
-        self.max_forward_steps = max_forward_steps
-        self.burning_steps = burning_steps
-
-        self.num_cashed = 0
-
-    def cache(self, episodes: Union[List[List[Dict]], List[Dict]]):
-        if isinstance(episodes[0], list):
-            self.episodes.extend(episodes)
-            self.num_cashed += len(episodes)
-        elif isinstance(episodes[0], dict):
-            self.episodes.append(episodes)
-            self.num_cashed += 1
-        else:
-            raise TypeError("episodes must be list of traj or traj, traj itself is a list of dict")
-
-    def _process(self, episode, forward_steps):
-        """
-
-        :param episode: list of moment, a moment at least have observation, action, reward, done
-        :param forward_steps: the sample steps
-        :return:
-        """
-        train_st = np.random.randint(0, max(1, len(episode) - forward_steps + 1))
-        st = max(0, train_st - self.burning_steps)
-        ed = min(train_st + forward_steps, len(episode))
-        episode = episode[st:ed]
-
-        pad_num = forward_steps + self.burning_steps - (ed - st)
-
-        observation = np.stack([moment["observation"] for moment in episode], axis=0)
-        observation = np.pad(observation, ((0, pad_num), (0, 0)), mode="constant", constant_values=0)
-
-        action = np.array([moment["action"] for moment in episode])
-        action = np.pad(action, (0, pad_num), mode="constant", constant_values=0)
-
-        reward = np.array([moment["reward"] for moment in episode])
-        reward = np.pad(reward, (0, pad_num), mode="constant", constant_values=0)
-
-        done = np.array([int(moment["done"]) for moment in episode])
-        done = np.pad(done, (0, pad_num), mode="constant", constant_values=0)
-
-        mask = np.zeros(forward_steps + self.burning_steps)
-        mask[0: train_st - st] = 1
-        mask[ed - st:] = 1
-
-        tail_mask = np.zeros(forward_steps + self.burning_steps)
-        tail_mask[0: train_st - st] = 1
-        tail_mask[ed - st - 1:] = 1
-
-        return observation, action, reward, done, mask, tail_mask
-
-    def recall(self):
-
-        observations, actions, rewards, dones, masks, tail_masks = \
-            [], [], [], [], [], []
-
-        indexes = np.random.choice(list(range(len(self.episodes))), size=self.batch_size, replace=False)
-        if self.forward_steps == "full":
-            max_traj_length = max([len(self.episodes[i]) for i in indexes])
-            forward_steps = min(max_traj_length, self.max_forward_steps)
-        else:
-            forward_steps = self.forward_steps
-
-        for i in indexes:
-            observation, action, reward, done, mask, tail_mask = self._process(self.episodes[i], forward_steps)
-
-            observations.append(observation)
-            actions.append(action)
-            rewards.append(reward)
-            dones.append(done)
-            masks.append(mask)
-            tail_masks.append(tail_masks)
-
-        return {"observations": torch.from_numpy(np.stack(observations)).to(self.device),
-                #"behavior_log_probs": torch.from_numpy(np.stack(behavior_log_probs)).to(self.device),
-                "actions": torch.from_numpy(np.stack(actions)).to(self.device),
-                "rewards": torch.from_numpy(np.stack(rewards)).to(self.device),
-                "masks": torch.from_numpy(np.stack(masks)).to(self.device),
-                "dones": torch.from_numpy(np.stack(dones)).to(self.device),
-                #"bootstrap_masks": torch.from_numpy(np.stack(bootstrap_masks)).to(self.device)
-                }
-
-
-class TrajList:
-    def __init__(self,
-                 device=torch.device("cpu")):
-
-        self.episodes = []
-        self.device = device
-
-        self.num_cashed = 0
-
-    def cache(self, episodes: Union[List[List[Dict]], List[Dict]]):
-        if isinstance(episodes[0], list):
-            self.episodes.extend(episodes)
-            self.num_cashed += len(episodes)
-        elif isinstance(episodes[0], dict):
-            self.episodes.append(episodes)
-            self.num_cashed += 1
-        else:
-            raise TypeError("episodes must be list of traj or traj, traj itself is a list of dict")
-
-    def recall(self):
-        observations, actions, rewards, dones, behavior_log_probs = [], [], [], [], []
-        for episode in self.episodes:
-            observation = np.stack([moment["observation"] for moment in episode], axis=0)
-            action = np.array([moment["action"] for moment in episode])
-            reward = np.array([moment["reward"] for moment in episode])
-            done = np.array([moment["done"] for moment in episode])
-            behavior_log_prob = np.array([moment["behavior_log_prob"] for moment in episode])
-
-            observations.append(observation)
-            actions.append(action)
-            rewards.append(reward)
-            dones.append(done)
-            behavior_log_probs.append(behavior_log_prob)
-
-        return {"observations": torch.from_numpy(np.stack(observations, axis=0)).type(torch.float32).to(self.device),
-                "actions": torch.from_numpy(np.stack(actions, axis=0)).type(torch.int64).to(self.device),
-                "rewards": torch.from_numpy(np.stack(rewards, axis=0)).type(torch.float32).to(self.device),
-                "dones": torch.from_numpy(np.stack(dones, axis=0)).type(torch.float32).to(self.device),
-                "behavior_log_probs": torch.from_numpy(np.stack(behavior_log_probs, axis=0)).type(torch.float32).to(self.device)
-                }
-
-    def empty(self):
-        self.episodes = []
-
-    def __len__(self):
-        return len(self.episodes)
-
-
-class TrajQueue:
-    def __init__(self,
-                 device=torch.device("cpu"),
+                 queue_receiver: mp.Queue,
                  batch_size=64):
-
-        self.episodes = queue.Queue(maxsize=8)
-        self.device = device
+        super().__init__(queue_receiver)
+        self.episode_queue = queue.Queue(maxsize=maxlen)
         self.batch_size = batch_size
-        self.num_cashed = 0
+        self.num_cached = 0
+        self.is_stop = False
 
-    def cache(self, episode: List[Dict]):
-        self.episodes.put(episode, timeout=0.1)
-        self.num_cashed += 1
-        logging.debug("put one episode")
+    def cache(self, episodes: Union[List[List[Dict]], List[Dict]]):
+        if isinstance(episodes[0], dict):
+            while True:
+                try:
+                    self.episode_queue.put(episodes, timeout=0.1)
+                    break
+                except queue.Full:
+                    logging.debug("the queue is full")
+            self.num_cached += 1
+            logging.debug(f"total cashed data num is {self.num_cached}")
+
+        elif isinstance(episodes[0], list):
+            for episode in episodes:
+                while True:
+                    try:
+                        self.episode_queue.put(episode, timeout=0.1)
+                        break
+                    except queue.Full:
+                        logging.debug("the queue is full")
+                self.num_cached += 1
+            logging.debug(f"total cashed data num is {self.num_cached}")
+
+    def send_raw_batch(self):
+        while True:
+            raw_batch = []
+            for _ in range(self.batch_size):
+                while True:
+                    try:
+                        raw_batch.append(self.episode_queue.get(timeout=0.1))
+                        break
+                    except queue.Empty:
+                        if self.is_stop:
+                            return
+            yield raw_batch
+
+    def start(self):
+        threading.Thread(target=self._make_batch, args=(), name="batch_maker", daemon=True).start()
+
+    def _make_batch(self):
+        num = 0
+        send_generator = self.send_raw_batch()
+        try:
+            while True:
+                if num == 0:
+                    batched = make_batch(next(send_generator))
+                else:
+                    batched = make_batch(send_generator.send(self.is_stop))
+                self.queue_receiver.put((False, batched))
+                num += 1
+                logging.debug(f"successfully make and send batch num: {num}")
+        except StopIteration:
+            self.queue_receiver.put((True, None))
+            logging.debug(f"successfully stop send!")
+
+    def stop(self):
+        self.is_stop = True
+
+
+class TrajQueueMP(TrajQueue):
+    def __init__(self,
+                 maxlen: int,
+                 queue_receiver: mp.Queue,
+                 batch_size: int = 64,
+                 num_batch_maker: int = 2,
+                 logger_file_dir: str = None,
+                 ):
+        super().__init__(maxlen, queue_receiver, batch_size)
+
+        self.batch_maker = connection.MultiProcessJobExecutors(func=make_batch,
+                                                               send_generator=self.send_raw_batch(),
+                                                               num=num_batch_maker,
+                                                               queue_receiver=self.queue_receiver,
+                                                               name_prefix="batch_maker",
+                                                               logger_file_dir=logger_file_dir)
+
+    def start(self):
+        self.batch_maker.start()
+
+
+class MemoryReplayServer:
+    def __init__(self,
+                 memory_replay: MemoryReplayBase,
+                 port: int,
+                 actor_num=None,
+                 tensorboard_dir=None
+                 ):
+
+        self.actor_communicator = connection.QueueCommunicator(port, actor_num)
+        self.memory_replay = memory_replay
+
+        if tensorboard_dir is not None:
+            self.sw = SummaryWriter(logdir=tensorboard_dir)
+
+        self.num_received_sample_episodes = 0
+        self.num_received_eval_episodes = 0
+        self.actor_num = actor_num
+
+    def run(self):
+        logging.info("start server to receive episodes that generated by actor")
+        self.actor_communicator.run()
+        self.memory_replay.start()
+        while True:
+            conn, (cmd, data) = self.actor_communicator.recv()
+            logging.debug(cmd)
+            if cmd == "episode":
+                self.memory_replay.cache(data)
+                self.actor_communicator.send(conn, (cmd, "successfully sent episodes"))
+
+            elif cmd == "sample_reward":
+                self._process_sample_rewards(conn, cmd, data)
+
+            elif cmd == "eval_reward":
+                self._process_eval_rewards(conn, cmd, data)
+
+    def run_sync(self):
+        self.actor_communicator.run_sync()
+
+        conns = []
+        while True:
+            conn, (cmd, data) = self.actor_communicator.recv()
+
+            logging.debug(cmd)
+
+            if cmd == "episodes":
+                self.memory_replay.cache(data)
+                conns.append(conn)
+
+                if len(conns) == self.actor_num:
+                    self.memory_replay.start()
+                    for conn in conns:
+                        self.actor_communicator.send(conn, (cmd, "successfully sent episodes"))
+                    conns = []
+
+            elif cmd == "sample_rewards":
+                self._process_sample_rewards(conn, cmd, data)
+
+            elif cmd == "eval_rewards":
+                self._process_eval_rewards(conn, cmd, data)
+
+    def _process_sample_rewards(self, conn, cmd, rewards):
+        assert(cmd == "sample_reward")
+        for reward in rewards:
+            self.num_received_sample_episodes += 1
+            self.sw.add_scalar(tag="sample_reward", scalar_value=reward, global_step=self.num_received_sample_episodes)
+        self.actor_communicator.send(conn, (cmd, "successfully sent sample rewards"))
+
+    def _process_eval_rewards(self, conn, cmd, rewards):
+        assert (cmd == "eval_reward")
+        for reward in rewards:
+            self.num_received_eval_episodes += 1
+            self.sw.add_scalar(tag="eval_reward", scalar_value=reward, global_step=self.num_received_eval_episodes)
+        self.actor_communicator.send(conn, (cmd, "successfully sent eval rewards"))
+
+
+class TensorReceiver(connection.Receiver):
+    def __init__(self,
+                 queue_receiver: mp.Queue,
+                 num_sender,
+                 device=torch.device("cpu")):
+        super().__init__(queue_receiver, num_sender=num_sender)
+        self.device = device
 
     def recall(self):
-        observations, actions, rewards, dones, behavior_log_probs = [], [], [], [], []
-        while True:
-            episode = self.episodes.get()
-            observation = np.stack([moment["observation"] for moment in episode], axis=0)
-            action = np.array([moment["action"] for moment in episode])
-            reward = np.array([moment["reward"] for moment in episode])
-            done = np.array([moment["done"] for moment in episode])
-            behavior_log_prob = np.array([moment["behavior_log_prob"] for moment in episode])
-
-            observations.append(observation)
-            actions.append(action)
-            rewards.append(reward)
-            dones.append(done)
-            behavior_log_probs.append(behavior_log_prob)
-
-            if len(observations) == self.batch_size:
-                break
-
-        return {"observations": torch.from_numpy(np.stack(observations, axis=0)).type(torch.float32).to(self.device),
-                "actions": torch.from_numpy(np.stack(actions, axis=0)).type(torch.int64).to(self.device),
-                "rewards": torch.from_numpy(np.stack(rewards, axis=0)).type(torch.float32).to(self.device),
-                "dones": torch.from_numpy(np.stack(dones, axis=0)).type(torch.float32).to(self.device),
-                "behavior_log_probs": torch.from_numpy(np.stack(behavior_log_probs, axis=0)).type(torch.float32).to(self.device)
-                }
+        logging.debug(f"current queue receiver size is : {self.queue_receiver.qsize()}")
+        batch = self.recv()
+        return utils.to_tensor(batch, unsqueeze=None, device=self.device)
 
 
-class MultiProcessTrajQueue:
+
+"""
+class TrajQueueMP(MemoryReplayBase):
     def __init__(self,
                  maxlen: int,
                  device=torch.device("cpu"),
@@ -316,7 +277,7 @@ class MultiProcessTrajQueue:
 
         self.num_cached = 0
 
-        self.batch_maker = MultiProcessJobExecutorsV2(func=make_batch, send_generator=self.send_raw_batch(),
+        self.batch_maker = connection.MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
                                                       postprocess=self.post_process,
                                                       num=num_batch_maker,
                                                       buffer_length=1,
@@ -346,9 +307,13 @@ class MultiProcessTrajQueue:
         self.batch_maker.start()
 
     def post_process(self, batch):
-        return to_tensor(batch, unsqueeze=None, device=self.device)
+        return utils.to_tensor(batch, unsqueeze=None, device=self.device)
+"""
 
 
+
+
+"""
 class MultiProcessBatcher:
     def __init__(self,
                  maxlen: int,
@@ -368,15 +333,15 @@ class MultiProcessBatcher:
         self.num_cached = 0
 
         if not use_queue:
-            self.batch_maker = MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
-                                                        postprocess=self.post_process,
+            self.batch_maker = connection.MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
+                                                        post_process=self.post_process,
                                                         num=num_batch_maker, buffer_length=1 + 8//num_batch_maker,
                                                         num_receivers=1,
                                                         name_prefix="batch_maker",
                                                         logger_file_path=logger_file_path,
                                                         file_level=file_level)
         else:
-            self.batch_maker = MultiProcessJobExecutorsV2(func=make_batch, send_generator=self.send_raw_batch(),
+            self.batch_maker = connection.MultiProcessJobExecutors(func=make_batch, send_generator=self.send_raw_batch(),
                                                           postprocess=self.post_process,
                                                           num=num_batch_maker, buffer_length=1 + 8//num_batch_maker,
                                                           name_prefix="batch_maker",
@@ -416,35 +381,15 @@ class MultiProcessBatcher:
         self.batch_maker.start()
 
     def post_process(self, batch):
-        return to_tensor(batch, unsqueeze=None, device=self.device)
+        return utils.to_tensor(batch, unsqueeze=None, device=self.device)
 
     def __len__(self):
         return len(self.episodes)
+"""
 
 
-def make_batch(episodes):
-    episodes = [batchify(episode, unsqueeze=0) for episode in episodes]
-    return batchify(episodes, unsqueeze=0)
-    """
-    observations, actions, rewards, dones, behavior_log_probs = [], [], [], [], []
-    for episode in episodes:
-        episode = batchify(episode, unsqueeze=0)
-        observation = np.stack([moment["observation"] for moment in episode], axis=0)
-        action = np.array([moment["action"] for moment in episode])
-        reward = np.array([moment["reward"] for moment in episode])
-        done = np.array([moment["done"] for moment in episode])
-        behavior_log_prob = np.array([moment["behavior_log_prob"] for moment in episode])
 
-        observations.append(observation)
-        actions.append(action)
-        rewards.append(reward)
-        dones.append(done)
-        behavior_log_probs.append(behavior_log_prob)
 
-    return {"observations": torch.from_numpy(np.stack(observations, axis=0)).type(torch.float32),
-            "actions": torch.from_numpy(np.stack(actions, axis=0)).type(torch.int64),
-            "rewards": torch.from_numpy(np.stack(rewards, axis=0)).type(torch.float32),
-            "dones": torch.from_numpy(np.stack(dones, axis=0)).type(torch.float32),
-            "behavior_log_probs": torch.from_numpy(np.stack(behavior_log_probs, axis=0)).type(torch.float32)
-            }
-    """
+
+
+
