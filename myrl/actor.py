@@ -245,7 +245,7 @@ class ActorCreateBase:
         self.logger_file_path = None
         self.steps = steps
 
-    def __call__(self, infos: tuple[int, int, str, bool], queue_gather2actor: mp.Queue, queue_actor2gather: mp.Queue):
+    def __call__(self, infos: Tuple[int, int, str, bool], queue_gather2actor: mp.Queue, queue_actor2gather: mp.Queue):
         gather_id, actor_id, actor_role, use_bz2 = infos
 
         assert (actor_role in ["sampler", "evaluator"])

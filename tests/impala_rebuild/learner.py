@@ -24,7 +24,7 @@ class LearnerMain(core.LearnerMainBase):
     def main(self, queue_receiver: mp.Queue, queue_sender: mp.Queue):
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         tensor_receiver = self.create_tensor_receiver(queue_receiver, device=device)
-        model = Model(8, 4, use_orthogonal_init=True, use_tanh=False)
+        model = Model(8, 4, use_orthogonal_init=True, use_tanh=False).to(device)
         impala = alg.IMPALA(model, tensor_receiver,
                             lr=2e-4, gamma=0.99, lbd=0.98, vf=0.5, ef=1e-4,
                             queue_sender=queue_sender,

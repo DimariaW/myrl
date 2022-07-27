@@ -7,6 +7,7 @@ import myrl.memory as mem
 import myrl.algorithm as alg
 import myrl.league as lg
 import numpy as np
+import logging
 
 from tests.football.football_model import CNNModel
 
@@ -33,6 +34,7 @@ class LearnerMain(core.LearnerMainBase):
         tensor_receiver = self.create_tensor_receiver(queue_receiver, device=device)
         model = CNNModel((16, 72, 96), 19).to(device)
         model.set_weights(np.load("./tests/football/easy_model/model_346346.npy", allow_pickle=True).item())
+        logging.info("successfully loads weight from pretrained !")
         impala = alg.IMPALA(model, tensor_receiver,
                             lr=0.00019896, gamma=0.993, lbd=1, vf=0.5, ef=0.00087453,
                             queue_sender=queue_sender,
