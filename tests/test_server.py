@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch
 from myrl.actor_server import MemoryReplayServer
 from myrl.algorithm import DQN
-from myrl.memory_replay import MemoryReplay
+from myrl.memory import MemoryReplay
 from myrl.agent import DQNAgent
 from myrl.actor import Actor, ActorClient
 from myrl.utils import set_process_logger

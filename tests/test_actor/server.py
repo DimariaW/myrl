@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from myrl.algorithm import IMPALA
-from myrl.memory_replay import MultiProcessBatcher
+from myrl.memory import MultiProcessBatcher
 
 
 class DuelNet(Model):

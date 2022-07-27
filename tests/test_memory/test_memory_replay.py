@@ -5,14 +5,14 @@ import torch
 import numpy as np
 import multiprocessing as mp
 
-import myrl.train as core
-import myrl.memory_replay as mr
+import myrl.core as core
+import myrl.memory as mr
 
 
 class MemoryReplayMain(core.MemoryReplayMainBase):
     def main(self, queue_receiver: mp.Queue):
-        #traj_list = mr.TrajList(queue_receiver)
-        traj_queue = mr.TrajQueueMP(maxlen=16, queue_receiver=queue_receiver, batch_size=16,
+        #traj_list = tensor_receiver.TrajList(queue_receiver)
+        traj_queue = mr.TrajQueueMP(maxlen=16, queue_sender=queue_receiver, batch_size=16,
                                     num_batch_maker=3, logger_file_dir="./log/test_traj_queue_mp/")
         traj_queue.start()
         for _ in range(64):

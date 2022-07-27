@@ -6,12 +6,12 @@ import logging
 class Algorithm:
     def __init__(self):
         self.model = None
-        self.memory_replay = None
+        self.tensor_receiver = None
         pass
 
     def learn(self):
         """
-        core function, used to fetch data from memory_replay and train
+        core function, used to fetch data from tensor_receiver and train
         """
         raise NotImplementedError
 
@@ -45,7 +45,7 @@ class Algorithm:
     def update_q_net(q_estimate, q_target, loss_func, optimizer, weight=None):  # tensor shape: batch_size*1
         if weight is not None:
             loss = loss_func(q_estimate, q_target).squeeze(-1)
-            #计算当前样本新的优先级
+            # 计算当前样本新的优先级
             td_errors = (loss.detach()).cpu().numpy()
             loss = torch.sum(loss * weight)
             Algorithm.optimize(optimizer, loss)

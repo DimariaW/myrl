@@ -3,7 +3,7 @@ from tests.football.football_env import CHWWrapper
 from tests.football.football_model import CNNModel
 from myrl.agent import IMPALAAgent
 
-import myrl.train as core
+import myrl.core as core
 import torch
 
 

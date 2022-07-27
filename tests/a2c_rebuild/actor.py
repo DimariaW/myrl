@@ -2,7 +2,7 @@ import gym
 import torch
 
 import envs.env_wrapper as env_wrapper
-import myrl.train as core
+import myrl.core as core
 from tests.a2c_rebuild.model import Model
 from myrl.agent import PGAgent
 

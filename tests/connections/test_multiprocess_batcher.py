@@ -1,6 +1,6 @@
 import logging
 import time
-from myrl.memory_replay import MultiProcessBatcher
+from myrl.memory import MultiProcessBatcher
 import torch
 import numpy as np
 import multiprocessing as mp

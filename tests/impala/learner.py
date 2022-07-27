@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch
 from myrl.actor_server import MemoryReplayServer
 from myrl.algorithm import IMPALA
-from myrl.memory_replay import MultiProcessBatcher, TrajQueue, MultiProcessTrajQueue
+from myrl.memory import MultiProcessBatcher, TrajQueue, MultiProcessTrajQueue
 from myrl.utils import set_process_logger
 
 
@@ -36,8 +36,8 @@ if __name__ == "__main__":
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = DuelNet(obs_dim=obs_dim, num_acts=num_acts).to(device)
     mr = MultiProcessBatcher(maxlen=30000, device=device, batch_size=192, forward_steps=64, num_batch_maker=4)
-    #mr = TrajQueue(device, 32)
-    #mr = MultiProcessTrajQueue(8, device=device, batch_size=64, num_batch_maker=2)
+    #tensor_receiver = TrajQueue(device, 32)
+    #tensor_receiver = MultiProcessTrajQueue(8, device=device, batch_size=64, num_batch_maker=2)
     learner = IMPALA(model, mr, lr=1e-5, ef=3e-5, vf=0.5)
     learner_server = MemoryReplayServer(learner, 1234)
     learner_server.run()

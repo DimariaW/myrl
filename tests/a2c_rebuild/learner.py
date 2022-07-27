@@ -1,8 +1,8 @@
 import torch
 import multiprocessing as mp
 
-import myrl.train as core
-import myrl.memory_replay as mr
+import myrl.core as core
+import myrl.memory as mr
 import myrl.algorithm as alg
 import myrl.league as lg
 
@@ -12,7 +12,7 @@ from tests.a2c_rebuild.model import Model
 class MemoryReplay(core.MemoryReplayMainBase):
     def main(self, queue_receiver: mp.Queue):
         traj_list = mr.TrajList(queue_receiver)
-        memory_server = mr.MemoryReplayServer(traj_list, 7777, actor_num=10, tensorboard_dir=self.logger_file_dir)
+        memory_server = mr.MemoryServer(traj_list, 7777, actor_num=10, tensorboard_dir=self.logger_file_dir)
         memory_server.run_sync()
 
 

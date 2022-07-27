@@ -1,4 +1,4 @@
-from myrl.train import train_main
+from myrl.core import train_main
 
 from tests.test_myrl.test_memory_replay import MemoryReplayMain, LeagueMain, LearnerMain
 

@@ -5,7 +5,7 @@ import torch
 import numpy as np
 import multiprocessing as mp
 
-import myrl.train as core
+import myrl.core as core
 
 
 class MemoryReplayMain(core.MemoryReplayMainBase):

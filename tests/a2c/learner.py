@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch
 from myrl.actor_server import MemoryReplayServer
 from myrl.algorithm import PG, A2C, IMPALA
-from myrl.memory_replay import TrajList
+from myrl.memory import TrajList
 from myrl.utils import set_process_logger
 
 

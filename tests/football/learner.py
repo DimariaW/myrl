@@ -2,8 +2,8 @@
 import torch
 import multiprocessing as mp
 import os
-import myrl.train as core
-import myrl.memory_replay as mr
+import myrl.core as core
+import myrl.memory as mr
 import myrl.algorithm as alg
 import myrl.league as lg
 
@@ -13,13 +13,13 @@ from tests.football.football_model import CNNModel
 class MemoryReplayMain(core.MemoryReplayMainBase):
     def main(self, queue_receiver: mp.Queue):
         traj_queue = mr.TrajQueueMP(maxlen=32,
-                                    queue_receiver=queue_receiver,
+                                    queue_sender=queue_receiver,
                                     batch_size=16,
                                     use_bz2=True,
                                     num_batch_maker=4,
                                     logger_file_dir=os.path.join(self.logger_file_dir, "batch_maker"))
-        memory_server = mr.MemoryReplayServer(traj_queue, 7777, actor_num=None,
-                                              tensorboard_dir=os.path.join(self.logger_file_dir, "reward"))
+        memory_server = mr.MemoryServer(traj_queue, 7777, actor_num=None,
+                                        tensorboard_dir=os.path.join(self.logger_file_dir, "reward"))
         memory_server.run()
 
 

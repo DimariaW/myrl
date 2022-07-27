@@ -1,7 +1,7 @@
 
 import logging
 import time
-from myrl.memory_replay import MultiProcessTrajQueueServer, Receiver
+from myrl.memory import MultiProcessTrajQueueServer, Receiver
 import torch
 import numpy as np
 import multiprocessing as mp

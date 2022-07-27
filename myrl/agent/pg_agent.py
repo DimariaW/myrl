@@ -15,7 +15,7 @@ class PGAgent(Agent):
     @torch.no_grad()
     def sample(self, state: np.ndarray):  # batched np.ndarray
         self.model.eval()
-        state = to_tensor(state, unsqueeze=None, device=self.device)
+        state = to_tensor(state, device=self.device)
         _, logits = self.model(state)
         action_idx = torch.distributions.Categorical(logits=logits).sample().cpu().numpy()
         return {"action": action_idx}

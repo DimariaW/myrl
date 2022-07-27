@@ -2,15 +2,16 @@ import sys
 
 import torch
 
-from myrl.model import Model
+
 import torch.nn as nn
 import torch.nn.functional as F
 
 import envs.env_wrapper as env_wrapper
 import gym
 
-from myrl.agent import IMPALAAgent
-from myrl.actor import Actor, ActorClient, open_gather
+from myrl.agent import IMPALAAgent, PGAgent
+from myrl.model import Model
+from myrl.actor import Actor
 from myrl.utils import set_process_logger
 
 
@@ -32,7 +33,7 @@ class DuelNet(Model):
         return value_and_logits[..., 0], value_and_logits[..., 1:]
 
 
-def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
+if __name__ == "__main__":
     set_process_logger()
     env = env_wrapper.ScaleReward(gym.make("LunarLander-v2"), scale_factor=1/200)
     env = env_wrapper.DictObservation(env, key="state")
@@ -41,11 +42,22 @@ def create_actor(actor_index: int, queue_gather2actor, queue_actor2gather):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = DuelNet(obs_dim, num_acts).to(device)
-    agent = IMPALAAgent(model, device)
-    actor = Actor(env, agent, steps=128, get_full_episode=False)
-    actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="sampler")
-    actor_client.run()
+    #agent = IMPALAAgent(model, device)
+    agent = PGAgent(model, device)
+    actor = Actor(env, agent, steps=-1, get_full_episode=True)
 
+    for _ in range(5):
+        episode = actor.sample(model_id=0)
+        episode1 = actor.sample(model_id=0)
+        episode2 = actor.sample(model_id=0)
 
-if __name__ == "__main__":
-    open_gather(host="172.18.237.53", port=8080, num_gathers=1, num_sample_actors_per_gather=8, func=create_actor)
+    infos = actor.episodes_infos
+
+    for _ in range(5):
+        actor.predict(model_id=1)
+        actor.predict(model_id=1)
+        actor.predict(model_id=1)
+
+    infos = actor.episodes_infos
+    print("...")
+

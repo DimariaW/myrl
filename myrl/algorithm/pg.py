@@ -1,8 +1,10 @@
 import queue
 import torch
+
 from myrl.model import Model
 from myrl.algorithm import Algorithm
-from myrl.memory_replay import TensorReceiver
+from myrl.connection import TensorReceiver, send_with_stop_flag
+
 import logging
 import multiprocessing as mp
 from tensorboardX import SummaryWriter
@@ -82,26 +84,40 @@ class PG(Algorithm):
 
 
 class A2C(Algorithm):
-    def __init__(self, model: Model, mr: TensorReceiver,
+    def __init__(self, model: Model, tensor_receiver: TensorReceiver,
                  lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3,
                  queue_sender: mp.Queue = None, tensorboard_dir: str = None):
 
         super().__init__()
+        """
+        1. usage: value, logits = model(tensor_receiver.recv()) shape(B, T, ...)
+        """
         self.model = model
-        self.memory_replay = mr
-
+        self.tensor_receiver = tensor_receiver
+        """
+        2. algorithm hyper-parameters
+        """
         self.lr = lr
         self.gamma = gamma
         self.lbd = lbd
         self.vf = vf
         self.ef = ef
-
-        self.queue_sender = queue_sender  # used to send model weights (np.ndarray)
-
+        """
+        3. loss function and optimizer
+        """
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr, eps=1e-5)  # trick increase eps
         # self.critic_loss_fn = torch.nn.MSELoss()
-        self.critic_loss_fn = torch.nn.SmoothL1Loss(reduction="sum")
-
+        self.critic_loss_fn = torch.nn.SmoothL1Loss(reduction="sum")  # trick replace MSE loss
+        """
+        4. model weight mp.Queue sender
+        """
+        self.queue_sender = queue_sender  # used to send model weights (np.ndarray)
+        """
+        tensorboard: used to log three things( A2C only log loss infos)
+        - data staleness, the difference of current model index and mean behavior model index
+        - probability ratio, the ratio of current model index prob and behavior model index
+        - loss infos, including actor loss, critic loss and entropy
+        """
         self.tensorboard_dir = tensorboard_dir  # used to log loss into tensorboard
         self.num_update = 0
         if self.tensorboard_dir is not None:
@@ -115,7 +131,7 @@ class A2C(Algorithm):
 
     def learn(self):
         self.model.train()
-        batch = self.memory_replay.recall()
+        _, batch = self.tensor_receiver.recv()
 
         obs = batch["observation"]  # shape(B, T)
         action = batch["action"]
@@ -133,6 +149,7 @@ class A2C(Algorithm):
         adv, value_estimate = self.a2c_v1(value_nograd[:, :-1], reward[:, :-1],
                                           self.gamma, self.lbd, done[:, :-1], value_nograd[:, -1])
 
+        # trick normalize adv mini-batch
         adv = (adv - adv.mean()) / (adv.std() + 1e-5)
 
         actor_loss = torch.sum(-action_log_prob[:, :-1] * adv)
@@ -232,17 +249,20 @@ class A2C(Algorithm):
 
 
 class IMPALA(A2C):
-    def __init__(self, model: Model, mr: TensorReceiver,
+    def __init__(self, model: Model, tensor_receiver: TensorReceiver,
                  lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3,
                  queue_sender: mp.Queue = None, tensorboard_dir: str = None,
                  use_upgo: bool = False, send_intervals: int = None):
-        super().__init__(model, mr, lr, gamma, lbd, vf, ef, queue_sender, tensorboard_dir)
+        super().__init__(model, tensor_receiver,
+                         lr, gamma, lbd, vf, ef,
+                         queue_sender,
+                         tensorboard_dir)
         self.use_upgo = use_upgo
         self.send_intervals = send_intervals  # 每间隔training steps 传送模型参数
 
     def learn(self):
         self.model.train()
-        batch = self.memory_replay.recall()
+        mean_behavior_model_index, batch = self.tensor_receiver.recv()
 
         obs = batch["observation"]  # shape(B*T)
         behavior_log_prob = batch['behavior_log_prob']
@@ -258,7 +278,11 @@ class IMPALA(A2C):
         log_rho = action_log_prob.detach() - behavior_log_prob
         rho = torch.exp(log_rho)
 
-        logging.debug(f" rho is {torch.mean(rho)}")
+        """
+        for debugging and logging
+        """
+        mean_rho = torch.mean(rho).item()
+        logging.debug(f" rho is {mean_rho}")
 
         clipped_rho = torch.clamp(rho, 0, 1)  # clip_rho_threshold := 1)  rho shape: B*T
         c = torch.clamp(rho, 0, 1)  # clip_c_threshold := 1)  c shape: B*T
@@ -292,7 +316,12 @@ class IMPALA(A2C):
 
         self.gradient_clip_and_optimize(self.optimizer, loss, self.model.parameters(), 40.0)
 
-        return {f"actor_loss": actor_loss.item(), "critic_loss": critic_loss.item(), "entropy": entropy.item()}
+        return {"actor_loss": actor_loss.item(),
+                "critic_loss": critic_loss.item(),
+                "entropy": entropy.item(),
+                "data_staleness": self.num_update - mean_behavior_model_index,
+                "rho": mean_rho
+                }
 
     @staticmethod
     @torch.no_grad()
@@ -317,7 +346,7 @@ class IMPALA(A2C):
         vtrace_value = advantage + value
 
         advantage = reward + gamma * (1. - done) * torch.concat([vtrace_value[:, 1:], bootstrap_value.unsqueeze(-1)],
-                                                                 dim=-1) - value
+                                                                dim=-1) - value
         return advantage, vtrace_value
 
     @staticmethod
@@ -344,7 +373,7 @@ class IMPALA(A2C):
         """
         impala 主函数
         """
-        self.queue_sender.put((False, (self.num_update, self.get_weights())))
+        send_with_stop_flag(self.queue_sender, False, (self.num_update, self.get_weights()))
         while True:
             learn_info = self.learn()
             self.num_update += 1
@@ -354,7 +383,7 @@ class IMPALA(A2C):
                     self.sw.add_scalar(key, value, self.num_update)
             if self.num_update % self.send_intervals == 0:
                 try:
-                    self.queue_sender.put((False, (self.num_update, self.get_weights())), block=False)
+                    send_with_stop_flag(self.queue_sender, False, (self.num_update, self.get_weights()), block=False)
                 except queue.Full:
                     logging.debug("the queue that used to send model is full")
 

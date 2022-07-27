@@ -4,7 +4,7 @@ from envs.football.football_model import FootballNet, SimpleModel
 from myrl import ActorServer
 from myrl.utils import set_process_logger
 from myrl.algorithm import IMPALA
-from myrl.memory_replay import MultiProcessBatcher, MultiProcessTrajQueue
+from myrl.memory import MultiProcessBatcher, MultiProcessTrajQueue
 
 import torch
 
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
     model = FootballNet().to(device)
     #model = SimpleModel(2, 1).to(device)
-    #mr = MultiProcessBatcher(maxlen=30000, device=device, batch_size=192, forward_steps=64, num_batch_maker=2,
+    #tensor_receiver = MultiProcessBatcher(maxlen=30000, device=device, batch_size=192, forward_steps=64, num_batch_maker=2,
                             # use_queue=True, logger_file_path="./log/empty_goal/batcher.txt")
     mr = MultiProcessTrajQueue(maxlen=16, device=device, batch_size=16,
                                num_batch_maker=1,

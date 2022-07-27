@@ -1,29 +1,32 @@
 import torch
 import multiprocessing as mp
 import os
-import myrl.train as core
-import myrl.memory_replay as mr
+import myrl.core as core
+
+import myrl.memory as mem
 import myrl.algorithm as alg
 import myrl.league as lg
 
 from tests.impala_rebuild.model import Model
 
 
-class MemoryReplayMain(core.MemoryReplayMainBase):
-    def main(self, queue_receiver: mp.Queue):
-        traj_queue = mr.TrajQueue(maxlen=8, queue_receiver=queue_receiver, batch_size=8)
-        memory_server = mr.MemoryReplayServer(traj_queue, 7777, actor_num=None,
-                                              tensorboard_dir=os.path.join(self.logger_file_dir, "reward"))
+class MemoryMain(core.MemoryMainBase):
+    def main(self, queue_sender: mp.Queue):
+        traj_queue = mem.TrajQueueMP(maxlen=8, queue_sender=queue_sender, batch_size=16,
+                                     use_bz2=True, num_batch_maker=1,
+                                     logger_file_dir=os.path.join(self.logger_file_dir, "batcher"))
+        memory_server = mem.MemoryServer(traj_queue, 7777, actor_num=None,
+                                         tensorboard_dir=os.path.join(self.logger_file_dir, "reward"))
         memory_server.run()
 
 
 class LearnerMain(core.LearnerMainBase):
     def main(self, queue_receiver: mp.Queue, queue_sender: mp.Queue):
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        memory_replay = self.create_tensor_receiver(queue_receiver, device=device)
-        model = Model(8, 4, use_orthogonal_init=False, use_tanh=False)
-        impala = alg.IMPALA(model, memory_replay,
-                            lr=2e-4, gamma=0.99, lbd=0.98, vf=0.5, ef=1e-5,
+        tensor_receiver = self.create_tensor_receiver(queue_receiver, device=device, num_sender=1)
+        model = Model(8, 4, use_orthogonal_init=True, use_tanh=False)
+        impala = alg.IMPALA(model, tensor_receiver,
+                            lr=1e-3, gamma=0.99, lbd=0.98, vf=0.5, ef=1e-3,
                             queue_sender=queue_sender,
                             tensorboard_dir=os.path.join(self.logger_file_dir, "train_info"),
                             use_upgo=False, send_intervals=1)
@@ -31,9 +34,10 @@ class LearnerMain(core.LearnerMainBase):
 
 
 class LeagueMain(core.LeagueMainBase):
-    def main(self, queue_sender: mp.Queue):
-        queue_receiver = self.create_receiver(queue_sender)
-        league = lg.League(7778, actor_num=None, queue_receiver=queue_receiver,
+    def main(self, queue_receiver: mp.Queue):
+        queue_receiver = self.create_receiver(queue_receiver, num_sender=1)
+        league = lg.League(queue_receiver=queue_receiver,
+                           port=7778, num_actors=None,
                            model_weights_save_dir=os.path.join(self.logger_file_dir, "model"),
-                           model_weights_save_intervals=1000)
+                           model_weights_save_intervals=1000, use_bz2=True)
         league.run()

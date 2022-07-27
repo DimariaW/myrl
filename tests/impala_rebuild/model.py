@@ -12,7 +12,7 @@ def orthogonal_init(layer, gain=1.0):
 
 
 class Model(md.Model):
-    def __init__(self, state_dim: int, num_act: int, use_orthogonal_init=True, use_tanh=True):
+    def __init__(self, state_dim: int, num_act: int, use_orthogonal_init=True, use_tanh=False):
         super().__init__()
         self.fc1 = nn.Linear(state_dim, 128)
         self.fc2 = nn.Linear(128, 128)
@@ -29,7 +29,7 @@ class Model(md.Model):
             self.act_fn = nn.ReLU()
 
     def forward(self, obs):
-        feature = obs["feature"]
+        feature = obs #["feature"]
         h1 = self.act_fn(self.fc1(feature))
         h2 = self.act_fn(self.fc2(h1))
         output = self.fc3(h2)

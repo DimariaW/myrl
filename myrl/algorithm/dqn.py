@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from myrl.algorithm import Algorithm
-from myrl.memory_replay import MemoryReplay, PriorityMemoryReplay
+from myrl.memory import MemoryReplay, PriorityMemoryReplay
 from typing import Union
 import copy
 from myrl.model import Model

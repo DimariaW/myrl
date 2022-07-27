@@ -1,11 +1,14 @@
 import os
 import multiprocessing as mp
 import torch
+from typing import List, Tuple, Union
 
 import myrl.utils as utils
-from myrl.memory_replay import TensorReceiver
-from myrl.connection import Receiver
-from myrl.actor import Actor, ActorClient
+from myrl.connection import TensorReceiver, Receiver
+
+from myrl.actor import ActorCreateBase, open_gather
+
+__all__ = ["ActorCreateBase", "MemoryMainBase", "LearnerMainBase", "LeagueMainBase", "open_gather", "train_main"]
 
 
 class MainBase:
@@ -20,43 +23,17 @@ class MainBase:
         return Receiver(queue_receiver, num_sender)
 
     @staticmethod
-    def create_tensor_receiver(queue_receiver, num_sender=-1, device=None):
+    def create_tensor_receiver(queue_receiver, num_sender: int = -1, device=None):
         if device is None:
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         return TensorReceiver(queue_receiver, num_sender=num_sender, device=device)
 
 
-class ActorCreateBase(MainBase):
-    def __init__(self, logger_file_dir, steps):
-        super().__init__(None)
-        self.logger_file_dir = logger_file_dir
-        self.steps = steps
-
-    def __call__(self, actor_indexes: tuple, queue_gather2actor, queue_actor2gather):
-        gather_id, actor_index, num_samples, num_evals = actor_indexes
-        if self.logger_file_dir is not None:
-            self.logger_file_path = os.path.join(self.logger_file_dir, f"gather_{gather_id}_actor_{actor_index}.txt")
-        utils.set_process_logger(file_path=self.logger_file_path)
-
-        env, agent = self.create_env_and_agent()
-
-        if actor_index < num_samples:
-            actor = Actor(env, agent, steps=self.steps, get_full_episode=False)
-            actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="sampler")
-        else:
-            actor = Actor(env, agent, steps=self.steps, get_full_episode=True)
-            actor_client = ActorClient(actor_index, actor, queue_gather2actor, queue_actor2gather, role="evaluator")
-        actor_client.run()
-
-    def create_env_and_agent(self):
-        raise NotImplementedError
-
-
-class MemoryReplayMainBase(MainBase):
+class MemoryMainBase(MainBase):
     def __init__(self, logger_file_dir=None):
-        super().__init__("memory_replay", logger_file_dir)
+        super().__init__("memory", logger_file_dir)
 
-    def __call__(self, queue_receiver: mp.Queue):
+    def __call__(self, queue_sender: mp.Queue):
         """
         自此函数中实例化MemoryReplayServer对象，处理actor收集的数据.
 
@@ -66,13 +43,13 @@ class MemoryReplayMainBase(MainBase):
         queue_receiver = mp.Queue(maxsize=1)
         mp.Process(target=actor_server_main, args=(queue_receiver,), daemon=False, name="actor_server").start()
 
-        :param queue_receiver: used to cache data generated
+        :param queue_sender: used to cache data generated
         :return: None
         """
         utils.set_process_logger(file_path=self.logger_file_path)
-        self.main(queue_receiver)
+        self.main(queue_sender)
 
-    def main(self, queue_receiver: mp.Queue):
+    def main(self, queue_sender: mp.Queue):
         raise NotImplementedError
 
 
@@ -89,7 +66,7 @@ class LearnerMainBase(MainBase):
         import multiprocessing as mp
         queue_receiver = mp.Queue(maxsize=1)
         queue_send = mp.Queue(maxsize=1)
-        mp.Process(target=learner_main, args=(queue_receiver,queue_sender), daemon=False, name="learner_main").start()
+        mp.Process(target=learner_main, args=(queue_receiver,queue_receiver), daemon=False, name="learner_main").start()
 
         :param queue_receiver: used to receiver data
         :param queue_sender: used to send model_weights
@@ -106,7 +83,7 @@ class LeagueMainBase(MainBase):
     def __init__(self, logger_file_dir=None):
         super().__init__("league", logger_file_dir)
 
-    def __call__(self, queue_sender: mp.Queue):
+    def __call__(self, queue_receiver: mp.Queue):
         """
            the process to manage model weights.
 
@@ -116,25 +93,25 @@ class LeagueMainBase(MainBase):
            queue_send = mp.Queue(maxsize=1)
            mp.Process(target=learner_main, args=(queue_send), daemon=False, name="league_main").start()
 
-           :param queue_sender: the queue to send model weights
+           :param queue_receiver: the queue to send model weights
            :return: None
         """
         utils.set_process_logger(file_path=self.logger_file_path)
-        self.main(queue_sender)
+        self.main(queue_receiver)
 
-    def main(self, queue_sender: mp.Queue):
+    def main(self, queue_receiver: mp.Queue):
         raise NotImplementedError
 
 
 def train_main(learner_main: LearnerMainBase,
-               memory_replay_main: MemoryReplayMainBase,
+               memory_mains: Union[List[MemoryMainBase], Tuple[MemoryMainBase]],
                league_main: LeagueMainBase,
-               queue_size=(1, 1)):  # receiver and sender
+               memory_buffer_length=1):  # receiver and sender
 
     mp.set_start_method("spawn")
 
-    queue_receiver = mp.Queue(maxsize=queue_size[0])  # receiver batched tensor, when on policy, this can be set to 1
-    queue_sender = mp.Queue(maxsize=queue_size[1])  # the queue to send the newest data
+    queue_receiver = mp.Queue(maxsize=memory_buffer_length)  # receiver batched tensor, when on policy, this can be set to 1
+    queue_sender = mp.Queue(maxsize=1)  # the queue to send the newest data
 
     learner_process = mp.Process(target=learner_main, args=(queue_receiver, queue_sender),
                                  daemon=False, name="learner_main")
@@ -144,18 +121,23 @@ def train_main(learner_main: LearnerMainBase,
                                 daemon=False, name="league_main")
     league_process.start()
 
-    memory_replay_main = mp.Process(target=memory_replay_main, args=(queue_receiver,),
-                                    daemon=False, name="actor_server_main")
-    memory_replay_main.start()
+    memory_processes = []
+    for i, memory_main in enumerate(memory_mains):
+        memory_process = mp.Process(target=memory_main, args=(queue_receiver,),
+                                           daemon=False, name=f"memory_main_{i}")
+        memory_process.start()
+        memory_processes.append(memory_process)
 
     try:
         learner_process.join()
         league_process.join()
-        memory_replay_main.join()
+        for memory_process in memory_processes:
+            memory_process.join()
     finally:
         learner_process.close()
         league_process.close()
-        memory_replay_main.close()
+        for memory_process in memory_processes:
+            memory_process.close()
 
 
 

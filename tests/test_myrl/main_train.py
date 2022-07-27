@@ -1,7 +1,7 @@
 """
 there are some bug in pycharm, all test should start from this file
 """
-from myrl.train import train_main
+from myrl.core import train_main
 
 from tests.test_myrl.test_train import MemoryReplayMain, LeagueMain, LearnerMain
 

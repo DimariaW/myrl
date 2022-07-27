@@ -1,4 +1,4 @@
-from myrl.memory_replay import MemoryReplay, PriorityMemoryReplay
+from myrl.memory import MemoryReplay, PriorityMemoryReplay
 import numpy as np
 
 mr = MemoryReplay(maxlen=500, batch_size=32, cached_in_device=False)

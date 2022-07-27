@@ -11,15 +11,12 @@ import threading
 import queue
 import multiprocessing as mp
 import traceback
-from typing import Callable, Iterator
-import myrl.utils as utils
+from typing import Callable, Iterator, Tuple, Any, Union
 import logging
 
+import torch
 
-def send_recv(conn, sdata):
-    conn.send(sdata)
-    rdata = conn.recv()
-    return rdata
+import myrl.utils as utils
 
 
 class PickledConnection:
@@ -74,24 +71,22 @@ class PickledConnection:
             self._send(chunk)
 
 
+def send_recv(conn: PickledConnection, sdata: Tuple[str, Any]) -> Tuple[str, Any]:  # sdata (cmd, args or data)
+    conn.send(sdata)
+    rdata = conn.recv()
+    return rdata
+
+
 def open_socket_connection(port, reuse=False):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(
         socket.SOL_SOCKET, socket.SO_REUSEADDR,
         sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) | 1
     )
-    hostname = socket.gethostbyname(socket.gethostname())
-    sock.bind((hostname, int(port)))
-    logging.info(f"successfully bind {hostname}:{port}")
+    ip = socket.gethostbyname(socket.gethostname())
+    sock.bind((ip, int(port)))
+    logging.info(f"successfully bind {ip}:{port}")
     return sock
-
-
-def accept_socket_connection(sock):
-    try:
-        conn, _ = sock.accept()
-        return PickledConnection(conn)
-    except socket.timeout:
-        return None
 
 
 def listen_socket_connections(n, port):
@@ -100,14 +95,12 @@ def listen_socket_connections(n, port):
     return [accept_socket_connection(sock) for _ in range(n)]
 
 
-def connect_socket_connection(host, port):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def accept_socket_connection(sock):
     try:
-        sock.connect((host, int(port)))
-    except ConnectionRefusedError as exception:
-        logging.info('failed to connect %s %d' % (host, port))
-        raise exception
-    return PickledConnection(sock)
+        conn, _ = sock.accept()
+        return PickledConnection(conn)
+    except socket.timeout:
+        return None
 
 
 def accept_socket_connections(port, timeout=None, maxsize=1024):
@@ -121,6 +114,112 @@ def accept_socket_connections(port, timeout=None, maxsize=1024):
             cnt += 1
         yield conn
 
+
+def connect_socket_connection(host, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        sock.connect((host, int(port)))
+    except ConnectionRefusedError as exception:
+        logging.info('failed to connect %s %d' % (host, port))
+        raise exception
+    return PickledConnection(sock)
+
+
+class QueueCommunicatorBase:
+    def __init__(self):
+        self.input_queue = queue.Queue(maxsize=256)
+        self.output_queue = queue.Queue(maxsize=256)
+        self.conns = set()
+        threading.Thread(target=self._send_thread, daemon=True).start()
+        threading.Thread(target=self._recv_thread, daemon=True).start()
+
+    def connection_count(self):
+        return len(self.conns)
+
+    def recv(self, timeout=None):
+        return self.input_queue.get(timeout=timeout)
+
+    def send(self, conn: PickledConnection, send_data: Tuple[str, Any]):  # send_data (cmd, args or data)
+        self.output_queue.put((conn, send_data))
+
+    def add_connection(self, conn):
+        self.conns.add(conn)
+
+    def disconnect(self, conn):
+        self.conns.discard(conn)
+        logging.info(f'disconnected one connection, current connection num is {self.connection_count()}')
+
+    def _send_thread(self):
+        while True:
+            conn, send_data = self.output_queue.get()
+            try:
+                conn.send(send_data)
+            except ConnectionResetError:
+                self.disconnect(conn)
+            except BrokenPipeError:
+                self.disconnect(conn)
+
+    def _recv_thread(self):
+        while True:
+            conns = mp.connection.wait(self.conns, timeout=0.3)
+            for conn in conns:
+                try:
+                    recv_data = conn.recv()
+                except ConnectionResetError:
+                    self.disconnect(conn)
+                    continue
+                except EOFError:
+                    self.disconnect(conn)
+                    continue
+
+                while True:
+                    try:
+                        self.input_queue.put((conn, recv_data), timeout=0.3)
+                        break
+                    except queue.Full:
+                        logging.critical("this process cannot consume some manny actor, the message queue is full")
+
+
+class QueueCommunicator(QueueCommunicatorBase):
+    def __init__(self, port: int, num_client=None):
+        """
+        :param port: 指定服务器端口
+        :param num_client: 指定连接的actor个数, 若异步模式此参数无意义, 若同步模式此参数表示需要等待actor_num个连接
+        """
+        super().__init__()
+        self.port = port
+        self.num_client = num_client
+
+    def run(self):
+        """
+        异步模式
+        """
+        def worker_server(port):
+            logging.info('preparing bind port: %d' % port)
+            conn_acceptor = accept_socket_connections(port=port, maxsize=9999)
+            while True:
+                conn = next(conn_acceptor)
+                self.add_connection(conn)
+                logging.info(f"total connection count now is {self.connection_count()}")
+
+        threading.Thread(name="add_connection", target=worker_server, args=(self.port,), daemon=True).start()
+
+    def run_sync(self):
+        """
+        同步，堵塞直到所有actor建立连接
+        """
+        if self.num_client is None:
+            raise ValueError("sync version requires known number of client")
+
+        logging.info('preparing bind port: %d' % self.port)
+        conn_acceptor = accept_socket_connections(port=self.port, maxsize=self.num_client)
+        while True:
+            try:
+                conn = next(conn_acceptor)
+                self.add_connection(conn)
+                logging.info(f"total connection count now is {self.connection_count()}")
+            except StopIteration:
+                break
 
 #%%
 """
@@ -277,18 +376,81 @@ class MultiProcessJobExecutorsDeprecated:
 #%%
 
 
+def send_with_stop_flag(queue_sender: mp.Queue, is_stop: bool, data: Tuple[Union[int, float], Any],  # model_id
+                        block: bool = True, timeout: float = None):
+    queue_sender.put((is_stop, data), block=block, timeout=timeout)
+
+
+def send(queue_sender: mp.Queue, data: Tuple[str, Any],
+         block: bool = True, timeout: float = None):
+    queue_sender.put(data, block=block, timeout=timeout)
+
+
+def send_with_sender_id_and_receive(queue_sender: mp.Queue, queue_receiver: mp.Queue,
+                                    sender_id: int, data: Tuple[str, Any],
+                                    block: bool = True, timeout: float = None) -> Tuple[str, Any]:
+    queue_sender.put((sender_id, data), block=block, timeout=timeout)
+    cmd, data = queue_receiver.get()
+    return cmd, data
+
+
+class Receiver:
+    """
+    mp.Queue通信时，sender端会发送一个is_stop标志位，通过对接收端的mp.Queue进行简单包装，可以在确保没有数据的情况下再抛出异常
+    a simple wrapper on mp.Queue, that  when raise a queue.Empty exception, it means the all sender have sent all data
+    """
+    def __init__(self, queue_receiver: mp.Queue, num_sender: int = -1):
+        self.queue_receiver = queue_receiver
+        self.num_sender = num_sender
+        self.stopped = False
+        self.stopped_num = 0
+
+    def recv(self):
+        while True:
+            try:
+                logging.debug(f"current queue size is {self.queue_receiver.qsize()} ")
+                is_stop, data = self.queue_receiver.get(timeout=0.1)
+
+                if is_stop:
+                    self.stopped_num += 1
+                    if self.stopped_num == self.num_sender:
+                        logging.debug("successfully receive all processed data!")
+                        self.stopped = True
+                    continue
+
+                return data
+
+            except queue.Empty:
+                if self.stopped:
+                    raise
+
+
+class TensorReceiver(Receiver):
+    def __init__(self,
+                 queue_receiver: mp.Queue,
+                 num_sender,
+                 device=torch.device("cpu")):
+        super().__init__(queue_receiver, num_sender=num_sender)
+        self.device = device
+
+    def recv(self):
+        mean_behavior_model_id, batch = super().recv()
+        return mean_behavior_model_id, utils.to_tensor(batch, unsqueeze=None, device=self.device)
+#%%
+
+
 @utils.wrap_traceback
 def wrapped_func(func: Callable, queue_sender: mp.Queue, queue_receiver: mp.Queue,
                  logger_file_path: str = None,
                  file_level=logging.DEBUG,
                  starts_with=None):
     utils.set_process_logger(file_path=logger_file_path, file_level=file_level, starts_with=starts_with)
-
+    logging.info("start processing !")
     num_processed_data = 0
     while True:
         is_stop, data = queue_sender.get()
         if is_stop:
-            logging.debug("the sender is closed, this process is going to close!")
+            logging.info("the sender is closed, this process is going to close!")
             queue_receiver.put((is_stop, None))
             break
 
@@ -311,7 +473,7 @@ class MultiProcessJobExecutors:
                  # 并行进程个数，与每个进程可以提前send的data个数
                  num: int,
                  buffer_length: int = 1,
-                 # 是否外部传入queue_receive, 如果传入的话，就不开启接收进程与后处理
+                 # 是否外部传入queue_receiver, 如果传入的话，就不开启接收进程与后处理
                  queue_receiver: mp.Queue = None,
                  post_process: Callable = None,
                  # logger args
@@ -393,17 +555,14 @@ class MultiProcessJobExecutors:
 
     def _receiver(self):
         logging.info('start receiver')
-        stop_num = 0
+        receiver = Receiver(self.queue_receiver, num_sender=self.num)
         while True:
-            is_stop, data = self.queue_receiver.get()
-
-            if is_stop:
-                stop_num += 1
-                if stop_num == self.num:
-                    logging.info("successfully receive all processed data!")
-                    self.stopped = True
-                    break
-                continue
+            try:
+                data = receiver.recv()
+            except queue.Empty:
+                logging.info("successfully receive all data!")
+                self.stopped = True
+                break
 
             if self.post_process is not None:
                 data = self.post_process(data)
@@ -418,132 +577,9 @@ class MultiProcessJobExecutors:
                 except queue.Full:
                     logging.debug("output_queue is full, the bottleneck is the speed of learner consume batch")
 
-#%%
 
 
-class Receiver:
-    def __init__(self, queue_receiver: mp.Queue, num_sender: int):
-        self.queue_receiver = queue_receiver
-        self.num_sender = num_sender
-        self.stopped = False
-        self.stopped_num = 0
-
-    def recv(self):
-        while True:
-            try:
-                is_stop, data = self.queue_receiver.get(timeout=0.1)
-
-                if is_stop:
-                    self.stopped_num += 1
-                    if self.stopped_num == self.num_sender:
-                        logging.debug("successfully receive all processed data!")
-                        self.stopped = True
-                    continue
-
-                return data
-
-            except queue.Empty:
-                if self.stopped:
-                    raise
-
-#%%
 
 
-class QueueCommunicatorBase:
-    def __init__(self):
-        self.input_queue = queue.Queue(maxsize=256)
-        self.output_queue = queue.Queue(maxsize=256)
-        self.conns = set()
-        threading.Thread(target=self._send_thread, daemon=True).start()
-        threading.Thread(target=self._recv_thread, daemon=True).start()
-
-    def connection_count(self):
-        return len(self.conns)
-
-    def recv(self, timeout=None):
-        return self.input_queue.get(timeout=timeout)
-
-    def send(self, conn, send_data):
-        self.output_queue.put((conn, send_data))
-
-    def add_connection(self, conn):
-        self.conns.add(conn)
-
-    def disconnect(self, conn):
-        self.conns.discard(conn)
-        logging.info(f'disconnected one connection, current connection num is {self.connection_count()}')
-
-    def _send_thread(self):
-        while True:
-            conn, send_data = self.output_queue.get()
-            try:
-                conn.send(send_data)
-            except ConnectionResetError:
-                self.disconnect(conn)
-            except BrokenPipeError:
-                self.disconnect(conn)
-
-    def _recv_thread(self):
-        while True:
-            conns = mp.connection.wait(self.conns, timeout=0.3)
-            for conn in conns:
-                try:
-                    recv_data = conn.recv()
-                except ConnectionResetError:
-                    self.disconnect(conn)
-                    continue
-                except EOFError:
-                    self.disconnect(conn)
-                    continue
-
-                while True:
-                    try:
-                        self.input_queue.put((conn, recv_data), timeout=0.3)
-                        break
-                    except queue.Full:
-                        logging.critical("this process cannot consume some manny actor, the message queue is full")
 
 
-class QueueCommunicator(QueueCommunicatorBase):
-    def __init__(self, port: int, num_client=None):
-        """
-
-        :param port: 指定服务器端口
-        :param num_client: 指定连接的actor个数, 若异步模式此参数无意义, 若同步模式此参数表示需要等待actor_num个连接
-        """
-        super().__init__()
-        self.port = port
-        self.num_client = num_client
-
-    def run(self):
-        """
-        异步模式
-        """
-        def worker_server(port):
-            logging.info('started actor server %d' % port)
-            conn_acceptor = accept_socket_connections(port=port, maxsize=9999)
-            while True:
-                conn = next(conn_acceptor)
-
-                self.add_connection(conn)
-
-                logging.info(f"total actor count now is {self.connection_count()}")
-
-        threading.Thread(name="add_connection", target=worker_server, args=(self.port,), daemon=True).start()
-
-    def run_sync(self):
-        """
-        同步，堵塞直到所有actor建立连接
-        """
-        if self.num_client is None:
-            raise ValueError("sync version requires known number of client")
-
-        logging.info('started actor server %d' % self.port)
-        conn_acceptor = accept_socket_connections(port=self.port, maxsize=self.num_client)
-        while True:
-            try:
-                conn = next(conn_acceptor)
-                self.add_connection(conn)
-                logging.info(f"total actor count now is {self.connection_count()}")
-            except StopIteration:
-                break

@@ -1,5 +1,5 @@
 from tests.football.learner import MemoryReplayMain, LearnerMain, LeagueMain
-from myrl.train import train_main
+from myrl.core import train_main
 from tests.football.common import NAME
 
 if __name__ == '__main__':
