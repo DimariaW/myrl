@@ -30,8 +30,9 @@ class MainBase:
 
 
 class MemoryMainBase(MainBase):
-    def __init__(self, logger_file_dir=None):
+    def __init__(self, port: int, logger_file_dir=None):
         super().__init__("memory", logger_file_dir)
+        self.port = port
 
     def __call__(self, queue_sender: mp.Queue):
         """
@@ -80,8 +81,9 @@ class LearnerMainBase(MainBase):
 
 
 class LeagueMainBase(MainBase):
-    def __init__(self, logger_file_dir=None):
+    def __init__(self, port: int, logger_file_dir=None):
         super().__init__("league", logger_file_dir)
+        self.port = port
 
     def __call__(self, queue_receiver: mp.Queue):
         """

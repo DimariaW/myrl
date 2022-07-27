@@ -149,11 +149,11 @@ class TrajQueue(MemoryReplayBase):
                     batched = decompress_and_make_batch(next(send_generator))
                 else:
                     batched = make_batch(next(send_generator))
-                self.queue_sender.put((False, batched))
+                connection.send_with_stop_flag(self.queue_sender, False, batched)
                 num += 1
                 logging.debug(f"successfully make and send batch num: {num}")
         except StopIteration:
-            self.queue_sender.put((True, None))
+            connection.send_with_stop_flag(self.queue_sender, True, (-1, None))
             logging.info(f"successfully stop send!")
 
     def stop(self):

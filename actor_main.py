@@ -1,7 +1,7 @@
 from tests.football.actor import ActorCreate
 from myrl.actor import open_gather
 
-import tests.football.common as cm
+import tests.football.config as cm
 
 if __name__ == "__main__":
     logger_file_dir = f"./log/{cm.NAME}/"

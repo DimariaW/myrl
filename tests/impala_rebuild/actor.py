@@ -15,7 +15,6 @@ class ActorCreate(core.ActorCreateBase):
         env = gym.make("LunarLander-v2")
         env = env_wrapper.ScaleReward(env, 1/200)
         #env = env_wrapper.DictObservation(env, "feature")
-
         device = torch.device("cpu")
         model = Model(8, 4, use_orthogonal_init=True, use_tanh=False).to(device)
         agent = IMPALAAgent(model, device)
