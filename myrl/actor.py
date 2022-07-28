@@ -1,12 +1,13 @@
 import bz2
 import os
 import pickle
+import typing
 
 from myrl.agent import Agent
 import myrl.connection as connection
 
 from tensorboardX import SummaryWriter
-from typing import Callable, Tuple, List, Dict, Union
+from typing import Optional, Tuple, List, Dict, Union, Any
 import logging
 import multiprocessing as mp
 
@@ -19,25 +20,30 @@ __all__ = ["Actor", "ActorCreateBase", "open_gather"]
 
 class Actor:
     def __init__(self, env, agent: Agent,
-                 steps: int = 50,
+                 num_steps: int = 0,
+                 num_episodes: int = 0,
                  get_full_episode: bool = False,
                  tensorboard_dir: str = None
                  ):
         """
-        steps 和 get_full_episode 共同控制一次采样的长度
+        一次采样至少num_steps步，
+        至少采样num_episodes个完整的episode,在steps步之后，
+        若get_full_episode等于True,继续采样一个完整的episode
 
         :param env:   gym api
         :param agent: 接受batched np.array 作为输入, 返回action_info, 其中必须有action字段
-        :param steps: 采用当前模型采样steps步
+        :param num_steps: 采用当前模型采样num_steps步
+        :param num_episodes: 采样num_episodes个完整的episode
         :param get_full_episode: 若采样steps步之后，继续采样一定步数直到当前episode结束
         """
         self.env = env
         self.agent = agent
 
-        self.steps = steps
+        self.num_steps = num_steps
+        self.num_episodes = num_episodes
         self.get_full_episode = get_full_episode
 
-        self.num_episodes = 0
+        self.total_episodes = 0
 
         if tensorboard_dir is not None:
             self.sw = SummaryWriter(logdir=tensorboard_dir)
@@ -50,12 +56,13 @@ class Actor:
 
         self.episodes_infos = defaultdict(list)
 
-    def sample(self, model_id=None):
+    def sample(self, model_id=None) -> List[Dict[str, Any]]:
         # episode generation
+        num_episodes = 0
         episode = []
         step = 0
 
-        while step < self.steps or (not self.done and self.get_full_episode):
+        while step < self.num_steps or num_episodes < self.num_episodes or (not self.done and self.get_full_episode):
 
             moment = dict()
             moment['observation'] = self.obs
@@ -66,57 +73,63 @@ class Actor:
             for key, value in action_info.items():
                 moment[key] = value[0]
 
-            self.obs, reward, self.done, info = self.env.step(moment['action'])
+            self.obs, reward_info, self.done, info = self.env.step(moment['action'])
             step += 1
 
-            moment["reward"] = reward
+            moment["reward_info"] = reward_info
             moment["done"] = self.done
 
             episode.append(moment)
 
             self.current_episode_infos["steps"] += 1
-            self.current_episode_infos["reward"] += reward
+            for key, value in reward_info.items():
+                self.current_episode_infos[key] += value
 
             if self.done:
                 self._record_update_and_reset_when_done(info, model_id)
 
-                if step >= self.steps:
+                num_episodes += 1
+                if step >= self.num_steps and num_episodes >= self.num_episodes:
                     break
 
         return episode
 
-    def predict(self, model_id=None):
+    def predict(self, model_id=None) -> None:
+        num_episodes = 0
         step = 0
-        while step < self.steps or (not self.done and self.get_full_episode):
+
+        while step < self.num_steps or num_episodes < self.num_episodes or (not self.done and self.get_full_episode):
 
             action_info = self.agent.predict(batchify([self.obs], unsqueeze=0))
 
-            self.obs, reward, self.done, info = self.env.step(action_info['action'][0])
+            self.obs, reward_info, self.done, info = self.env.step(action_info['action'][0])
 
             step += 1
 
             self.current_episode_infos["steps"] += 1
-            self.current_episode_infos["reward"] += reward
+            for key, value in reward_info.items():
+                self.current_episode_infos[key] += value
 
             if self.done:
                 self._record_update_and_reset_when_done(info, model_id)
 
-                if step >= self.steps:
+                num_episodes += 1
+                if step >= self.num_steps and num_episodes >= self.num_episodes:
                     break
         return
 
-    def _record_update_and_reset_when_done(self, ending_info, model_id):
+    def _record_update_and_reset_when_done(self, ending_info, model_id=None):
         """
         1. record according to num_episodes, current_episode_infos and ending_info
         """
-        self.num_episodes += 1
-        logging.info(f"num_episodes is : {self.num_episodes}, "
+        self.total_episodes += 1
+        logging.info(f"num_episodes is : {self.total_episodes}, "
                      f"current episode_infos is : {self.current_episode_infos}, "
                      f"ending info is {ending_info}")
 
         if hasattr(self, "sw"):
             for key, value in self.current_episode_infos.items():
-                self.sw.add_scalar(key, value, self.num_episodes)
+                self.sw.add_scalar(key, value, self.total_episodes)
         """
         2. update episodes_infos according to current_episode_infos and model_index
         """
@@ -134,15 +147,40 @@ class Actor:
         self.current_episode_infos = defaultdict(lambda: 0)
 
 
+#%%
 """
-actor_client and gather communication protocol:
-cmd           args                       explanation
+actor_client and gather communication protocol
+
+actor_client send data format (id:int, (cmd:str, data:Any))
+actor_client receive data format (cmd:str, data:Any)
+
+actor_client and gather communication data type:
+cmd           model                       explanation
 model         None      
 model         (model_index, weights) 
-episode       (model_index, raw_episode)
+episodes      (model_index, raw_episode)
 sample_infos  Dict[metric, value_list]
 eval_infos    Dict[metric, value_list]
+
+
+actor_client logic:
+  request and receive weights (uncompress?)
+  sample or predict (send episodes when sample)
+  send episodes_infos when necessary.
+
+gather logic:
+   request and receive weights from league
+   send weight num_actor times
+   cache episodes and episodes_infos and send to server
 """
+
+
+def send_with_sender_id_and_receive(queue_sender: mp.Queue, queue_receiver: mp.Queue,
+                                    sender_id: int, data: Tuple[str, Any],
+                                    block: bool = True, timeout: float = None) -> Tuple[str, Any]:
+    queue_sender.put((sender_id, data), block=block, timeout=timeout)
+    cmd, data = queue_receiver.get()
+    return cmd, data
 
 
 class ActorClient:
@@ -182,12 +220,12 @@ class ActorClient:
             self.actor.predict(model_id)
 
             if len(self.actor.episodes_infos["model_id"]) >= send_infos_length:
-                cmd, msg = connection.send_with_sender_id_and_receive(self.queue_actor2gather,
-                                                                      self.queue_gather2actor,
-                                                                      self.actor_id,
-                                                                      ("eval_infos", self.actor.episodes_infos))
+                cmd, msg = send_with_sender_id_and_receive(self.queue_actor2gather,
+                                                           self.queue_gather2actor,
+                                                           self.actor_id,
+                                                           ("eval_infos", self.actor.episodes_infos))
                 self.actor.episodes_infos.clear()
-                logging.debug(f"{cmd}_{msg}")
+                logging.debug(f"{cmd} response: {msg}")
 
     def _run_sampler(self):
         send_infos_length = 5
@@ -199,28 +237,29 @@ class ActorClient:
             if self.use_bz2:
                 episode = bz2.compress(pickle.dumps(episode))
 
-            cmd, msg = connection.send_with_sender_id_and_receive(self.queue_actor2gather,
-                                                                  self.queue_gather2actor,
-                                                                  self.actor_id,
-                                                                  ("episodes", (model_id, episode)))
+            cmd, msg = send_with_sender_id_and_receive(self.queue_actor2gather,
+                                                       self.queue_gather2actor,
+                                                       self.actor_id,
+                                                       ("episodes", (model_id, episode)))
 
-            logging.debug(f"{cmd}_{msg}")  # cmd, msg
+            logging.debug(f"{cmd} response: {msg}")  # cmd, msg
 
             if len(self.actor.episodes_infos["model_id"]) >= send_infos_length:
-                cmd, msg = connection.send_with_sender_id_and_receive(self.queue_actor2gather,
-                                                                      self.queue_gather2actor,
-                                                                      self.actor_id,
-                                                                      ("sample_infos", self.actor.episodes_infos))
+                cmd, msg = send_with_sender_id_and_receive(self.queue_actor2gather,
+                                                           self.queue_gather2actor,
+                                                           self.actor_id,
+                                                           ("sample_infos", self.actor.episodes_infos))
                 self.actor.episodes_infos.clear()
-                logging.debug(f"{cmd}_{msg}")
+                logging.debug(f"{cmd} response: {msg}")
 
     def _request_weights_and_set(self):
         """
         1. request weights
         """
-        cmd, (model_id, weights) = connection.send_with_sender_id_and_receive(self.queue_actor2gather,
-                                                                              self.queue_gather2actor,
-                                                                              self.actor_id, ("model", None))
+        cmd, (model_id, weights) = send_with_sender_id_and_receive(self.queue_actor2gather,
+                                                                   self.queue_gather2actor,
+                                                                   self.actor_id, ("model", None))
+
         logging.debug(f"successfully request model weights {model_id}")
         """
         2. decompress? and set weights
@@ -231,19 +270,36 @@ class ActorClient:
         self.actor.agent.set_weights(weights)
 
         return model_id
+#%%
+
+
+"""
+API Class
+"""
 
 
 class ActorCreateBase:
-    def __init__(self, logger_file_dir: str = None, steps: int = None):
+    def __init__(self, num_steps: int = 50, num_episodes: int = 0, get_full_episode: bool = False,
+                 logger_file_dir: str = None,):
         """
         the class of create actor and run sampling or predicting.
         the user should inherit this class and implement create_env_and_agent.
         :param logger_file_dir: the logger file directory
-        :param steps: the sample steps of each actor, when the actor role is evaluator, this parameter will be ignored
+        :param num_steps: the sample steps of each actor, when the actor role is evaluator,
+                          this parameter will be ignored
+        :param num_episodes: the episodes num of each actor, when the actor role is evaluator,
+                             this parameter will be ignored
+        :param get_full_episode: the flag of whether to get full episode of each actor,
+                                 when the actor role is evaluator,
+                                 this parameter will be ignored
         """
+
         self.logger_file_dir = logger_file_dir
         self.logger_file_path = None
-        self.steps = steps
+
+        self.num_steps = num_steps
+        self.num_episodes = num_episodes
+        self.get_full_episode = get_full_episode
 
     def __call__(self, infos: Tuple[int, int, str, bool], queue_gather2actor: mp.Queue, queue_actor2gather: mp.Queue):
         gather_id, actor_id, actor_role, use_bz2 = infos
@@ -258,13 +314,22 @@ class ActorCreateBase:
         env, agent = self.create_env_and_agent(gather_id, actor_id)
 
         if actor_role == "sampler":
-            actor = Actor(env, agent, steps=self.steps, get_full_episode=False)  # 每次采样step步
+            actor = Actor(env, agent,
+                          num_steps=self.num_steps,
+                          num_episodes=self.num_episodes,
+                          get_full_episode=self.get_full_episode)
+
             actor_client = ActorClient(actor_id=actor_id, role=actor_role, actor=actor,
                                        queue_gather2actor=queue_gather2actor, queue_actor2gather=queue_actor2gather,
                                        use_bz2=use_bz2)
             actor_client.run()
+
         elif actor_role == "evaluator":
-            actor = Actor(env, agent, steps=-1, get_full_episode=True)  # 每次采样一个episode
+            actor = Actor(env, agent,
+                          num_steps=0,
+                          num_episodes=5,
+                          get_full_episode=True)  # 每次采样5个episode
+
             actor_client = ActorClient(actor_id=actor_id, role=actor_role, actor=actor,
                                        queue_gather2actor=queue_gather2actor, queue_actor2gather=queue_actor2gather,
                                        use_bz2=use_bz2)
@@ -274,16 +339,28 @@ class ActorCreateBase:
         raise NotImplementedError
 
 
+#%%
+
+def send(queue_sender: mp.Queue, data: Tuple[str, Any],
+         block: bool = True, timeout: float = None):
+    queue_sender.put(data, block=block, timeout=timeout)
+
+
 class Gather:
     def __init__(self,
                  gather_id: int,
-                 memory_server_conn: connection.PickledConnection,
-                 league_conn: connection.PickledConnection,
                  num_actors: int,
                  actor_role: str,  # Literal["sampler", "evaluator"]
+                 league_conn: connection.PickledConnection,
+                 memory_server_conn: Optional[connection.PickledConnection],
                  func: ActorCreateBase,
                  use_bz2=True):
         super().__init__()
+
+        assert(actor_role in ["sampler", "evaluator"])
+        if actor_role == "sampler" and memory_server_conn is None:
+            raise ValueError("sampler actor must designate memory_server_conn that used to receive episodes")
+
         self.gather_id = gather_id
 
         self.memory_server_conn = memory_server_conn  # send episodes and sample_infos
@@ -333,10 +410,10 @@ class Gather:
 
             if command == "model":
 
-                if self.num_sent_weights > self.max_num_sent_weights:
+                if self.num_sent_weights >= self.max_num_sent_weights:
                     self._request_weights_and_reset()
 
-                connection.send(self.queue_gather2actors[actor_id], (command, (self.model_id, self.weights)))
+                send(self.queue_gather2actors[actor_id], (command, (self.model_id, self.weights)))
                 self.num_sent_weights += 1
 
             elif command == "episodes":
@@ -347,7 +424,7 @@ class Gather:
                     logging.debug(connection.send_recv(self.memory_server_conn, ("episodes", self.episodes)))
                     self.episodes.clear()
 
-                connection.send(self.queue_gather2actors[actor_id], (command, "successfully send episodes"))
+                send(self.queue_gather2actors[actor_id], (command, "successfully receive episodes"))
 
             elif command == "sample_infos":
                 for key, value in data.items():
@@ -357,7 +434,7 @@ class Gather:
                     logging.debug(connection.send_recv(self.memory_server_conn, ("sample_infos", self.infos)))
                     self.infos.clear()
 
-                connection.send(self.queue_gather2actors[actor_id], (command, "successfully send sample_infos"))
+                send(self.queue_gather2actors[actor_id], (command, "successfully receive sample_infos"))
 
             elif command == "eval_infos":
 
@@ -368,7 +445,7 @@ class Gather:
                     logging.debug(connection.send_recv(self.league_conn, ("eval_infos", self.infos)))
                     self.infos.clear()
 
-                connection.send(self.queue_gather2actors[actor_id], (command, "successfully send eval_infos"))
+                send(self.queue_gather2actors[actor_id], (command, "successfully receive eval_infos"))
 
     def _request_weights_and_reset(self):
         if self.actor_role == "sampler":
@@ -387,30 +464,65 @@ class Gather:
 
 
 def _open_per_gather(gather_id: int,
-                     memory_server_address: Tuple[str, int],
+                     memory_server_address: Optional[Tuple[str, int]],
                      league_address: Tuple[str, int],
                      num_actors: int, actor_role: str,
                      func: ActorCreateBase,
                      use_bz2: bool,
                      logger_file_path: str):
 
+    assert (actor_role in ["sampler", "evaluator"])
+    if actor_role == "sampler" and memory_server_address is None:
+        raise ValueError("sampler actor must designate memory_server_address that used to receive episodes")
+
     set_process_logger(file_path=logger_file_path)
-    memory_server_conn = connection.connect_socket_connection(*memory_server_address)
+
+    if memory_server_address is not None:
+        memory_server_conn = connection.connect_socket_connection(*memory_server_address)
+    else:
+        memory_server_conn = None
+
     league_conn = connection.connect_socket_connection(*league_address)
 
-    logging.info(f"successfully connected! the gather {gather_id} is started!")
-    Gather(gather_id=gather_id, memory_server_conn=memory_server_conn, league_conn=league_conn,
-           num_actors=num_actors, actor_role=actor_role, func=func, use_bz2=use_bz2).run()
+    logging.info(f"successfully connected! the gather {gather_id} is starting!")
+
+    gather = Gather(gather_id=gather_id, memory_server_conn=memory_server_conn, league_conn=league_conn,
+                    num_actors=num_actors, actor_role=actor_role, func=func, use_bz2=use_bz2)
+
+    logging.info(f"gather {gather_id} is started!")
+
+    gather.run()
 
 
-def open_gather(memory_server_address: Tuple[str, int],
-                league_address: Tuple[str, int],
-                num_gathers: int,
+AddrType = Tuple[str, int]
+
+
+def open_gather(num_gathers: int,
+                memory_server_address: Union[AddrType, List[AddrType], Tuple[AddrType]],
+                league_address: Union[AddrType, List[AddrType], Tuple[AddrType]],
                 num_actors: Union[int, List[int], Tuple[int]],
                 actor_roles: Union[str, List[str], Tuple[str]],
                 func: ActorCreateBase,
                 use_bz2: bool = True,
                 logger_file_dir=None):
+    """
+
+    :param num_gathers:
+    :param memory_server_address:
+    :param league_address:
+    :param num_actors:
+    :param actor_roles:
+    :param func:
+    :param use_bz2:
+    :param logger_file_dir:
+    :return:
+    """
+
+    if isinstance(memory_server_address[0], str):
+        memory_server_address = [memory_server_address] * num_gathers
+
+    if isinstance(league_address[0], str):
+        league_address = [league_address] * num_gathers
 
     if isinstance(num_actors, int):
         num_actors = [num_actors] * num_gathers
@@ -420,12 +532,17 @@ def open_gather(memory_server_address: Tuple[str, int],
 
     mp.set_start_method("spawn")
     processes = []
+
     for i in range(num_gathers):
+        if logger_file_dir is not None:
+            logger_file_path = os.path.join(logger_file_dir, f"gather_{i}.txt")
+        else:
+            logger_file_path = None
         p = mp.Process(name=f"gather_{i}",
                        target=_open_per_gather,
-                       args=(i, memory_server_address, league_address,
+                       args=(i, memory_server_address[i], league_address[i],
                              num_actors[i], actor_roles[i],
-                             func, use_bz2, os.path.join(logger_file_dir, f"gather_{i}.txt")), daemon=False)
+                             func, use_bz2, logger_file_path), daemon=False)
         processes.append(p)
 
     for p in processes:

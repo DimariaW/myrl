@@ -7,8 +7,10 @@ from tqdm import tqdm
 utils.set_process_logger()
 env, agent = ActorCreate().create_env_and_agent()
 env.render()
-agent.set_weights(np.load("./easy_model/model_346346.npy", allow_pickle=True).item())
+#agent.set_weights(np.load("./easy_model/model_346346.npy", allow_pickle=True).item())
+agent.set_weights(np.load("./hard_model/model_80031.npy", allow_pickle=True).item())
 
+rewards = []
 reward = 0
 obs = env.reset()
 
@@ -20,5 +22,6 @@ while True:
     reward += rew
     if done:
         obs = env.reset()
-        logging.info(reward)
+        rewards.append(reward)
+        reward = 0
 

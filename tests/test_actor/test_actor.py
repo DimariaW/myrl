@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import envs.env_wrapper as env_wrapper
 import gym
 
-from myrl.agent import IMPALAAgent, PGAgent
+from myrl.agent import IMPALAAgent, ACAgent
 from myrl.model import Model
 from myrl.actor import Actor
 from myrl.utils import set_process_logger
@@ -37,25 +37,23 @@ if __name__ == "__main__":
     set_process_logger()
     env = env_wrapper.ScaleReward(gym.make("LunarLander-v2"), scale_factor=1/200)
     env = env_wrapper.DictObservation(env, key="state")
+    env = env_wrapper.DictReward(env)
     obs_dim = env.observation_space.shape[0]
     num_acts = env.action_space.n
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = DuelNet(obs_dim, num_acts).to(device)
     #agent = IMPALAAgent(model, device)
-    agent = PGAgent(model, device)
-    actor = Actor(env, agent, steps=-1, get_full_episode=True)
+    agent = ACAgent(model, device)
 
-    for _ in range(5):
+    actor = Actor(env, agent, num_steps=0, num_episodes=2, get_full_episode=True)
+
+    for _ in range(2):
         episode = actor.sample(model_id=0)
-        episode1 = actor.sample(model_id=0)
-        episode2 = actor.sample(model_id=0)
 
     infos = actor.episodes_infos
 
-    for _ in range(5):
-        actor.predict(model_id=1)
-        actor.predict(model_id=1)
+    for _ in range(2):
         actor.predict(model_id=1)
 
     infos = actor.episodes_infos

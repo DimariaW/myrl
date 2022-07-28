@@ -1,20 +1,19 @@
 # Copyright (c) 2020 DeNA Co., Ltd.
 # Licensed under The MIT License [see LICENSE for details]
 import io
-import sys
 import os
-import time
 import struct
 import socket
 import pickle
 import threading
 import queue
 import multiprocessing as mp
-import traceback
+
 from typing import Callable, Iterator, Tuple, Any, Union
 import logging
 
 import torch
+import torch.multiprocessing as torch_mp
 
 import myrl.utils as utils
 
@@ -136,7 +135,7 @@ class QueueCommunicatorBase:
     def connection_count(self):
         return len(self.conns)
 
-    def recv(self, timeout=None):
+    def recv(self, timeout=None) -> Tuple[PickledConnection, Tuple[str, Any]]:
         return self.input_queue.get(timeout=timeout)
 
     def send(self, conn: PickledConnection, send_data: Tuple[str, Any]):  # send_data (cmd, args or data)
@@ -222,176 +221,11 @@ class QueueCommunicator(QueueCommunicatorBase):
                 break
 
 #%%
-"""
-this part have been deprecated because the pipe may cause some unreasonable error
-"""
 
 
-def open_multiprocessing_connections_deprecated(num_process, target, args_func):
-    # open connections
-    s_conns, g_conns = [], []
-    for _ in range(num_process):
-        conn0, conn1 = mp.connection.Pipe(duplex=True)
-        s_conns.append(conn0)
-        g_conns.append(conn1)
-
-    # open workers
-    for i, conn in enumerate(g_conns):
-        mp.Process(target=target, args=args_func(i, conn)).start()
-        conn.close()
-
-    return s_conns
-
-
-def wrapped_func_deprecated(func: Callable, conn, logger_file_path=None, file_level=logging.DEBUG):
-    try:
-        utils.set_process_logger(file_path=logger_file_path, file_level=file_level)
-        total_sent = 0
-        while True:
-            data = conn.recv()
-            beg = time.time()
-            data = func(data)
-            time.sleep(max(0.01, 0.1 - (time.time()-beg)))
-            conn.send((data, 1))
-            total_sent += 1
-            logging.debug(f"successfully send data counts is : {total_sent}")
-    except Exception:
-        traceback.print_exc(file=open(logger_file_path, "a") if logger_file_path is not None else sys.stderr)
-        raise
-
-
-class MultiProcessJobExecutorsDeprecated:
-    def __init__(self,
-                 func: Callable,
-                 send_generator: Iterator,
-                 num: int,
-                 postprocess: Callable = None,
-                 buffer_length: int = 8,
-                 num_receivers: int = 1,
-                 name_prefix: str = None,
-                 logger_file_path: str = None,
-                 file_level=logging.DEBUG
-                 ):
-        """
-
-        :param func:
-        :param send_generator:
-        :param num:
-        :param postprocess:
-        :param buffer_length:
-        :param num_receivers:
-        :param logger_file_path:
-        :param file_level:
-
-        launch num process, each process return func(next(send_generator)) to a queue,
-        the main process can use queue.get() to get the results,
-
-        the buffer_length is the total data can be sent ahead of receiving.
-        the num_receivers control how many receiver thread can be launched.
-
-        each job executors have a process name: f"{name_prefix}_{i}"
-        the logging info will be written in to logger_file_path.
-        """
-        self.send_generator = send_generator
-        self.postprocess = postprocess
-        self.buffer_length = buffer_length
-        self.num_receivers = num_receivers
-        self.conns = []
-        self.send_cnt = {}
-        self.shutdown_flag = False
-        self.lock = threading.Lock()
-        self.output_queue = queue.Queue(maxsize=8)
-        self.threads = []
-        self.name_prefix = name_prefix
-        self.logger_file_path = logger_file_path
-        self.file_level = file_level
-
-        for i in range(num):
-            conn0, conn1 = mp.Pipe(duplex=True)
-            mp.Process(name=f"{name_prefix}-{i}",
-                       target=wrapped_func_deprecated,
-                       args=(func, conn1, logger_file_path, file_level), daemon=True).start()
-            conn1.close()
-            self.conns.append(conn0)
-            self.send_cnt[conn0] = 0
-
-    def shutdown(self):
-        self.shutdown_flag = True
-        for thread in self.threads:
-            thread.join()
-
-    def recv(self):
-        return self.output_queue.get()
-
-    def start(self):
-        self.threads.append(threading.Thread(name="sender thread", target=self._sender, daemon=True))
-        for i in range(self.num_receivers):
-            self.threads.append(threading.Thread(name=f"receiver thread {i}",
-                                                 target=self._receiver,
-                                                 args=(i,),
-                                                 daemon=True))
-        for thread in self.threads:
-            thread.start()
-
-    def _sender(self):
-        logging.info("start send data")
-        while not self.shutdown_flag:
-            total_send_cnt = 0
-            for conn, cnt in self.send_cnt.items():
-                if cnt < self.buffer_length:
-                    conn.send(next(self.send_generator))
-                    self.lock.acquire()
-                    self.send_cnt[conn] += 1
-                    self.lock.release()
-                    total_send_cnt += 1
-            if total_send_cnt == 0:
-                time.sleep(0.01)
-        logging.info('finished sender')
-
-    def _receiver(self, index):
-        logging.info('start receiver %d' % index)
-        conns = [conn for i, conn in enumerate(self.conns) if i % self.num_receivers == index]
-        while not self.shutdown_flag:
-            tmp_conns = mp.connection.wait(conns)
-            for conn in tmp_conns:
-                data, cnt = conn.recv()
-
-                if self.postprocess is not None:
-                    data = self.postprocess(data)
-
-                while True:
-                    """
-                    只有成功put 数据，才修改send cnt
-                    """
-                    try:
-                        self.output_queue.put(data, timeout=0.1)
-                        self.lock.acquire()
-                        self.send_cnt[conn] -= cnt
-                        self.lock.release()
-                        break
-                    except queue.Full:
-                        logging.debug("output_queue is full, the bottleneck is the speed of learner consume batch")
-        logging.info('end receiver %d' % index)
-
-#%%
-
-
-def send_with_stop_flag(queue_sender: mp.Queue, is_stop: bool, data: Tuple[Union[int, float], Any],  # model_id
+def send_with_stop_flag(queue_sender: mp.Queue, is_stop: bool, data: Any,  # model_id
                         block: bool = True, timeout: float = None):
     queue_sender.put((is_stop, data), block=block, timeout=timeout)
-
-
-def send(queue_sender: mp.Queue, data: Tuple[str, Any],
-         block: bool = True, timeout: float = None):
-    queue_sender.put(data, block=block, timeout=timeout)
-
-
-def send_with_sender_id_and_receive(queue_sender: mp.Queue, queue_receiver: mp.Queue,
-                                    sender_id: int, data: Tuple[str, Any],
-                                    block: bool = True, timeout: float = None) -> Tuple[str, Any]:
-    queue_sender.put((sender_id, data), block=block, timeout=timeout)
-    cmd, data = queue_receiver.get()
-    return cmd, data
 
 
 class Receiver:
@@ -436,7 +270,6 @@ class TensorReceiver(Receiver):
     def recv(self):
         mean_behavior_model_id, batch = super().recv()
         return mean_behavior_model_id, utils.to_tensor(batch, unsqueeze=None, device=self.device)
-#%%
 
 
 @utils.wrap_traceback
@@ -451,13 +284,13 @@ def wrapped_func(func: Callable, queue_sender: mp.Queue, queue_receiver: mp.Queu
         is_stop, data = queue_sender.get()
         if is_stop:
             logging.info("the sender is closed, this process is going to close!")
-            queue_receiver.put((is_stop, None))
+            send_with_stop_flag(queue_receiver, is_stop, data)
             break
 
         processed_data = func(data)
         while True:
             try:
-                queue_receiver.put((is_stop, processed_data), timeout=0.1)
+                send_with_stop_flag(queue_receiver, is_stop, processed_data, timeout=0.3)
                 num_processed_data += 1
                 logging.debug(f"successfully processed data count {num_processed_data}!")
                 break
@@ -474,10 +307,10 @@ class MultiProcessJobExecutors:
                  num: int,
                  buffer_length: int = 1,
                  # 是否外部传入queue_receiver, 如果传入的话，就不开启接收进程与后处理
-                 queue_receiver: mp.Queue = None,
+                 queue_receiver: Union[mp.Queue, torch_mp.Queue] = None,
                  post_process: Callable = None,
                  # logger args
-                 name_prefix: str = None,
+                 name_prefix: str = "",
                  logger_file_dir: str = None,
                  file_level=logging.DEBUG,
                  starts_with=None
@@ -547,10 +380,10 @@ class MultiProcessJobExecutors:
             while True:
                 for queue_sender in self.queue_senders:
                     if not queue_sender.full():
-                        queue_sender.put((False, next(self.send_generator)))
+                        send_with_stop_flag(queue_sender, False, next(self.send_generator))
         except StopIteration:
             for queue_sender in self.queue_senders:
-                queue_sender.put((True, None))
+                send_with_stop_flag(queue_sender, True, None)
             logging.info("successfully send all data!")
 
     def _receiver(self):

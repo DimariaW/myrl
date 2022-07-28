@@ -4,7 +4,7 @@ import torch
 import envs.env_wrapper as env_wrapper
 import myrl.core as core
 from tests.a2c_rebuild.model import Model
-from myrl.agent import PGAgent
+from myrl.agent import ACAgent
 
 
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     env = env_wrapper.DictObservation(env, "feature")
     device = torch.device("cpu")
     model = Model(8, 4).to(device)
-    agent = PGAgent(model, device)
+    agent = ACAgent(model, device)
     actor = Actor(env, agent, steps=256, get_full_episode=True)
     episode1 = actor.sample()
     episode2 = actor.sample()

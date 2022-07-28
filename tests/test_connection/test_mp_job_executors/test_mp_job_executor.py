@@ -67,18 +67,18 @@ def receiver_process(receiver: connection.Receiver, logger_file_path=None):
 
 
 def test_multiprocess_job_executor_with_receiver():
-    mp.set_start_method("spawn")
+    #mp.set_start_method("spawn")
     log_dir = "test_multiprocess_job_executor_with_receiver"
     utils.set_process_logger(file_path=f"./log/{log_dir}/main.txt")
     queue_receiver = mp.Queue(maxsize=1)
-    worker = connection.MultiProcessJobExecutors(func, send_generator(), num=3,
+    worker = connection.MultiProcessJobExecutors(func, send_generator(), num=4,
                                                  buffer_length=3,
                                                  queue_receiver=queue_receiver,
                                                  name_prefix="work",
                                                  logger_file_dir=f"./log/{log_dir}/",
                                                  file_level=logging.DEBUG)
 
-    receiver = connection.Receiver(queue_receiver, num_sender=3)
+    receiver = connection.Receiver(queue_receiver, num_sender=4)
     mp.Process(target=receiver_process, name="receiver", args=(receiver,
                                                                f"./log/{log_dir}/receiver.txt"), daemon=True).start()
     worker.start()

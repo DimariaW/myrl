@@ -1,2 +1,0 @@
-[pid: 13512, pname: MainProcess], [tid: 19872, tname: sender thread], [Tue Jul 26 19:13:19 2022], [D:\dimaria\myrl\myrl\connection.py-527]: start send data
-[pid: 13512, pname: MainProcess], [tid: 19872, tname: sender thread], [Tue Jul 26 19:13:46 2022], [D:\dimaria\myrl\myrl\connection.py-536]: successfully send all data!

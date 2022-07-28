@@ -99,6 +99,11 @@ class ScaleRunningReward(gym.Wrapper):
         return obs, self.reward_scaler(reward), done, info
 
 
+class DictReward(gym.RewardWrapper):
+    def reward(self, reward):
+        return {"reward": reward}
+
+
 if __name__ == "__main__":
     x = np.random.randn(100, 3)
     m1 = RunningMeanStd(3)

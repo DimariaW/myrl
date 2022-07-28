@@ -70,6 +70,15 @@ def decompress_and_make_batch(episodes: List[CompressedEpisodeType]) -> Tuple[in
     return int(np.mean(model_indexes)), utils.batchify(episodes, unsqueeze=0)
 
 
+class ToTensorWrapper:
+    def __init__(self, device, func):
+        self.device = device
+        self.func = func
+
+    def __call__(self, data):
+        return utils.to_tensor(self.func(data), unsqueeze=None, device=self.device)
+
+
 class TrajList(MemoryReplayBase):
     """
     used for a2c algorithm

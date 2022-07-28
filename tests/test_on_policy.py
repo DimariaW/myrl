@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from myrl.model import Model
-from myrl.agent import PGAgent
+from myrl.agent import ACAgent
 from myrl.actor import Actor, ActorClient
 
 class DuelNet(Model):
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     worker = False
     if worker:
         device = torch.device("cpu")
-        agent = PGAgent(model, device)
+        agent = ACAgent(model, device)
         actor = Actor(env, agent, 300)
         actor_client = ActorClient(actor, "localhost", 8989)
         while True:
