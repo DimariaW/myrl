@@ -2,6 +2,7 @@
 # Licensed under The MIT License [see LICENSE for details]
 import io
 import os
+import time
 import struct
 import socket
 import pickle
@@ -13,7 +14,6 @@ from typing import Callable, Iterator, Tuple, Any, Union
 import logging
 
 import torch
-import torch.multiprocessing as torch_mp
 
 import myrl.utils as utils
 
@@ -233,9 +233,11 @@ class Receiver:
     mp.Queue通信时，sender端会发送一个is_stop标志位，通过对接收端的mp.Queue进行简单包装，可以在确保没有数据的情况下再抛出异常
     a simple wrapper on mp.Queue, that  when raise a queue.Empty exception, it means the all sender have sent all data
     """
-    def __init__(self, queue_receiver: mp.Queue, num_sender: int = -1):
+    def __init__(self, queue_receiver: mp.Queue, num_sender: int = -1, postprocess=None):
         self.queue_receiver = queue_receiver
         self.num_sender = num_sender
+        self.postprocess = postprocess
+
         self.stopped = False
         self.stopped_num = 0
 
@@ -252,31 +254,22 @@ class Receiver:
                         self.stopped = True
                     continue
 
-                return data
+                return self.postprocess(data)
 
             except queue.Empty:
                 if self.stopped:
                     raise
 
 
-class TensorReceiver(Receiver):
-    def __init__(self,
-                 queue_receiver: mp.Queue,
-                 num_sender,
-                 device=torch.device("cpu")):
-        super().__init__(queue_receiver, num_sender=num_sender)
-        self.device = device
-
-    def recv(self):
-        mean_behavior_model_id, batch = super().recv()
-        return mean_behavior_model_id, utils.to_tensor(batch, unsqueeze=None, device=self.device)
-
-
 @utils.wrap_traceback
 def wrapped_func(func: Callable, queue_sender: mp.Queue, queue_receiver: mp.Queue,
-                 logger_file_path: str = None,
-                 file_level=logging.DEBUG,
-                 starts_with=None):
+                 # 进程的logger信息
+                 logger_file_path: str = None, file_level=logging.DEBUG, starts_with=None,
+                 # 发送完数据后等待时间,
+                 # 当发送torch.Tensor且 sharing strategy 为 file descriptor (linux 平台默认) 时，
+                 # 必须等待一段时间等接收端完全接收
+                 waiting_time: int = 0
+                 ):
     utils.set_process_logger(file_path=logger_file_path, file_level=file_level, starts_with=starts_with)
     logging.info("start processing !")
     num_processed_data = 0
@@ -296,6 +289,7 @@ def wrapped_func(func: Callable, queue_sender: mp.Queue, queue_receiver: mp.Queu
                 break
             except queue.Full:
                 logging.debug(" the receive queue is full !")
+    time.sleep(waiting_time)
 
 
 class MultiProcessJobExecutors:
@@ -307,13 +301,14 @@ class MultiProcessJobExecutors:
                  num: int,
                  buffer_length: int = 1,
                  # 是否外部传入queue_receiver, 如果传入的话，就不开启接收进程与后处理
-                 queue_receiver: Union[mp.Queue, torch_mp.Queue] = None,
+                 queue_receiver: mp.Queue = None,
                  post_process: Callable = None,
                  # logger args
                  name_prefix: str = "",
                  logger_file_dir: str = None,
                  file_level=logging.DEBUG,
-                 starts_with=None
+                 starts_with=None,
+                 waiting_time=0
                  ):
         """
         launch num process each process return func(next(send_generator)) to a queue,
@@ -388,7 +383,7 @@ class MultiProcessJobExecutors:
 
     def _receiver(self):
         logging.info('start receiver')
-        receiver = Receiver(self.queue_receiver, num_sender=self.num)
+        receiver = Receiver(self.queue_receiver, num_sender=self.num, postprocess=self.post_process)
         while True:
             try:
                 data = receiver.recv()
@@ -396,9 +391,6 @@ class MultiProcessJobExecutors:
                 logging.info("successfully receive all data!")
                 self.stopped = True
                 break
-
-            if self.post_process is not None:
-                data = self.post_process(data)
 
             while True:
                 """

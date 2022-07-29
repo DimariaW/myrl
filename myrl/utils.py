@@ -3,7 +3,6 @@ import torch
 import logging
 from functools import wraps
 import traceback
-import sys
 import os
 from typing import Union, List, Dict, Tuple
 
@@ -77,22 +76,27 @@ def wrap_traceback(func):
 
 
 def to_tensor(x: Union[List, Dict, Tuple, np.ndarray, torch.Tensor], unsqueeze=None, device=torch.device("cpu")):
-    if isinstance(x, (list, tuple)):
-        return type(x)(to_tensor(xx, unsqueeze, device) for xx in x)
-    elif isinstance(x, dict):
-        return type(x)((key, to_tensor(xx, unsqueeze, device)) for key, xx in x.items())
-    elif isinstance(x, np.ndarray):
-        if x.dtype in [np.int32, np.int64]:
-            t = torch.from_numpy(x).type(torch.int64).to(device)
-        else:
-            t = torch.from_numpy(x).type(torch.float32).to(device)
-        return t if unsqueeze is None else t.unsqueeze(unsqueeze)
-    elif isinstance(x, torch.Tensor):
+    if isinstance(x, torch.Tensor):
         if x.dtype in [torch.int32, torch.int64]:
             t = x.type(torch.int64).to(device)
         else:
             t = x.type(torch.float32).to(device)
         return t if unsqueeze is None else t.unsqueeze(unsqueeze)
+
+    elif isinstance(x, (list, tuple)):
+        return type(x)(to_tensor(xx, unsqueeze, device) for xx in x)
+
+    elif isinstance(x, dict):
+        return type(x)((key, to_tensor(xx, unsqueeze, device)) for key, xx in x.items())
+
+    elif isinstance(x, np.ndarray):
+        if x.dtype in [np.int32, np.int64]:
+            t = torch.from_numpy(x).type(torch.int64).to(device)
+        else:
+            t = torch.from_numpy(x).type(torch.float32).to(device)
+
+        return t if unsqueeze is None else t.unsqueeze(unsqueeze)
+
     else:
         raise NotImplementedError(f"do not support convert type: {type(x)} to tensor")
 
