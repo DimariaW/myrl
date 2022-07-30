@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import logging
 
-from myrl.model import Model
+import myrl.model as model
 
 
 # orthogonal init
@@ -11,8 +11,8 @@ def orthogonal_init(layer, gain=1.0):
     nn.init.constant_(layer.bias, 0)
 
 
-class Model(Model):
-    def __init__(self, state_dim: int, num_act: int, use_orthogonal_init=True, use_tanh=True):
+class Model(model.Model):
+    def __init__(self, state_dim: int, num_act: int, use_orthogonal_init=True, use_tanh=False):
         super().__init__()
         self.fc1 = nn.Linear(state_dim, 64)
         self.fc2 = nn.Linear(64, 64)
@@ -29,10 +29,9 @@ class Model(Model):
             self.act_fn = nn.ReLU()
 
     def forward(self, obs):
-        feature = obs["feature"]
-        h1 = self.act_fn(self.fc1(feature))
+        h1 = self.act_fn(self.fc1(obs))
         h2 = self.act_fn(self.fc2(h1))
         output = self.fc3(h2)
 
-        return output[..., 0], output[..., 1:]  # value and logit, value 的最后一维度需要squeeze
+        return {"reward": output[..., 0]}, output[..., 1:]  # value and logit, value 的最后一维度需要squeeze
 

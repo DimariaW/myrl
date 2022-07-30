@@ -101,7 +101,7 @@ class ScaleRunningReward(gym.Wrapper):
 
 class DictReward(gym.RewardWrapper):
     def reward(self, reward):
-        return {"default": reward}
+        return {"reward": reward}
 
 
 if __name__ == "__main__":

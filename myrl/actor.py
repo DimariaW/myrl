@@ -498,7 +498,7 @@ AddrType = Tuple[str, int]
 
 
 def open_gather(num_gathers: int,
-                memory_server_address: Union[AddrType, List[AddrType], Tuple[AddrType]],
+                memory_server_address: Union[Optional[AddrType], List[Optional[AddrType]], Tuple[Optional[AddrType]]],
                 league_address: Union[AddrType, List[AddrType], Tuple[AddrType]],
                 num_actors: Union[int, List[int], Tuple[int]],
                 actor_roles: Union[str, List[str], Tuple[str]],
@@ -517,6 +517,8 @@ def open_gather(num_gathers: int,
     :param logger_file_dir:
     :return:
     """
+    if memory_server_address is None:
+        memory_server_address = [None] * num_gathers
 
     if isinstance(memory_server_address[0], str):
         memory_server_address = [memory_server_address] * num_gathers

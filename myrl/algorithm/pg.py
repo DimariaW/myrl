@@ -8,7 +8,7 @@ from myrl.connection import send_with_stop_flag, Receiver
 import logging
 import multiprocessing as mp
 from tensorboardX import SummaryWriter
-from typing import Dict, Union, Callable, Any, Tuple, List
+from typing import Dict, Union, Callable, Any, Tuple, List, Optional
 
 """
 class PG(Algorithm):
@@ -282,8 +282,9 @@ class IMPALA(A2C):
     """
     def __init__(self, model: Union[Model, Callable[[Any], Tuple[Dict[str, torch.Tensor], torch.Tensor]]],
                  tensor_receiver: Receiver,
+                 vtrace_key: List[str],
                  lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3,
-                 upgo_key: str = None,
+                 upgo_key: Optional[List[str]] = None,
                  queue_senders: List[mp.Queue] = None,
                  tensorboard_dir: str = None):
         super().__init__(model, tensor_receiver,
@@ -291,6 +292,7 @@ class IMPALA(A2C):
                          queue_senders,
                          tensorboard_dir)
         self.upgo_key = upgo_key
+        self.vtrace_key = vtrace_key
 
     def learn(self):
         self.model.train()
@@ -324,7 +326,7 @@ class IMPALA(A2C):
         actor_loss = 0
         critic_loss = 0
 
-        for key in value_infos.keys():
+        for key in self.vtrace_key:
             value = value_infos[key]
             value_nograd = value.detach()
             reward = reward_infos[key]
@@ -346,20 +348,21 @@ class IMPALA(A2C):
             critic_losses[key+"_critic_loss"] = critic_loss_local.item()
 
         if self.upgo_key is not None:
-            value = value_infos[self.upgo_key]
-            value_nograd = value.detach()
-            reward = reward_infos[self.upgo_key]
+            for key in self.upgo_key:
+                value = value_infos[key]
+                value_nograd = value.detach()
+                reward = reward_infos[key]
 
-            upgo_adv, upgo_value = self.upgo(value_nograd[:, :-1], reward[:, :-1],
-                                             gamma=self.gamma, lbd=1, done=done[:, :-1],
-                                             bootstrap_value=value_nograd[:, -1])
+                upgo_adv, upgo_value = self.upgo(value_nograd[:, :-1], reward[:, :-1],
+                                                 gamma=self.gamma, lbd=1, done=done[:, :-1],
+                                                 bootstrap_value=value_nograd[:, -1])
 
-            logging.debug(f" upgo_adv is {torch.mean(upgo_adv)}")
-            logging.debug(f" upgo_value is {torch.mean(upgo_value)}")
+                logging.debug(f" upgo_adv is {torch.mean(upgo_adv)}")
+                logging.debug(f" upgo_value is {torch.mean(upgo_value)}")
 
-            actor_loss_local = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * upgo_adv)
-            actor_loss += actor_loss_local
-            actor_losses[self.upgo_key+"_upgo"] = actor_loss_local.item()
+                actor_loss_local = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * upgo_adv)
+                actor_loss += actor_loss_local
+                actor_losses[key+"_upgo"] = actor_loss_local.item()
 
         entropy = torch.sum(torch.distributions.Categorical(logits=action_logit).entropy())
 

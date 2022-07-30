@@ -1,33 +1,44 @@
 import torch
 import multiprocessing as mp
-
+import os
 import myrl.core as core
-import myrl.memory as mr
+
+import myrl.memory as mem
 import myrl.algorithm as alg
 import myrl.league as lg
 
 from tests.a2c_rebuild.model import Model
 
 
-class MemoryReplay(core.MemoryReplayMainBase):
-    def main(self, queue_receiver: mp.Queue):
-        traj_list = mr.TrajList(queue_receiver)
-        memory_server = mr.MemoryServer(traj_list, 7777, actor_num=10, tensorboard_dir=self.logger_file_dir)
+class MemoryMain(core.MemoryMainBase):
+    def main(self, queue_sender: mp.Queue):
+        traj_list = mem.TrajList(queue_sender, use_bz2=False)
+        memory_server = mem.MemoryServer(traj_list, self.port, actor_num=4,
+                                         tensorboard_dir=os.path.join(self.logger_file_dir, "sample_reward"))
         memory_server.run_sync()
 
 
 class LearnerMain(core.LearnerMainBase):
-    def main(self, queue_receiver: mp.Queue, queue_sender: mp.Queue):
+    def main(self, queue_receiver: mp.Queue, queue_senders):
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        memory_replay = self.create_tensor_receiver(queue_receiver, device=device)
-        model = Model(8, 4, use_orthogonal_init=True, use_tanh=True)
-        a2c = alg.A2C(model, memory_replay,
-                      lr=2e-3, gamma=0.99, lbd=0.98, vf=0.5, ef=1e-2,
-                      queue_sender=queue_sender, tensorboard_dir=self.logger_file_dir)
+        tensor_receiver = self.create_receiver(queue_receiver, device=device)
+        model = Model(8, 4, use_orthogonal_init=True, use_tanh=False).to(device)
+        a2c = alg.A2C(model, tensor_receiver,
+                      lr=2e-4, gamma=0.99, lbd=0.98, vf=0.5, ef=1e-4,
+                      queue_senders=queue_senders,
+                      tensorboard_dir=os.path.join(self.logger_file_dir, "train_info"))
         a2c.run()
 
 
 class LeagueMain(core.LeagueMainBase):
-    def main(self, queue_sender: mp.Queue):
-        league = lg.League(7778, actor_num=10, queue_sender=queue_sender, save_dir=self.logger_file_dir, save_intervals=10)
-        league.run()
+    def main(self, queue_receiver: mp.Queue):
+        queue_receiver = self.create_receiver(queue_receiver)
+        league = lg.League(queue_receiver=queue_receiver,
+                           port=self.port, num_actors=4,
+                           model_weights_cache_intervals=1,
+                           model_weights_save_dir=os.path.join(self.logger_file_dir, "model"),
+                           model_weights_save_intervals=1000,
+                           use_bz2=False,
+                           tensorboard_dir=os.path.join(self.logger_file_dir, "eval_info"))
+        league.run_sync()
+
