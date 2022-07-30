@@ -73,16 +73,16 @@ class Actor:
             for key, value in action_info.items():
                 moment[key] = value[0]
 
-            self.obs, reward_info, self.done, info = self.env.step(moment['action'])
+            self.obs, reward_infos, self.done, info = self.env.step(moment['action'])
             step += 1
 
-            moment["reward_info"] = reward_info
+            moment["reward_infos"] = reward_infos
             moment["done"] = self.done
 
             episode.append(moment)
 
             self.current_episode_infos["steps"] += 1
-            for key, value in reward_info.items():
+            for key, value in reward_infos.items():
                 self.current_episode_infos[key] += value
 
             if self.done:
@@ -102,12 +102,12 @@ class Actor:
 
             action_info = self.agent.predict(batchify([self.obs], unsqueeze=0))
 
-            self.obs, reward_info, self.done, info = self.env.step(action_info['action'][0])
+            self.obs, reward_infos, self.done, info = self.env.step(action_info['action'][0])
 
             step += 1
 
             self.current_episode_infos["steps"] += 1
-            for key, value in reward_info.items():
+            for key, value in reward_infos.items():
                 self.current_episode_infos[key] += value
 
             if self.done:

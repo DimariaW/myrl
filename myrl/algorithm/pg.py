@@ -3,13 +3,14 @@ import torch
 
 from myrl.model import Model
 from myrl.algorithm import Algorithm
-from myrl.connection import TensorReceiver, send_with_stop_flag
+from myrl.connection import send_with_stop_flag, Receiver
 
 import logging
 import multiprocessing as mp
 from tensorboardX import SummaryWriter
+from typing import Dict, Union, Callable, Any, Tuple, List
 
-
+"""
 class PG(Algorithm):
     def __init__(self, model: Model, mr, lr: float = 2e-3, gamma: float = 0.99):
         super().__init__()
@@ -55,7 +56,8 @@ class PG(Algorithm):
                              gamma: float,
                              done: torch.Tensor,
                              bootstrap_value: torch.Tensor,):
-        """
+"""
+"""
         calculate loss by vanilla policy_gradient algorithm.
         now the algorithm only support episodes case
 
@@ -66,8 +68,8 @@ class PG(Algorithm):
         :param done: shape(B, T)
 
         :return: loss: torch.Tensor scalar
-        """
-
+"""
+"""
         cumulative_reward = []
         next_reward = bootstrap_value
 
@@ -81,18 +83,22 @@ class PG(Algorithm):
         cumulative_reward = torch.stack(cumulative_reward, dim=-1)  # shape(B, T)
 
         return torch.mean(-action_log_prob * cumulative_reward)
+"""
 
 
 class A2C(Algorithm):
-    def __init__(self, model: Model, tensor_receiver: TensorReceiver,
+    def __init__(self, model: Union[Model, Callable[[Any], Tuple[Dict[str, torch.Tensor], torch.Tensor]]],
+                 tensor_receiver: Receiver,
                  lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3,
-                 queue_sender: mp.Queue = None, tensorboard_dir: str = None):
+                 queue_senders: List[mp.Queue] = None, tensorboard_dir: str = None):
 
         super().__init__()
         """
-        1. usage: value, logits = model(tensor_receiver.recv()) shape(B, T, ...)
+        version: single action head, multi value head
         """
         self.model = model
+        self.model.share_memory()
+
         self.tensor_receiver = tensor_receiver
         """
         2. algorithm hyper-parameters
@@ -111,7 +117,7 @@ class A2C(Algorithm):
         """
         4. model weight mp.Queue sender
         """
-        self.queue_sender = queue_sender  # used to send model weights (np.ndarray)
+        self.queue_senders = queue_senders  # used to send model weights (np.ndarray)
         """
         tensorboard: used to log three things( A2C only log loss infos)
         - data staleness, the difference of current model index and mean behavior model index
@@ -119,7 +125,10 @@ class A2C(Algorithm):
         - loss infos, including actor loss, critic loss and entropy
         """
         self.tensorboard_dir = tensorboard_dir  # used to log loss into tensorboard
-        self.num_update = 0
+
+        self.num_update = torch.tensor(0)
+        self.num_update.share_memory_()
+
         if self.tensorboard_dir is not None:
             self.sw = SummaryWriter(logdir=self.tensorboard_dir)
 
@@ -135,41 +144,59 @@ class A2C(Algorithm):
 
         obs = batch["observation"]  # shape(B, T)
         action = batch["action"]
-        reward = batch["reward"]
+        reward_infos: Dict[str, torch.Tensor] = batch["reward_infos"]
         done = batch["done"]
 
-        value, logit = self.model(obs)  # shape(B, T), shape(B, T, action_dim)
+        value_infos, logit = self.model(obs)  # shape(B, T), shape(B, T, action_dim)
 
         entropy = torch.sum(torch.distributions.Categorical(logits=logit).entropy())
 
         action_log_probs = torch.log_softmax(logit, dim=-1)
         action_log_prob = torch.gather(action_log_probs, dim=-1, index=action.unsqueeze(-1)).squeeze(-1)  # shape(B*T)
 
-        value_nograd = value.detach()
-        adv, value_estimate = self.a2c_v1(value_nograd[:, :-1], reward[:, :-1],
-                                          self.gamma, self.lbd, done[:, :-1], value_nograd[:, -1])
+        actor_losses = {}
+        critic_losses = {}
+        actor_loss = 0
+        critic_loss = 0
 
-        # trick normalize adv mini-batch
-        adv = (adv - adv.mean()) / (adv.std() + 1e-5)
+        for key in value_infos.keys():
+            value = value_infos[key]
+            value_nograd = value.detach()
+            reward = reward_infos[key]
 
-        actor_loss = torch.sum(-action_log_prob[:, :-1] * adv)
-        critic_loss = self.critic_loss_fn(value[:, :-1], value_estimate)
+            adv, value_estimate = self.a2c_v1(value_nograd[:, :-1], reward[:, :-1],
+                                              self.gamma, self.lbd, done[:, :-1], value_nograd[:, -1])
+            # trick normalize adv mini-batch
+            adv = (adv - torch.mean(adv)) / (torch.std(adv) + 1e-5)
+
+            actor_loss_local = torch.sum(-action_log_prob[:, :-1] * adv)
+            critic_loss_local = self.critic_loss_fn(value[:, :-1], value_estimate)
+
+            actor_loss += actor_loss_local
+            critic_loss += critic_loss_local
+
+            actor_losses[key+"_actor_loss"] = actor_loss_local.item()
+            critic_losses[key+"_critic_loss"] = critic_loss_local.item()
 
         self.gradient_clip_and_optimize(self.optimizer,
                                         actor_loss + self.vf * critic_loss - self.ef * entropy,
                                         self.model.parameters(),
                                         max_norm=40.0)
-        return {"loss_actor": actor_loss.item(), "loss_critic": critic_loss.item(), "entropy": entropy.item()}
+        train_infos = {}
+        train_infos.update(**actor_losses, **critic_losses, entropy=entropy.item())
+        return train_infos
 
     def run(self):
+        for queue_sender in self.queue_senders:
+            send_with_stop_flag(queue_sender, False, (self.num_update, self.model))
+
         while True:
-            self.queue_sender.put((False, (self.num_update, self.get_weights())))
             learn_info = self.learn()
             self.num_update += 1
-            logging.info(f"update num: {self.num_update}, {learn_info}")
+            logging.info(f"update num: {self.num_update.item()}, {learn_info}")
             if hasattr(self, "sw"):
                 for key, value in learn_info.items():
-                    self.sw.add_scalar(key, value, self.num_update)
+                    self.sw.add_scalar(key, value, self.num_update.item())
 
     @staticmethod
     @torch.no_grad()
@@ -249,16 +276,21 @@ class A2C(Algorithm):
 
 
 class IMPALA(A2C):
-    def __init__(self, model: Model, tensor_receiver: TensorReceiver,
+    """
+    多reward, 单action
+    reward 结构应为 {”reward1", "reward2", "reward3"}
+    """
+    def __init__(self, model: Union[Model, Callable[[Any], Tuple[Dict[str, torch.Tensor], torch.Tensor]]],
+                 tensor_receiver: Receiver,
                  lr: float = 2e-3, gamma: float = 0.99, lbd: float = 0.98, vf: float = 0.5, ef: float = 1e-3,
-                 queue_sender: mp.Queue = None, tensorboard_dir: str = None,
-                 use_upgo: bool = False, send_intervals: int = None):
+                 upgo_key: str = None,
+                 queue_senders: List[mp.Queue] = None,
+                 tensorboard_dir: str = None):
         super().__init__(model, tensor_receiver,
                          lr, gamma, lbd, vf, ef,
-                         queue_sender,
+                         queue_senders,
                          tensorboard_dir)
-        self.use_upgo = use_upgo
-        self.send_intervals = send_intervals  # 每间隔training steps 传送模型参数
+        self.upgo_key = upgo_key
 
     def learn(self):
         self.model.train()
@@ -267,10 +299,10 @@ class IMPALA(A2C):
         obs = batch["observation"]  # shape(B*T)
         behavior_log_prob = batch['behavior_log_prob']
         action = batch["action"]
-        reward = batch["reward"]
+        reward_infos: Dict[str, torch.Tensor] = batch["reward_infos"]
         done = batch["done"]
 
-        value, action_logit = self.model(obs)  # shape: B*T, B*T*act_dim
+        value_infos, action_logit = self.model(obs)  # shape: B*T, B*T*act_dim
 
         action_log_prob = torch.log_softmax(action_logit, dim=-1)
         action_log_prob = action_log_prob.gather(-1, action.unsqueeze(-1)).squeeze(-1)  # B*T
@@ -287,16 +319,37 @@ class IMPALA(A2C):
         clipped_rho = torch.clamp(rho, 0, 1)  # clip_rho_threshold := 1)  rho shape: B*T
         c = torch.clamp(rho, 0, 1)  # clip_c_threshold := 1)  c shape: B*T
 
-        value_nograd = value.detach()
+        actor_losses = {}
+        critic_losses = {}
+        actor_loss = 0
+        critic_loss = 0
 
-        vtrace_adv, vtrace_value = self.vtrace(value_nograd[:, :-1], reward[:, :-1], done[:, :-1],
-                                               gamma=self.gamma, lbd=self.lbd, rho=clipped_rho[:, :-1], c=c[:, :-1],
-                                               bootstrap_value=value_nograd[:, -1])
+        for key in value_infos.keys():
+            value = value_infos[key]
+            value_nograd = value.detach()
+            reward = reward_infos[key]
 
-        logging.debug(f" adv is {torch.mean(vtrace_adv)}")
-        logging.debug(f" value is {torch.mean(vtrace_value)}")
+            vtrace_adv, vtrace_value = self.vtrace(value_nograd[:, :-1], reward[:, :-1], done[:, :-1],
+                                                   gamma=self.gamma, lbd=self.lbd, rho=clipped_rho[:, :-1], c=c[:, :-1],
+                                                   bootstrap_value=value_nograd[:, -1])
 
-        if self.use_upgo:
+            logging.debug(f" {key} adv is {torch.mean(vtrace_adv)}")
+            logging.debug(f" {key} value is {torch.mean(vtrace_value)}")
+
+            actor_loss_local = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * vtrace_adv)
+            critic_loss_local = self.critic_loss_fn(value[:, :-1], vtrace_value)
+
+            actor_loss += actor_loss_local
+            critic_loss += critic_loss_local
+
+            actor_losses[key+"_actor_loss"] = actor_loss_local.item()
+            critic_losses[key+"_critic_loss"] = critic_loss_local.item()
+
+        if self.upgo_key is not None:
+            value = value_infos[self.upgo_key]
+            value_nograd = value.detach()
+            reward = reward_infos[self.upgo_key]
+
             upgo_adv, upgo_value = self.upgo(value_nograd[:, :-1], reward[:, :-1],
                                              gamma=self.gamma, lbd=1, done=done[:, :-1],
                                              bootstrap_value=value_nograd[:, -1])
@@ -304,11 +357,9 @@ class IMPALA(A2C):
             logging.debug(f" upgo_adv is {torch.mean(upgo_adv)}")
             logging.debug(f" upgo_value is {torch.mean(upgo_value)}")
 
-            actor_loss = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * (vtrace_adv + upgo_adv) / 2)
-        else:
-            actor_loss = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * vtrace_adv)
-
-        critic_loss = self.critic_loss_fn(value[:, :-1], vtrace_value)
+            actor_loss_local = torch.sum(-action_log_prob[:, :-1] * clipped_rho[:, :-1] * upgo_adv)
+            actor_loss += actor_loss_local
+            actor_losses[self.upgo_key+"_upgo"] = actor_loss_local.item()
 
         entropy = torch.sum(torch.distributions.Categorical(logits=action_logit).entropy())
 
@@ -316,12 +367,13 @@ class IMPALA(A2C):
 
         self.gradient_clip_and_optimize(self.optimizer, loss, self.model.parameters(), 40.0)
 
-        return {"actor_loss": actor_loss.item(),
-                "critic_loss": critic_loss.item(),
-                "entropy": entropy.item(),
-                "data_staleness": self.num_update - mean_behavior_model_index,
-                "rho": mean_rho
-                }
+        train_infos = {}
+        train_infos.update(**actor_losses, **critic_losses,
+                           entropy=entropy.item(),
+                           data_staleness=self.num_update.item() - mean_behavior_model_index,
+                           rho=mean_rho)
+
+        return train_infos
 
     @staticmethod
     @torch.no_grad()
@@ -368,29 +420,6 @@ class IMPALA(A2C):
         target_value = torch.stack(target_value, dim=-1)
 
         return target_value - value, target_value
-
-    def run(self):
-        """
-        impala 主函数
-        """
-        send_with_stop_flag(self.queue_sender, False, (self.num_update, self.get_weights()))
-        while True:
-            learn_info = self.learn()
-            self.num_update += 1
-            logging.info(f"update num: {self.num_update}, {learn_info}")
-            if hasattr(self, "sw"):
-                for key, value in learn_info.items():
-                    self.sw.add_scalar(key, value, self.num_update)
-            if self.num_update % self.send_intervals == 0:
-                try:
-                    send_with_stop_flag(self.queue_sender, False, (self.num_update, self.get_weights()), block=False)
-                except queue.Full:
-                    logging.debug("the queue that used to send model is full")
-
-
-
-
-
 
 
 """

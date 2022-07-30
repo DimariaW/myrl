@@ -34,5 +34,5 @@ class Model(md.Model):
         h2 = self.act_fn(self.fc2(h1))
         output = self.fc3(h2)
 
-        return output[..., 0], output[..., 1:]  # value and logit, value 的最后一维度需要squeeze
+        return {"default": output[..., 0]}, output[..., 1:]  # value and logit, value 的最后一维度需要squeeze
 

@@ -254,7 +254,10 @@ class Receiver:
                         self.stopped = True
                     continue
 
-                return self.postprocess(data)
+                if self.postprocess is not None:
+                    data = self.postprocess(data)
+
+                return data
 
             except queue.Empty:
                 if self.stopped:
@@ -342,7 +345,7 @@ class MultiProcessJobExecutors:
             mp.Process(name=f"{name_prefix}-{i}",
                        target=wrapped_func,
                        args=(func, queue_sender, self.queue_receiver,
-                             logger_file_path, file_level, starts_with), daemon=True).start()
+                             logger_file_path, file_level, starts_with, waiting_time), daemon=True).start()
 
             self.queue_senders.append(queue_sender)
 

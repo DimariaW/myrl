@@ -5,9 +5,9 @@ from myrl.core import train_main
 
 if __name__ == '__main__':
     name = "lunar_lander"
-    mr_main1 = MemoryMain(7777, f"./log/{name}/")
-    mr_main2 = MemoryMain(7778, f"./log/{name}/")
+    mm_main1 = MemoryMain(7777, f"./log/{name}/mm1")
+    mm_main2 = MemoryMain(7778, f"./log/{name}/mm2")
     league_main = LeagueMain(7779, f"./log/{name}/")
     leaner_main = LearnerMain(f"./log/{name}/")
 
-    train_main(leaner_main, [mr_main1, mr_main2], league_main, memory_buffer_length=4)
+    train_main(leaner_main, [mm_main1, mm_main2], [league_main], memory_buffer_length=4)

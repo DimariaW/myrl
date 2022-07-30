@@ -56,27 +56,23 @@ class MemoryReplayBase:
         pass
 
 
-def make_batch(episodes: List[EpisodeType]) -> Tuple[int, Dict]:  # batch_size*time_step
+def make_batch(episodes: List[EpisodeType], to_tensor=True) -> Tuple[int, Dict]:  # batch_size*time_step
     model_indexes = [index for index, episode in episodes]
     episodes = [episode for index, episode in episodes]
     episodes = [utils.batchify(episode, unsqueeze=0) for episode in episodes]
-    return int(np.mean(model_indexes)), utils.batchify(episodes, unsqueeze=0)
+    episodes = utils.batchify(episodes, unsqueeze=0)
+    if to_tensor:
+        episodes = utils.to_tensor(episodes, unsqueeze=None, device=torch.device("cpu"))
+    return int(np.mean(model_indexes)), episodes
 
 
-def decompress_and_make_batch(episodes: List[CompressedEpisodeType]) -> Tuple[int, Dict]:
+def decompress_and_make_batch(episodes: List[CompressedEpisodeType], to_tensor=True) -> Tuple[int, Dict]:
     model_indexes = [index for index, episode in episodes]
     episodes = [episode for index, episode in episodes]
     episodes = [utils.batchify(pickle.loads(bz2.decompress(episode)), unsqueeze=0) for episode in episodes]
-    return int(np.mean(model_indexes)), utils.batchify(episodes, unsqueeze=0)
-
-
-class ToTensorWrapper:
-    def __init__(self, device, func):
-        self.device = device
-        self.func = func
-
-    def __call__(self, data):
-        return utils.to_tensor(self.func(data), unsqueeze=None, device=self.device)
+    if to_tensor:
+        episodes = utils.to_tensor(episodes, unsqueeze=None, device=torch.device("cpu"))
+    return int(np.mean(model_indexes)), episodes
 
 
 class TrajList(MemoryReplayBase):
@@ -99,13 +95,13 @@ class TrajList(MemoryReplayBase):
             batch = decompress_and_make_batch(self.episode_list)
         else:
             batch = make_batch(self.episode_list)
-        self.queue_sender.put((False, batch))  # False 表示发送端没有停止发送
+        connection.send_with_stop_flag(self.queue_sender, is_stop=False, data=batch)  # False 表示发送端没有停止发送
         self.num_sent += 1
         logging.debug(f"total sent data num is {self.num_sent}")
         self.episode_list.clear()
 
     def stop(self):
-        self.queue_sender.put((True, None))
+        connection.send_with_stop_flag(self.queue_sender, is_stop=True, data=None)  # False 表示发送端没有停止发送
         logging.debug(f'successfully stop sending data')
 
 
@@ -118,6 +114,7 @@ class TrajQueue(MemoryReplayBase):
         super().__init__(queue_sender, use_bz2)
         self.episode_queue = queue.Queue(maxsize=maxlen)
         self.batch_size = batch_size
+
         self.num_cached = 0
         self.is_stop = False
 
@@ -130,7 +127,7 @@ class TrajQueue(MemoryReplayBase):
                 except queue.Full:
                     logging.debug("the queue is full")
             self.num_cached += 1
-            logging.debug(f"total cashed data num is {self.num_cached}")
+        logging.debug(f"total cashed data num is {self.num_cached}")
 
     def send_raw_batch(self):
         while True:
@@ -207,7 +204,7 @@ class MemoryServer:
         if tensorboard_dir is not None:
             self.sw = SummaryWriter(logdir=tensorboard_dir)
 
-        self.num_sample_info_received = defaultdict(lambda:0)
+        self.num_sample_info_received = defaultdict(lambda: 0)
         self.actor_num = actor_num
 
     def run(self):
@@ -222,7 +219,7 @@ class MemoryServer:
             logging.debug(cmd)
             if cmd == "episodes":
                 self.memory_replay.cache(data)
-                self.actor_communicator.send(conn, (cmd, "successfully sent episodes"))
+                self.actor_communicator.send(conn, (cmd, "successfully receive episodes"))
 
             elif cmd == "sample_infos":
                 self._record_sample_info(data)
@@ -245,12 +242,12 @@ class MemoryServer:
                 if len(conns) == self.actor_num:
                     self.memory_replay.start()
                     for conn in conns:
-                        self.actor_communicator.send(conn, (cmd, "successfully sent episodes"))
+                        self.actor_communicator.send(conn, (cmd, "successfully receive episodes"))
                     conns = []
 
-            elif cmd == "sample_info":
+            elif cmd == "sample_infos":
                 self._record_sample_info(data)
-                self.actor_communicator.send(conn, (cmd, "successfully record sample info"))
+                self.actor_communicator.send(conn, (cmd, "successfully record sample infos"))
 
     def _record_sample_info(self, data: Dict[str, list]):
         for key, values in data.items():
